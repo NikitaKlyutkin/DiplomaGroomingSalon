@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,5 +19,6 @@ namespace DiplomaGroomingSalon.Domain.Entities
 		public string BreedPet { get;set;}
 
 		public User User { get; set; }
+		public List<Order> Order { get; set; }
 	}
 }

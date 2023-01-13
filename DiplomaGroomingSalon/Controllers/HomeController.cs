@@ -6,21 +6,25 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using DiplomaGroomingSalon.DAL;
 
 namespace DiplomaGroomingSalon.Controllers
 {
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
-
-		public HomeController(ILogger<HomeController> logger)
+		private readonly DBContext _context;
+		public HomeController(ILogger<HomeController> logger, DBContext context)
 		{
 			_logger = logger;
+			_context = context;
+
 		}
 
 		public IActionResult Index()
 		{
-			return View();
+			var createDB = _context.Users.ToList();
+			return View(createDB);
 		}
 
 		public IActionResult Privacy()
