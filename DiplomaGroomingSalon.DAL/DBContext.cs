@@ -14,5 +14,6 @@ namespace DiplomaGroomingSalon.DAL
 		public DbSet<User> Users { get; set; }
 		public DbSet<Account> Accounts { get; set; }
 		public DbSet<Order> Orders { get; set; }
+		public DbSet<Appointment> Appointments { get; set; }
 	}
 }

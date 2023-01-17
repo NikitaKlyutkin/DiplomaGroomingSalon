@@ -8,10 +8,12 @@ using DiplomaGroomingSalon.Domain.Enum;
 
 namespace DiplomaGroomingSalon.Domain.Entities
 {
-	[Table("Orders")]
-	public class Order : Account
+	
+	public class Order 
 	{
+		public Guid Id { get; set; }
 		public StatusOrder StatusOrder { get; set; }
 		public Account Account { get; set; }
+		public List<Appointment> Appointments { get; set; }
 	}
 }
