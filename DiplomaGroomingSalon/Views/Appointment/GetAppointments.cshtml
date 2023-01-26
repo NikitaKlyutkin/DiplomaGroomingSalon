@@ -1,0 +1,41 @@
+﻿@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.Appointment>
+
+@{
+    ViewData["Title"] = "GetAppointments";
+}
+
+<h1>GetAppointments</h1>
+
+<p>
+    <a asp-action="CreateAppointment">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateAppointment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeAppointment)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateAppointment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeAppointment)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

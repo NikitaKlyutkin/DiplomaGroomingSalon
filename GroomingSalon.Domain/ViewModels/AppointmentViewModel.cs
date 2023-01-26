@@ -5,15 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiplomaGroomingSalon.Domain.Entities
+namespace DiplomaGroomingSalon.Domain.ViewModels
 {
-	public class Appointment
+	public class AppointmentViewModel
 	{
-		public Guid Id { get; set; }
 		[DataType(DataType.Date)]
-        public DateTime DateAppointment { get; set; }
+		public DateTime DateAppointment { get; set; }
 		[DataType(DataType.Time)]
 		public DateTime TimeAppointment { get; set; }
-		public bool StatusAppointment { get; set; }
 	}
 }

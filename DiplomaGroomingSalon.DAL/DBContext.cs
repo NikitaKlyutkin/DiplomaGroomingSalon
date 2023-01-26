@@ -8,7 +8,7 @@ namespace DiplomaGroomingSalon.DAL
 	{
 		public DBContext(DbContextOptions opts) : base(opts)
 		{
-			Database.EnsureDeleted();
+			//Database.EnsureDeleted();
 			Database.EnsureCreated();
 		}
 
@@ -34,5 +34,6 @@ namespace DiplomaGroomingSalon.DAL
 					.OnDelete(DeleteBehavior.Cascade);
 			});
 		}
+
 	}
 }

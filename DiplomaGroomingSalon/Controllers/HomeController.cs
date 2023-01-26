@@ -23,8 +23,8 @@ namespace DiplomaGroomingSalon.Controllers
 
 		public IActionResult Index()
 		{
-			var createDB = _context.Users.ToList();
-			return View(createDB);
+			//var createDB = _context.Users.ToList();
+			return View();
 		}
 
 		public IActionResult Privacy()

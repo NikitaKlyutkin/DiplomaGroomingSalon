@@ -9,6 +9,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DiplomaGroomingSalon.DAL;
+using DiplomaGroomingSalon.DAL.Interfaces;
+using DiplomaGroomingSalon.DAL.Repositories;
+using DiplomaGroomingSalon.Domain.Entities;
+using DiplomaGroomingSalon.Service.Implementations;
+using DiplomaGroomingSalon.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaGroomingSalon
@@ -28,6 +33,10 @@ namespace DiplomaGroomingSalon
 			services.AddControllersWithViews();
 			var connectionStr = Configuration.GetConnectionString("DefaultConnection");
 			services.AddDbContext<DBContext>(opts => opts.UseSqlServer(connectionStr));
+			services.AddScoped<IBaseRepository<Appointment>, AppointmentRepository>();
+			services.AddScoped<IBaseRepository<Order>, OrderRepository>();
+			services.AddScoped<IAppointmentService, AppointmentService>();
+			services.AddScoped<IOrderService, OrderService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

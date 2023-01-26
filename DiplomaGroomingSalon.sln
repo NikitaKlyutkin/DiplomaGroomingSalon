@@ -9,9 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiplomaGroomingSalon.Domain
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{CC60E14C-E48C-4BFD-8A67-7E19AD8BDFF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaGroomingSalon", "DiplomaGroomingSalon\DiplomaGroomingSalon.csproj", "{CFEECCFE-F9EC-4D5B-A54F-616A49167D5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiplomaGroomingSalon", "DiplomaGroomingSalon\DiplomaGroomingSalon.csproj", "{CFEECCFE-F9EC-4D5B-A54F-616A49167D5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaGroomingSalon.DAL", "DiplomaGroomingSalon.DAL\DiplomaGroomingSalon.DAL.csproj", "{94971F5F-457B-4873-B3CB-E48156B6E7D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiplomaGroomingSalon.DAL", "DiplomaGroomingSalon.DAL\DiplomaGroomingSalon.DAL.csproj", "{94971F5F-457B-4873-B3CB-E48156B6E7D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{6DD636D0-FF42-4CF8-B33B-0F292FDFC6A6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiplomaGroomingSalon.Service", "DiplomaGroomingSalon.Service\DiplomaGroomingSalon.Service.csproj", "{2A4C5589-CF1E-4741-A76C-FFEAA77822F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +35,10 @@ Global
 		{94971F5F-457B-4873-B3CB-E48156B6E7D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94971F5F-457B-4873-B3CB-E48156B6E7D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94971F5F-457B-4873-B3CB-E48156B6E7D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A4C5589-CF1E-4741-A76C-FFEAA77822F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A4C5589-CF1E-4741-A76C-FFEAA77822F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A4C5589-CF1E-4741-A76C-FFEAA77822F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A4C5589-CF1E-4741-A76C-FFEAA77822F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,6 +46,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{DCEA15FB-8296-4446-BD70-F7E89426F732} = {0A65A740-D549-4CA5-A313-711702E34DBE}
 		{94971F5F-457B-4873-B3CB-E48156B6E7D8} = {CC60E14C-E48C-4BFD-8A67-7E19AD8BDFF5}
+		{2A4C5589-CF1E-4741-A76C-FFEAA77822F6} = {6DD636D0-FF42-4CF8-B33B-0F292FDFC6A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2CD0D54C-3198-4A05-BA25-86CD44292362}
