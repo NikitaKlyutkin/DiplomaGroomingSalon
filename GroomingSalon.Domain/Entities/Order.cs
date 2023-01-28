@@ -14,6 +14,7 @@ namespace DiplomaGroomingSalon.Domain.Entities
 		public Guid Id { get; set; }
 		public StatusOrder StatusOrder { get; set; }
 		public Account Account { get; set; }
-		public List<Appointment> Appointments { get; set; }
+		public Guid AppointmentId { get; set; }
+		public Appointment Appointment { get; set; }
 	}
 }

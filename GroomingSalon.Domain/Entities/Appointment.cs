@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,10 +11,9 @@ namespace DiplomaGroomingSalon.Domain.Entities
 	public class Appointment
 	{
 		public Guid Id { get; set; }
-		[DataType(DataType.Date)]
-        public DateTime DateAppointment { get; set; }
-		[DataType(DataType.Time)]
-		public DateTime TimeAppointment { get; set; }
+		
+        public DateTime DateTimeAppointment { get; set; }
+
 		public bool StatusAppointment { get; set; }
 	}
 }

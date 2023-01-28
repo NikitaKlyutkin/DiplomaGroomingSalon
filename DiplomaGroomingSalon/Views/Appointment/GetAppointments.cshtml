@@ -13,24 +13,18 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DateAppointment)
+                @Html.DisplayNameFor(model => model.DateTimeAppointment)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TimeAppointment)
-            </th>
-            <th></th>
+	        <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.DateAppointment)
+                    @Html.DisplayFor(modelItem => item.DateTimeAppointment)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeAppointment)
-            </td>
-            <td>
+	        <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })

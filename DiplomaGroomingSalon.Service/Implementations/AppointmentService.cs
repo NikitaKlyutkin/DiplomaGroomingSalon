@@ -30,8 +30,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 				var appointment = new Appointment()
 				{
 					Id = Guid.NewGuid(),
-					DateAppointment = appointmentViewModel.DateAppointment,
-					TimeAppointment = appointmentViewModel.TimeAppointment,
+					DateTimeAppointment = appointmentViewModel.DateTimeAppointment,
 					StatusAppointment = true
 				};
 
@@ -49,8 +48,8 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			return baseResponse;
 	    }
 
-	    public IBaseResponse<List<Appointment>> GetAppointments()
-	    {
+		public IBaseResponse<List<Appointment>> GetAppointments()
+		{
 		    var baseResponse = new BaseResponse<IEnumerable<Appointment>>();
 		    try
 		    {

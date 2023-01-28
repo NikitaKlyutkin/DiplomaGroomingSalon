@@ -11,6 +11,7 @@ namespace DiplomaGroomingSalon.Domain.ViewModels
 	public class OrderViewModel
 	{
 		public Account Account { get; set; }
-		public List<Appointment> Appointments { get; set; }
+		public Guid AppointmentId { get; set; }
+		public Appointment Appointment { get; set; }
 	}
 }

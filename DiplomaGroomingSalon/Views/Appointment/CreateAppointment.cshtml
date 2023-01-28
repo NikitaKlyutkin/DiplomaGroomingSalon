@@ -13,16 +13,11 @@
         <form asp-action="CreateAppointment">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="DateAppointment" class="control-label"></label>
-                <input asp-for="DateAppointment" class="form-control" />
-                <span asp-validation-for="DateAppointment" class="text-danger"></span>
+                <label asp-for="DateTimeAppointment" class="control-label"></label>
+                <input asp-for="DateTimeAppointment" class="form-control" />
+                <span asp-validation-for="DateTimeAppointment" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="TimeAppointment" class="control-label"></label>
-                <input asp-for="TimeAppointment" class="form-control" />
-                <span asp-validation-for="TimeAppointment" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+	        <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

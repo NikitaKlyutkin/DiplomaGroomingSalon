@@ -15,5 +15,6 @@ namespace DiplomaGroomingSalon.Service.Interfaces
 	    IBaseResponse<List<Appointment>> GetAppointments();
 
 
+
     }
 }
