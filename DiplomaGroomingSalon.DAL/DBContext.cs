@@ -16,10 +16,15 @@ namespace DiplomaGroomingSalon.DAL
 		public DbSet<Account> Accounts { get; set; }
 		public DbSet<Order> Orders { get; set; }
 		public DbSet<Appointment> Appointments { get; set; }
+		public DbSet<TypePet> TypePets { get; set; }
+		public DbSet<BreedPet> BreedPets { get; set; }
+		public DbSet<ServiceType> ServiceTypes { get; set; }
+
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<User>(builder =>
+
+            modelBuilder.Entity<User>(builder =>
 			{
 				builder.ToTable("Users").HasKey(x => x.Id);
 

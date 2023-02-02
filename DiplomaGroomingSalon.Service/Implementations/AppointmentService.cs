@@ -55,7 +55,8 @@ namespace DiplomaGroomingSalon.Service.Implementations
 		    {
 			    var appointments = _appointmentRepository.GetAll().ToList();
 			    var appointmentsTrue = new List<Appointment>();
-				if (!appointments.Any())
+				
+			    if (!appointments.Any())
 				{
 					return new BaseResponse<List<Appointment>>()
 					{

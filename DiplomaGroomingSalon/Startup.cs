@@ -35,9 +35,14 @@ namespace DiplomaGroomingSalon
 			services.AddDbContext<DBContext>(opts => opts.UseSqlServer(connectionStr));
 			services.AddScoped<IBaseRepository<Appointment>, AppointmentRepository>();
 			services.AddScoped<IBaseRepository<Order>, OrderRepository>();
+			services.AddScoped<IBaseRepository<TypePet>, TypePetRepository>();
+            services.AddScoped<IBaseRepository<BreedPet>, BreedPetRepository>();
+			services.AddScoped<IBaseRepository<ServiceType>, ServiceTypeRepository>();
+
 			services.AddScoped<IAppointmentService, AppointmentService>();
 			services.AddScoped<IOrderService, OrderService>();
-		}
+            services.AddScoped<IPriceCascadingService, PriceCascadingService>();
+        }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

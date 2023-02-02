@@ -1,0 +1,62 @@
+﻿@model DiplomaGroomingSalon.Domain.ViewModels.ServiceTypeViewModel
+
+@{
+    ViewData["Title"] = "CreateServiceType";
+}
+
+<h1>CreateServiceType</h1>
+
+<h4>ServiceTypeViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateServiceType">
+	        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	        <div class="form-group">
+		        @Html.DropDownListFor(m => m.TypePetId, ViewBag.TypePetBP as IEnumerable<SelectListItem>, "Select TypePet",new {@class="form-control"})
+		        
+	        </div>
+	        <div class="form-group">
+		        <label asp-for="BreedPetId" class="control-label">SubCategory Type</label> 
+			        <select asp-for="BreedPetId" class="form-control"></select> 
+		        </div>
+
+	        <div class="form-group">
+		        <label asp-for="serviceTypeName" class="control-label"></label>
+		        <input asp-for="serviceTypeName" class="form-control" />
+		        <span asp-validation-for="serviceTypeName" class="text-danger"></span>
+	        </div>
+	        <div class="form-group">
+		        <label asp-for="Price" class="control-label"></label>
+				<input asp-for="Price" class="form-control" />
+				<span asp-validation-for="Price" class="text-danger"></span>
+	        </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+	<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$("#TypePetId").change(function () {
+				$.get("/PriceCascading/GetBreedPets", { TypePetId: $("#TypePetId").val() }, function (data) {
+					$("#BreedPetId").empty();
+					$.each(data, function (i, item) {
+						$("select#BreedPetId").append(`<option value="${item.id}">${item.name}</option>`);
+					});
+				});
+			})
+		})
+	</script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -38,6 +38,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 					
 					AppointmentId = orderViewModel.AppointmentId
 				};
+
 				var appointmentRepository = _appointmentRepository.GetAll()
 					.FirstOrDefault(x => x.Id == orderViewModel.AppointmentId);
 				var appointment = new Appointment()

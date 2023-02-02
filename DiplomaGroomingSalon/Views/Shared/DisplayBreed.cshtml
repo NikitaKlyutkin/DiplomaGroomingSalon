@@ -1,0 +1,9 @@
+﻿@model DiplomaGroomingSalon.Domain.Entities.BreedPet
+<option> --select Type Pet--</option>
+@if (ViewBag.BreedPet != null)
+{
+	foreach (var item in ViewBag.BreedPet)
+	{
+		<option value="@item.Value">@item.Text</option>
+	}
+}
