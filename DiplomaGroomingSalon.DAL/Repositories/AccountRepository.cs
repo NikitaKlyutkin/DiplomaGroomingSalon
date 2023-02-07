@@ -40,5 +40,10 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 
 			return entity;
 		}
-	}
+
+        public Task DeleteRange(Account entity)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

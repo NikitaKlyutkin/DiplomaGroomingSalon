@@ -1,0 +1,57 @@
+﻿@model IEnumerable<DiplomaGroomingSalon.Domain.ViewModels.BreedPetViewModel>
+
+@{
+    ViewData["Title"] = "GetBreedPets";
+}
+
+<h1>GetBreedPets</h1>
+
+<p>
+	<a asp-action="CreateTypePet">Create New TypePet</a>
+</p>
+<p>
+	<a asp-action="CreateBreedPet">Create New BreedPet</a>
+</p>
+<p>
+	<a asp-action="CreateServiceType">Create New ServiceType</a>
+</p>
+@if (Model == null)
+{
+	<div class="col-md-8">
+				<div class="card-body">
+					<h5 class="card-title text-center">Список пуст :(</h5>
+				</div>
+			</div>
+}
+else
+{
+	<table class="table">
+		<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.IdBreedPet)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.breedPetName)
+			</th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.IdBreedPet)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.breedPetName)
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "EditBreedPet", new {id = item.IdBreedPet}) |
+						@Html.ActionLink("Delete All(including BreedPet)", "DeleteBreedPets", new {id=item.IdBreedPet})
+				</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+}

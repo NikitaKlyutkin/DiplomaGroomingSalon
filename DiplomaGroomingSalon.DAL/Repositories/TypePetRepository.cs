@@ -32,7 +32,12 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 			await _db.SaveChangesAsync();
 		}
 
-		public async Task<TypePet> Update(TypePet entity)
+        public Task DeleteRange(TypePet entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<TypePet> Update(TypePet entity)
 		{
 			_db.TypePets.Update(entity);
 			await _db.SaveChangesAsync();

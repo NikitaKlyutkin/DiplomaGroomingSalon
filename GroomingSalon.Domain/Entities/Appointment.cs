@@ -15,5 +15,6 @@ namespace DiplomaGroomingSalon.Domain.Entities
         public DateTime DateTimeAppointment { get; set; }
 
 		public bool StatusAppointment { get; set; }
-	}
+        public string Description { get; set; }
+    }
 }

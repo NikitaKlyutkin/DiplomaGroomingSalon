@@ -1,0 +1,70 @@
+﻿@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.ServiceType>
+
+@{
+    ViewData["Title"] = "GetServiceTypes";
+}
+
+<h1>GetServiceTypes</h1>
+
+<p>
+	<a asp-action="CreateTypePet">Create New TypePet</a>
+</p>
+<p>
+	<a asp-action="CreateBreedPet">Create New BreedPet</a>
+</p>
+<p>
+	<a asp-action="CreateServiceType">Create New ServiceType</a>
+</p>
+@if (Model == null)
+{
+	<div class="col-md-8">
+		<div class="card-body">
+			<h5 class="card-title text-center">Список пуст :(</h5>
+		</div>
+	</div>
+}
+else
+{
+	<table class="table">
+		<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.serviceTypeName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Price)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.BreedPetId)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.TypePetId)
+			</th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.serviceTypeName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Price)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.BreedPetId)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.TypePetId)
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "EditServiceType", new {id = item.IdServiceType}) |
+					@Html.ActionLink("Delete ServiceType and Price", "DeleteServiceTypes", new {id = item.IdServiceType})
+				</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+}

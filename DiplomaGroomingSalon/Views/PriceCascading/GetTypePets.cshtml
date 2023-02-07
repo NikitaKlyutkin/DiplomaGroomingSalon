@@ -1,0 +1,57 @@
+﻿@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.TypePet>
+
+@{
+	ViewData["Title"] = "GetTypePets";
+}
+
+<h1>GetServiceTypes</h1>
+<p>
+	<a asp-action="CreateTypePet">Create New TypePet</a>
+</p>
+<p>
+	<a asp-action="CreateBreedPet">Create New BreedPet</a>
+</p>
+<p>
+	<a asp-action="CreateServiceType">Create New ServiceType</a>
+</p>
+@if (Model == null)
+{
+	<div class="col-md-8">
+		<div class="card-body">
+			<h5 class="card-title text-center">Список пуст :(</h5>
+		</div>
+	</div>
+}
+else
+{
+	<table class="table">
+		<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.IdTypePet)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.typePetName)
+			</th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.IdTypePet)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.typePetName)
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "EditTypePet", new {id = item.IdTypePet}) |
+						@Html.ActionLink("Delete All(including TypePet)", "DeleteTypePets", new {id = item.IdTypePet})
+				</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+}

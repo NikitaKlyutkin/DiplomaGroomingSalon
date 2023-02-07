@@ -23,6 +23,37 @@ namespace DiplomaGroomingSalon.Controllers
 		{
 			_priceCascadingService = priceCascadingService;
 		}
+		[HttpGet]
+		public IActionResult GetTypePets()
+		{
+			var response = _priceCascadingService.GetTypePets();
+			if (response.StatusCode == Domain.Enum.StatusCode.OK)
+			{
+				return View(response.Data);
+			}
+			return View(response.Description);
+		}
+		[HttpGet]
+		public IActionResult GetBreedPets()
+        {
+            var response = _priceCascadingService.GetBreedPets();
+
+            if (response.StatusCode == Domain.Enum.StatusCode.OK)
+			{
+                return View(response.Data);
+            }
+			return View(response.Description);
+		}
+		[HttpGet]
+		public IActionResult GetServiceTypes()
+		{
+			var response = _priceCascadingService.GetServiceTypes();
+            if (response.StatusCode == Domain.Enum.StatusCode.OK)
+			{
+				return View(response.Data);
+			}
+			return View(response.Description);
+		}
         [HttpGet]
         public IActionResult CreateTypePet()
         {
@@ -96,15 +127,106 @@ namespace DiplomaGroomingSalon.Controllers
 			}
 			return StatusCode(StatusCodes.Status500InternalServerError);
 		}
-		public IActionResult GetBreedPets(Guid TypePetId)
+		public IActionResult GetBreedForCascading(Guid TypePetId)
         {
 	        var response = _priceCascadingService.GetBreedPets();
             var breedPets = response.Data;
 
-            var SubCategory_List = breedPets.Where(s => s.TypePetId == TypePetId).Select(c => new { Id = c.IdBreedPet, Name = c.breedPetName }).ToList();
-            //var breedPets = response.Data.Where(x=>x.TypePetId == TypePetId).ToList();
-            //ViewBag.BreedPet = new SelectList(breedPets, "IdBreedPet", "breedPetName");
+            var SubCategory_List = breedPets.Where(s => s.TypePetId == TypePetId)
+	            .Select(c => new { Id = c.IdBreedPet, Name = c.breedPetName }).ToList();
             return Json(SubCategory_List);
 		}
+        [HttpGet]
+        public async Task<IActionResult> EditTypePet(Guid id)
+        {
+            var response = await _priceCascadingService.GetTypePet(id);
+            if (response.StatusCode == Domain.Enum.StatusCode.OK)
+            {
+                return View(response.Data);
+            }
+            ModelState.AddModelError("", response.Description);
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditTypePet(TypePetViewModel viewModel)
+        {
+            ModelState.Remove("IdTypePet");
+            ModelState.Remove("TypePetId");
+            if (ModelState.IsValid)
+                await _priceCascadingService.EditTypePet(viewModel.IdTypePet, viewModel);
+            return RedirectToAction("GetTypePets");
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditBreedPet(Guid id)
+        {
+            var response = await _priceCascadingService.GetBreedPet(id);
+            if (response.StatusCode == Domain.Enum.StatusCode.OK)
+            {
+                return View(response.Data);
+            }
+            ModelState.AddModelError("", response.Description);
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditBreedPet(BreedPetViewModel viewModel)
+        {
+            ModelState.Remove("IdBreedPet");
+            ModelState.Remove("TypePetId");
+            if (ModelState.IsValid)
+                await _priceCascadingService.EditBreedPet(viewModel.IdBreedPet, viewModel);
+            return RedirectToAction("GetBreedPets");
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditServiceType(Guid id)
+        {
+            var response = await _priceCascadingService.GetServiceType(id);
+            if (response.StatusCode == Domain.Enum.StatusCode.OK)
+            {
+                return View(response.Data);
+            }
+            ModelState.AddModelError("", response.Description);
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditServiceType(ServiceTypeViewModel viewModel)
+        {
+            ModelState.Remove("IdServiceType");
+            ModelState.Remove("TypePetId");
+            ModelState.Remove("BreedPetId");
+            if (ModelState.IsValid)
+                await _priceCascadingService.EditServiceType(viewModel.IdServiceType, viewModel);
+            return RedirectToAction("GetServiceTypes");
+        }
+        public async Task<IActionResult> DeleteTypePets(Guid id)
+        {
+            var response = await _priceCascadingService.DeleteTypePet(id);
+            if (response.StatusCode == Domain.Enum.StatusCode.OK)
+            {
+                return RedirectToAction("GetTypePets");
+            }
+            return View(response.Description);
+        }
+        public async Task<IActionResult> DeleteBreedPets(Guid id)
+        {
+            var response = await _priceCascadingService.DeleteBreedPet(id);
+            if (response.StatusCode == Domain.Enum.StatusCode.OK)
+            {
+                return RedirectToAction("GetBreedPets");
+            }
+            return View(response.Description);
+        }
+        public async Task<IActionResult> DeleteServiceTypes(Guid id)
+        {
+	        var response = await _priceCascadingService.DeleteServiceType(id);
+	        if (response.StatusCode == Domain.Enum.StatusCode.OK)
+	        {
+		        return RedirectToAction("GetServiceTypes");
+	        }
+	        return View(response.Description);
+        }
+
 	}
 }

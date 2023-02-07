@@ -14,8 +14,8 @@ namespace DiplomaGroomingSalon.Domain.Entities
 		public string serviceTypeName { get; set; }
 		public decimal Price { get; set; }
 		public BreedPet BreedPet { get; set; }
-		//public TypePet TypePet { get; set; }
 		public Guid BreedPetId { get; set; }
 		public Guid TypePetId { get; set; }
-	}
+        public string Description { get; set; }
+    }
 }

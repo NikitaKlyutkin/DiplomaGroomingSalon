@@ -7,13 +7,23 @@
 <h1>CreateBreedPet</h1>
 
 <h4>BreedPetViewModel</h4>
+<p>
+	<a asp-action="CreateTypePet">Create New TypePet</a>
+</p>
+<p>
+	<a asp-action="CreateBreedPet">Create New BreedPet</a>
+</p>
+<p>
+	<a asp-action="CreateServiceType">Create New ServiceType</a>
+</p>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateBreedPet">
 	        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 	        <div class="form-group">
-                @Html.DropDownListFor(m => m.TypePetId, ViewBag.TypePet as IEnumerable<SelectListItem>, "Select TypePet",new {@class="form-control"})
+		        <label>TypePet</label> 
+		        @Html.DropDownListFor(m => m.TypePetId, ViewBag.TypePet as IEnumerable<SelectListItem>, "Select TypePet", new {@class = "form-control"})
 	        </div>
             <div class="form-group">
                 <label asp-for="breedPetName" class="control-label"></label>
@@ -29,7 +39,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="GetBreedPets">Back to List</a>
 </div>
 
 @section Scripts {

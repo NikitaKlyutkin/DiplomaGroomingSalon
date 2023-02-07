@@ -17,8 +17,8 @@ namespace DiplomaGroomingSalon.Domain.Entities
 		public string Phone { get; set;}
 		public string NamePet { get; set;}
 		public string BreedPet { get;set;}
-
-		public User User { get; set; }
+        public string Description { get; set; }
+        public User User { get; set; }
 		public List<Order> Orders { get; set; }
 	}
 }

@@ -10,8 +10,10 @@ namespace DiplomaGroomingSalon.Domain.ViewModels
 {
 	public class OrderViewModel
 	{
-		public Account Account { get; set; }
+        public Guid Id { get; set; }
+        public Account Account { get; set; }
 		public Guid AppointmentId { get; set; }
 		public Appointment Appointment { get; set; }
-	}
+        public string Description { get; set; }
+    }
 }

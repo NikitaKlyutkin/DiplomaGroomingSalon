@@ -11,5 +11,6 @@ namespace DiplomaGroomingSalon.Domain.Entities
 		public string Password { get; set; }
 		public Role Role { get; set; }
 		public Account Account { get; set; }
-	}
+        public string Description { get; set; }
+    }
 }

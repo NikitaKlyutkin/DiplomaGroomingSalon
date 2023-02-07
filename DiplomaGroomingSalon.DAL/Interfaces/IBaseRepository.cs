@@ -13,7 +13,7 @@ namespace DiplomaGroomingSalon.DAL.Interfaces
 		IQueryable<T> GetAll();
 
 		Task Delete(T entity);
-
-		Task<T> Update(T entity);
+        Task DeleteRange(T entity);
+        Task<T> Update(T entity);
 	}
 }

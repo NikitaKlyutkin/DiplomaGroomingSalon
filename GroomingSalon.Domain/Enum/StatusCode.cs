@@ -11,7 +11,7 @@ namespace DiplomaGroomingSalon.Domain.Enum
 		UserNotFound = 0,
 		UserAlreadyExists = 1,
 
-		CarNotFound = 10,
+		NotFound = 10,
 
 		OrderNotFound = 20,
 

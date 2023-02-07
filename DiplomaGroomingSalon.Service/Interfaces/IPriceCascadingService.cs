@@ -14,10 +14,20 @@ namespace DiplomaGroomingSalon.Service.Interfaces
 		IBaseResponse<List<TypePet>> GetTypePets();
 		IBaseResponse<List<BreedPet>> GetBreedPets();
 		IBaseResponse<List<ServiceType>> GetServiceTypes();
-		IBaseResponse<List<BreedPet>> GetSortBreedPet(Guid TypePetId);
-        Task<IBaseResponse<TypePetViewModel>> CreateTypePet(TypePetViewModel typePetViewModel);
+		Task<IBaseResponse<TypePetViewModel>> CreateTypePet(TypePetViewModel typePetViewModel);
 		Task<IBaseResponse<BreedPetViewModel>> CreateBreedPet(BreedPetViewModel breedPetViewModel);
 		Task<IBaseResponse<ServiceTypeViewModel>> CreateServiceType(ServiceTypeViewModel serviceTypeViewModel);
+        Task<IBaseResponse<TypePetViewModel>> GetTypePet(Guid id);
+        Task<IBaseResponse<BreedPetViewModel>> GetBreedPet(Guid id);
+        Task<IBaseResponse<ServiceTypeViewModel>> GetServiceType(Guid id);
+        Task<IBaseResponse<TypePet>> EditTypePet(Guid id, TypePetViewModel model);
+        Task<IBaseResponse<BreedPet>> EditBreedPet(Guid id, BreedPetViewModel model);
+        Task<IBaseResponse<ServiceType>> EditServiceType(Guid id, ServiceTypeViewModel model);
+        Task<IBaseResponse<bool>> DeleteTypePet(Guid id);
+        Task<IBaseResponse<bool>> DeleteBreedPet(Guid id);
+        Task<IBaseResponse<bool>> DeleteServiceType(Guid id);
+
+
 
 	}
 }

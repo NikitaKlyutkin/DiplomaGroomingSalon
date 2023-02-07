@@ -1,0 +1,40 @@
+﻿@model DiplomaGroomingSalon.Domain.ViewModels.TypePetViewModel
+
+@{
+    ViewData["Title"] = "EditTypePet";
+}
+
+<h1>EditTypePet</h1>
+
+<h4>TypePetViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditTypePet">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdTypePet" class="control-label" hidden="text"></label>
+                <input asp-for="IdTypePet" class="form-control" hidden="text" />
+                <span asp-validation-for="IdTypePet" class="text-danger" hidden="text"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="typePetName" class="control-label"></label>
+                <input asp-for="typePetName" class="form-control" />
+                <span asp-validation-for="typePetName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TypePetId" class="control-label" hidden="text"></label>
+                <input asp-for="TypePetId" class="form-control" hidden="text" />
+                <span asp-validation-for="TypePetId" class="text-danger" hidden="text"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="GetTypePets">Back to List</a>
+</div>
+

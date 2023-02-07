@@ -14,5 +14,6 @@ namespace DiplomaGroomingSalon.Domain.Entities
 		public Guid IdTypePet { get; set; }
 		public string typePetName { get; set; }
 		public Guid TypePetId { get; set; }
-	}
+        public string Description { get; set; }
+    }
 }

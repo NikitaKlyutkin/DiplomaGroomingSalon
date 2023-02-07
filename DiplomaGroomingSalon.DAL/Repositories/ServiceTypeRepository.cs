@@ -32,7 +32,13 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 			await _db.SaveChangesAsync();
 		}
 
-		public async Task<ServiceType> Update(ServiceType entity)
+        public async Task DeleteRange(ServiceType entity)
+        {
+            _db.ServiceTypes.RemoveRange(entity);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task<ServiceType> Update(ServiceType entity)
 		{
 			_db.ServiceTypes.Update(entity);
 			await _db.SaveChangesAsync();

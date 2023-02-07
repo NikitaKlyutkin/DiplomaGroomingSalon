@@ -33,7 +33,12 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 			await _db.SaveChangesAsync();
 		}
 
-		public async Task<Order> Update(Order entity)
+        public Task DeleteRange(Order entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Order> Update(Order entity)
 		{
 			_db.Orders.Update(entity);
 			await _db.SaveChangesAsync();
