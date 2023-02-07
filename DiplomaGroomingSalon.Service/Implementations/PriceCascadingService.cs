@@ -65,8 +65,12 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			try
 			{
 				var breedPets = _breedPetRepository.GetAll().ToList();
-
-				if (!breedPets.Any())
+                //var typePets = _typePetRepository.GetAll().ToList();
+                //if (typePets.Select(x => x.IdTypePet) == breedPets.Select(x => x.TypePetId))
+                //{
+                    
+                //}
+                if (!breedPets.Any())
 				{
 					return new BaseResponse<List<BreedPet>>()
 					{
