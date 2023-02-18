@@ -35,10 +35,10 @@ else
 				@Html.DisplayNameFor(model => model.Price)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.BreedPetId)
+				@Html.DisplayNameFor(model => model.BreedPet.breedPetName)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.TypePetId)
+				@Html.DisplayNameFor(model => model.BreedPet.TypePet.typePetName)
 			</th>
 			<th></th>
 		</tr>
@@ -54,10 +54,10 @@ else
 					@Html.DisplayFor(modelItem => item.Price)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.BreedPetId)
+					@Html.DisplayFor(modelItem => item.BreedPet.breedPetName)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.TypePetId)
+					@Html.DisplayFor(modelItem => item.BreedPet.TypePet.typePetName)
 				</td>
 				<td>
 					@Html.ActionLink("Edit", "EditServiceType", new {id = item.IdServiceType}) |

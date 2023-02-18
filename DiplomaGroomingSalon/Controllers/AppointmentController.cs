@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks;
 using DiplomaGroomingSalon.Domain.ViewModels;
 using DiplomaGroomingSalon.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomaGroomingSalon.Controllers
 {
-	public class AppointmentController : Controller
+    public class AppointmentController : Controller
 	{
 		private readonly IAppointmentService _appointmentService;
 
@@ -14,15 +15,15 @@ namespace DiplomaGroomingSalon.Controllers
 		{
 			_appointmentService = appointmentService;
 		}
-
-		[HttpGet]
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
 		public IActionResult CreateAppointment()
 		{
 			var appointmentViewModel = new AppointmentViewModel();
 			return View(appointmentViewModel);
 		}
-
-		[HttpPost]
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
 		public async Task<IActionResult> CreateAppointment(AppointmentViewModel model)
 		{
 			if (ModelState.IsValid)

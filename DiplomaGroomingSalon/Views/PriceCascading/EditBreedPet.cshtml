@@ -1,4 +1,5 @@
-﻿@model DiplomaGroomingSalon.Domain.ViewModels.BreedPetViewModel
+﻿@using System.Security.Cryptography.X509Certificates
+@model DiplomaGroomingSalon.Domain.ViewModels.BreedPetViewModel
 
 @{
     ViewData["Title"] = "EditBreedPet";
@@ -11,8 +12,12 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="EditBreedPet">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+	        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	        <div class="form-group">
+		        <label asp-for="TypePetName" class="control-label"></label>
+                <input class="form-control" type="text" asp-for="TypePetName" readonly>
+	        </div>
+	        <div class="form-group">
                 <label asp-for="IdBreedPet" class="control-label"hidden="text"></label>
                 <input asp-for="IdBreedPet" class="form-control" hidden="text" />
                 <span asp-validation-for="IdBreedPet" class="text-danger"hidden="text"></span>

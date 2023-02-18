@@ -8,40 +8,40 @@ using DiplomaGroomingSalon.DAL.Interfaces;
 
 namespace DiplomaGroomingSalon.DAL.Repositories
 {
-	public class AccountRepository : IBaseRepository<Account>
+	public class ProfileRepository : IBaseRepository<Profile>
 	{
 		private readonly DBContext _db;
 
-		public AccountRepository(DBContext db)
+		public ProfileRepository(DBContext db)
 		{
 			_db = db;
 		}
-		public async Task Create(Account entity)
+		public async Task Create(Profile entity)
 		{
-			await _db.Accounts.AddAsync(entity);
+			await _db.Profiles.AddAsync(entity);
 			await _db.SaveChangesAsync();
 		}
 
-		public IQueryable<Account> GetAll()
+		public IQueryable<Profile> GetAll()
 		{
-			return _db.Accounts;
+			return _db.Profiles;
 		}
 
-		public async Task Delete(Account entity)
+		public async Task Delete(Profile entity)
 		{
-			_db.Accounts.Remove(entity);
+			_db.Profiles.Remove(entity);
 			await _db.SaveChangesAsync();
 		}
 
-		public async Task<Account> Update(Account entity)
+		public async Task<Profile> Update(Profile entity)
 		{
-			_db.Accounts.Update(entity);
+			_db.Profiles.Update(entity);
 			await _db.SaveChangesAsync();
 
 			return entity;
 		}
 
-        public Task DeleteRange(Account entity)
+        public Task DeleteRange(Profile entity)
         {
             throw new NotImplementedException();
         }

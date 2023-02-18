@@ -12,10 +12,11 @@ using DiplomaGroomingSalon.Domain.Entities;
 using static MessagePack.MessagePackSerializer;
 using NuGet.Protocol.Core.Types;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DiplomaGroomingSalon.Controllers
 {
-	public class PriceCascadingController : Controller
+    public class PriceCascadingController : Controller
 	{
 		private readonly IPriceCascadingService _priceCascadingService;
 
@@ -54,13 +55,14 @@ namespace DiplomaGroomingSalon.Controllers
 			}
 			return View(response.Description);
 		}
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult CreateTypePet()
         {
             var typePetViewModel = new TypePetViewModel();
             return View(typePetViewModel);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateTypePet(TypePetViewModel model)
         {
@@ -76,15 +78,23 @@ namespace DiplomaGroomingSalon.Controllers
             }
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult CreateBreedPet()
         {
-            var response = _priceCascadingService.GetTypePets();
-            var typePets = response.Data;
-            ViewBag.TypePet = new SelectList(typePets, "IdTypePet", "typePetName");
-            return View();
-        }
+	        if (_priceCascadingService.GetTypePets().Data != null)
+	        {
+				var response = _priceCascadingService.GetTypePets();
+				var typePets = response.Data;
+				ViewBag.TypePet = new SelectList(typePets, "IdTypePet", "typePetName");
+				return View();
+			}
 
+	        ViewBag.TypePet = null;
+
+			return View();
+        }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateBreedPet(BreedPetViewModel model)
         {
@@ -102,20 +112,37 @@ namespace DiplomaGroomingSalon.Controllers
             }
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult CreateServiceType()
         {
-            var responseTypePet = _priceCascadingService.GetTypePets();
-            var typePets = responseTypePet.Data.ToList();
-            ViewBag.TypePetBP = new SelectList(typePets, "IdTypePet", "typePetName");
-            return View();
+	        if (_priceCascadingService.GetTypePets().Data != null  && _priceCascadingService.GetBreedPets().Data != null)
+	        {
+				var responseTypePet = _priceCascadingService.GetTypePets();
+				var typePets = responseTypePet.Data.ToList();
+				ViewBag.BreedPetBP = "true";
+				ViewBag.TypePetBP = new SelectList(typePets, "IdTypePet", "typePetName");
+				return View();
+			}
+	        else if(_priceCascadingService.GetBreedPets().Data == null)
+	        {
+		        ViewBag.TypePetBP = "true"; 
+		        ViewBag.BreedPetBP = null;
+                return View();
+	        }
+	        else
+	        {
+				ViewBag.TypePetBP = null;
+				return View();
+			}
+
         }
-		[HttpPost]
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
 		public async Task<IActionResult> CreateServiceType(ServiceTypeViewModel model)
 		{
 			if (ModelState.IsValid)
 			{
-
 				var response = await _priceCascadingService.CreateServiceType(model);
 
 				if (response.StatusCode == Domain.Enum.StatusCode.OK)
@@ -127,6 +154,7 @@ namespace DiplomaGroomingSalon.Controllers
 			}
 			return StatusCode(StatusCodes.Status500InternalServerError);
 		}
+
 		public IActionResult GetBreedForCascading(Guid TypePetId)
         {
 	        var response = _priceCascadingService.GetBreedPets();
@@ -134,8 +162,28 @@ namespace DiplomaGroomingSalon.Controllers
 
             var SubCategory_List = breedPets.Where(s => s.TypePetId == TypePetId)
 	            .Select(c => new { Id = c.IdBreedPet, Name = c.breedPetName }).ToList();
+
             return Json(SubCategory_List);
 		}
+		public IActionResult GetServiceForCascading(Guid BreedPetId)
+		{
+			var response = _priceCascadingService.GetServiceTypes();
+			var serviceTypes = response.Data;
+
+			var SubCategory_List = serviceTypes.Where(s => s.BreedPetId == BreedPetId)
+				.Select(c => new { Id = c.IdServiceType, Name = c.serviceTypeName }).ToList();
+			return Json(SubCategory_List);
+		}
+		public IActionResult GetPriceForCascading(Guid ServiceTypeId)
+		{
+			var response = _priceCascadingService.GetServiceTypes();
+			var serviceTypes = response.Data;
+
+			var SubCategory_List = serviceTypes.Where(s => s.IdServiceType == ServiceTypeId)
+				.Select(c => new { Id = c.IdServiceType, Name = c.Price }).ToList();
+			return Json(SubCategory_List);
+		}
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> EditTypePet(Guid id)
         {
@@ -147,7 +195,7 @@ namespace DiplomaGroomingSalon.Controllers
             ModelState.AddModelError("", response.Description);
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> EditTypePet(TypePetViewModel viewModel)
         {
@@ -157,6 +205,7 @@ namespace DiplomaGroomingSalon.Controllers
                 await _priceCascadingService.EditTypePet(viewModel.IdTypePet, viewModel);
             return RedirectToAction("GetTypePets");
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> EditBreedPet(Guid id)
         {
@@ -168,7 +217,7 @@ namespace DiplomaGroomingSalon.Controllers
             ModelState.AddModelError("", response.Description);
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> EditBreedPet(BreedPetViewModel viewModel)
         {
@@ -178,6 +227,7 @@ namespace DiplomaGroomingSalon.Controllers
                 await _priceCascadingService.EditBreedPet(viewModel.IdBreedPet, viewModel);
             return RedirectToAction("GetBreedPets");
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> EditServiceType(Guid id)
         {
@@ -189,7 +239,7 @@ namespace DiplomaGroomingSalon.Controllers
             ModelState.AddModelError("", response.Description);
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> EditServiceType(ServiceTypeViewModel viewModel)
         {
@@ -200,6 +250,7 @@ namespace DiplomaGroomingSalon.Controllers
                 await _priceCascadingService.EditServiceType(viewModel.IdServiceType, viewModel);
             return RedirectToAction("GetServiceTypes");
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteTypePets(Guid id)
         {
             var response = await _priceCascadingService.DeleteTypePet(id);
@@ -209,6 +260,7 @@ namespace DiplomaGroomingSalon.Controllers
             }
             return View(response.Description);
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteBreedPets(Guid id)
         {
             var response = await _priceCascadingService.DeleteBreedPet(id);
@@ -218,6 +270,7 @@ namespace DiplomaGroomingSalon.Controllers
             }
             return View(response.Description);
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteServiceTypes(Guid id)
         {
 	        var response = await _priceCascadingService.DeleteServiceType(id);

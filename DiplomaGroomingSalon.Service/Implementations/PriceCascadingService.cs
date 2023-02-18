@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using DiplomaGroomingSalon.DAL.Interfaces;
@@ -12,7 +13,6 @@ using DiplomaGroomingSalon.Domain.Response;
 using DiplomaGroomingSalon.Domain.ViewModels;
 using DiplomaGroomingSalon.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
-
 namespace DiplomaGroomingSalon.Service.Implementations
 {
 	public class PriceCascadingService : IPriceCascadingService
@@ -64,12 +64,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			var baseResponse = new BaseResponse<IEnumerable<BreedPet>>();
 			try
 			{
-				var breedPets = _breedPetRepository.GetAll().ToList();
-                //var typePets = _typePetRepository.GetAll().ToList();
-                //if (typePets.Select(x => x.IdTypePet) == breedPets.Select(x => x.TypePetId))
-                //{
-                    
-                //}
+				var breedPets = _breedPetRepository.GetAll().Include(x => x.TypePet).ToList();
                 if (!breedPets.Any())
 				{
 					return new BaseResponse<List<BreedPet>>()
@@ -99,7 +94,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			var baseResponse = new BaseResponse<IEnumerable<ServiceType>>();
 			try
 			{
-				var serviceTypes = _serviceTypeRepository.GetAll().ToList();
+				var serviceTypes = _serviceTypeRepository.GetAll().Include(x => x.BreedPet.TypePet).ToList();
 
 				if (!serviceTypes.Any())
 				{
@@ -223,7 +218,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
                 {
 					IdTypePet = typepet.IdTypePet,
 					typePetName = typepet.typePetName,
-					TypePetId = typepet.TypePetId
+					//TypePetId = typepet.TypePetId
 
                 };
 
@@ -246,7 +241,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
         {
             try
             {
-                var breedpet = await _breedPetRepository.GetAll().FirstOrDefaultAsync(x => x.IdBreedPet == id);
+                var breedpet = await _breedPetRepository.GetAll().Include(x=>x.TypePet).FirstOrDefaultAsync(x => x.IdBreedPet == id);
                 if (breedpet == null)
                 {
                     return new BaseResponse<BreedPetViewModel>()
@@ -258,9 +253,12 @@ namespace DiplomaGroomingSalon.Service.Implementations
 
                 var data = new BreedPetViewModel()
                 {
+                 
                     IdBreedPet = breedpet.IdBreedPet,
 					breedPetName = breedpet.breedPetName,
-					TypePetId = breedpet.TypePetId
+					TypePetId = breedpet.TypePetId,
+                    TypePetName = breedpet.TypePet.typePetName
+                    
 
                 };
 
@@ -283,7 +281,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
         {
             try
             {
-                var servicetype = await _serviceTypeRepository.GetAll().FirstOrDefaultAsync(x => x.IdServiceType == id);
+                var servicetype = await _serviceTypeRepository.GetAll().Include(x=>x.BreedPet.TypePet).FirstOrDefaultAsync(x => x.IdServiceType == id);
                 if (servicetype == null)
                 {
                     return new BaseResponse<ServiceTypeViewModel>()
@@ -297,6 +295,8 @@ namespace DiplomaGroomingSalon.Service.Implementations
                 {
                    IdServiceType = servicetype.IdServiceType,
 				   serviceTypeName = servicetype.serviceTypeName,
+                   TypePetName = servicetype.BreedPet.TypePet.typePetName,
+                   BreedPetName = servicetype.BreedPet.breedPetName,
 				   TypePetId = servicetype.TypePetId,
 				   BreedPetId = servicetype.BreedPetId,
 				   Price = servicetype.Price
@@ -333,7 +333,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
                 }
                 typepet.IdTypePet=model.IdTypePet;
 				typepet.typePetName=model.typePetName;
-                typepet.TypePetId = model.TypePetId;
+                //typepet.TypePetId = model.TypePetId;
 
                 await _typePetRepository.Update(typepet);
 
@@ -443,8 +443,16 @@ namespace DiplomaGroomingSalon.Service.Implementations
                 {
                     var breedpet = await _breedPetRepository.GetAll().FirstOrDefaultAsync(x => x.TypePetId == id);
                     var servicetype = await _serviceTypeRepository.GetAll().FirstOrDefaultAsync(x => x.TypePetId == id);
-                    await _serviceTypeRepository.DeleteRange(servicetype!);
-                    await _breedPetRepository.DeleteRange(breedpet!);
+                    if (servicetype != null)
+                    {
+                        await _serviceTypeRepository.DeleteRange(servicetype!);
+                    }
+
+                    if (breedpet != null)
+                    {
+                        await _breedPetRepository.DeleteRange(breedpet!);
+                    }
+
                     await _typePetRepository.Delete(typepet);
                 }
                
@@ -481,7 +489,11 @@ namespace DiplomaGroomingSalon.Service.Implementations
                 else
                 {
                     var servicetype = await _serviceTypeRepository.GetAll().FirstOrDefaultAsync(x => x.BreedPetId == id);
-                    await _serviceTypeRepository.DeleteRange(servicetype!);
+                    if (servicetype != null)
+                    {
+                        await _serviceTypeRepository.DeleteRange(servicetype!);
+                    }
+
                     await _breedPetRepository.Delete(breedpet);
                 }
 

@@ -16,48 +16,63 @@
 <p>
 	<a asp-action="CreateServiceType">Create New ServiceType</a>
 </p>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateServiceType">
-	        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-	        <div class="form-group">
-		        <label>TypePet</label> 
-		        @Html.DropDownListFor(m => m.TypePetId,
-			        ViewBag.TypePetBP as IEnumerable<SelectListItem>, "Select TypePet",
-			        new {@class = "form-control"})
+@if (ViewBag.TypePetBP == null)
+{
+	<div class="col-md-8">
+		<div class="card-body">
+			<h5 class="card-title text-center">Complete the TypePet List</h5>
+		</div>
+	</div>
+}
+else if (ViewBag.BreedPetBP == null)
+{
+	<div class="col-md-8">
+		<div class="card-body">
+			<h5 class="card-title text-center">Complete the BreedPet List</h5>
+		</div>
+	</div>
+}
+else
+{
+	<hr/>
+	<div class="row">
+		<div class="col-md-4">
+			<form asp-action="CreateServiceType">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div class="form-group">
+					<label>TypePet</label>
+					@Html.DropDownListFor(m => m.TypePetId,
+						ViewBag.TypePetBP as IEnumerable<SelectListItem>, "Select TypePet",
+						new {@class = "form-control"})
+				</div>
+				<div class="form-group">
+					<label asp-for="BreedPetId" class="control-label">Breed</label>
+					<select asp-for="BreedPetId" class="form-control">
+						<option value="">Select Breed Pet</option>
+					</select>
+				</div>
 
-	        </div>
-	        <div class="form-group">
-		        <label asp-for="BreedPetId" class="control-label">Breed</label> 
-		        <select asp-for="BreedPetId" class="form-control">
-			        <option value="">Select Breed Pet</option>
-		        </select> 
-		        
-	        </div>
+				<div class="form-group">
+					<label asp-for="serviceTypeName" class="control-label"></label>
+					<input asp-for="serviceTypeName" class="form-control"/>
+					<span asp-validation-for="serviceTypeName" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="Price" class="control-label"></label>
+					<input asp-for="Price" class="form-control"/>
+					<span asp-validation-for="Price" class="text-danger"></span>
+				</div>
 
-	        <div class="form-group">
-		        <label asp-for="serviceTypeName" class="control-label"></label>
-		        <input asp-for="serviceTypeName" class="form-control" />
-		        <span asp-validation-for="serviceTypeName" class="text-danger"></span>
-	        </div>
-	        <div class="form-group">
-		        <label asp-for="Price" class="control-label"></label>
-				<input asp-for="Price" class="form-control" />
-				<span asp-validation-for="Price" class="text-danger"></span>
-	        </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="GetServiceTypes">Back to List</a>
-</div>
-
+				<div class="form-group">
+					<input type="submit" value="Create" class="btn btn-primary"/>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div>
+		<a asp-action="GetServiceTypes">Back to List</a>
+	</div>
+}
 
 @section Scripts {
 	<script src="~/Scripts/jquery-3.4.1.min.js"></script>

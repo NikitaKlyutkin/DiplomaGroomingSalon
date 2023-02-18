@@ -14,8 +14,11 @@ namespace DiplomaGroomingSalon.Domain.ViewModels
         public Guid IdServiceType { get; set; }
         public string serviceTypeName { get; set; }
 		public decimal Price { get; set; }
+		public BreedPet BreedPet { get; set; }
 		public Guid BreedPetId { get; set; }
         public Guid TypePetId { get; set; }
+        public string TypePetName { get; set; }
+        public string BreedPetName { get; set; }
         public string Description { get; set; }
     }
 }

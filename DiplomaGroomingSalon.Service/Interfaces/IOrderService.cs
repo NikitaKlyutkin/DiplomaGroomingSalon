@@ -1,4 +1,5 @@
-﻿using DiplomaGroomingSalon.Domain.Response;
+﻿using DiplomaGroomingSalon.Domain.Entities;
+using DiplomaGroomingSalon.Domain.Response;
 using DiplomaGroomingSalon.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,10 @@ namespace DiplomaGroomingSalon.Service.Interfaces
 {
 	public interface IOrderService
 	{
-		Task<IBaseResponse<OrderViewModel>> CreateOrder(OrderViewModel orderViewModel);
-	}
+		IBaseResponse<List<Order>> GetOrdersAll();
+		Task<IBaseResponse<OrderViewModel>> CreateOrder(OrderViewModel orderViewModel, Guid ProfileId);
+        Task<BaseResponse<ProfileViewModel>> GetProfileOrder(string userName);
+
+
+    }
 }

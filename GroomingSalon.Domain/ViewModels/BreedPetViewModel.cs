@@ -15,6 +15,7 @@ namespace DiplomaGroomingSalon.Domain.ViewModels
         public string breedPetName { get; set; }
 		public TypePet TypePet { get; set; }
 		public Guid TypePetId { get; set; }
+        public string TypePetName { get; set; }
         public string Description { get; set; }
     }
 }

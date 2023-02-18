@@ -1,0 +1,124 @@
+﻿@model DiplomaGroomingSalon.Domain.ViewModels.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Detail";
+}
+<br />
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <form id="profileFormId">
+                    <input asp-for="Id" hidden="hidden" />
+                    <h5 class="card-title">Данные профиля</h5>
+                    <div class="mb-3">
+                        <label class="form-label text-black-50">Имя</label>
+                        <input type="text" class="form-control" asp-for="Name">
+                        <div class="form-text"></div>
+                    </div>
+                    <div class="mb-3">
+	                    <label class="form-label text-black-50">Фамилия</label>
+	                    <input type="text" class="form-control" asp-for="Surname">
+	                    <div class="form-text"></div>
+                    </div>
+                    <div class="mb-3">
+	                    <label class="form-label text-black-50">Телефон</label>
+	                    <input type="text" class="form-control" asp-for="Phone">
+	                    <div class="form-text"></div>
+                    </div>
+                    <div class="mb-3">
+	                    <label class="form-label text-black-50">E-mail</label>
+	                    <input type="text" class="form-control" asp-for="Email">
+	                    <div class="form-text"></div>
+                    </div>
+                    <div class="card-buttons-group">
+                        <button class='btn btn-primary' id='saveProfileId'>Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <form id="accountFormId">
+                    <h5 class="card-title">Данные аккаунта</h5>
+                    <div class="mb-3">
+                        <label class="form-label text-black-50">Логин</label>
+                        <input type="text" class="form-control" asp-for="UserName" disabled="disabled">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-black-50">Новый пароль</label>
+                        <input name="NewPassword" class="form-control textbox-dg font-weight-bold text-center" type="password">
+                    </div>
+                    <div class="card-buttons-group">
+                        <button class='btn btn-primary' id='saveAccountId'>Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+@section Scripts
+{
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script>
+	    $('#saveProfileId').on('click', function (e) {
+            e.preventDefault();
+            var data = $('#profileFormId').serialize();
+            $.ajax({
+                url: '@Url.Action("Save", "Profile")',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+	                Swal.fire({
+		                title: 'Информация',
+		                text: response.description,
+		                icon: 'success',
+		                confirmButtonText: 'Окей'
+	                });
+                },
+                error: function (data) {
+	                Swal.fire({
+		                title: 'Информация',
+		                text: 'Ошибка валидации',
+		                icon: 'error',
+		                confirmButtonText: 'Окей'
+	                });
+                }
+            });
+        });
+
+        $('#saveAccountId').on('click', function (e) {
+            e.preventDefault();
+
+            $('#UserName').removeAttr('disabled');
+            var data = $('#accountFormId').serialize();
+            $('#UserName').attr('disabled', 'disabled');
+
+            $.ajax({
+                url: '@Url.Action("ChangePassword", "Account")',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+	                Swal.fire({
+		                title: 'Информация',
+		                text: response.description,
+		                icon: 'success',
+		                confirmButtonText: 'Окей'
+	                });
+                },
+                error: function (response) {
+	                Swal.fire({
+		                title: 'Информация',
+		                text: response.responseJSON.errorMessage,
+		                icon: 'error',
+		                confirmButtonText: 'Окей'
+	                });
+                }
+            });
+        });
+    </script>
+}

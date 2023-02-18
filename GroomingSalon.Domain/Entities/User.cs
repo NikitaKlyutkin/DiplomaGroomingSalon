@@ -6,11 +6,14 @@ namespace DiplomaGroomingSalon.Domain.Entities
 {
 	public class User
 	{
+		
 		public Guid Id { get; set; }
-		public string Login { get; set; }
+		public string Name { get; set; }
 		public string Password { get; set; }
 		public Role Role { get; set; }
-		public Account Account { get; set; }
-        public string Description { get; set; }
+		public Profile Profile { get; set; }
+		public Guid ProfileId { get; set; }
+		public string Description { get; set; }
+
     }
 }

@@ -14,6 +14,8 @@ using DiplomaGroomingSalon.DAL.Repositories;
 using DiplomaGroomingSalon.Domain.Entities;
 using DiplomaGroomingSalon.Service.Implementations;
 using DiplomaGroomingSalon.Service.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaGroomingSalon
@@ -38,11 +40,21 @@ namespace DiplomaGroomingSalon
 			services.AddScoped<IBaseRepository<TypePet>, TypePetRepository>();
             services.AddScoped<IBaseRepository<BreedPet>, BreedPetRepository>();
 			services.AddScoped<IBaseRepository<ServiceType>, ServiceTypeRepository>();
+            services.AddScoped<IBaseRepository<User>, UserRepository>();
+            services.AddScoped<IBaseRepository<Profile>, ProfileRepository>();
 
-			services.AddScoped<IAppointmentService, AppointmentService>();
+            services.AddScoped<IAppointmentService, AppointmentService>();
 			services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IPriceCascadingService, PriceCascadingService>();
-        }
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IProfileService, ProfileService>();
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                    options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
+		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -62,9 +74,10 @@ namespace DiplomaGroomingSalon
 
 			app.UseRouting();
 
-			app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
-			app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute(
 					name: "default",

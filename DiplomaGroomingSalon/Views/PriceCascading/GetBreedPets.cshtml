@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DiplomaGroomingSalon.Domain.ViewModels.BreedPetViewModel>
+﻿@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.BreedPet>
 
 @{
     ViewData["Title"] = "GetBreedPets";
@@ -34,6 +34,9 @@ else
 			<th>
 				@Html.DisplayNameFor(model => model.breedPetName)
 			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.TypePet.typePetName)
+			</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -45,6 +48,9 @@ else
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.breedPetName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.TypePet.typePetName)
 				</td>
 				<td>
 					@Html.ActionLink("Edit", "EditBreedPet", new {id = item.IdBreedPet}) |

@@ -16,32 +16,42 @@
 <p>
 	<a asp-action="CreateServiceType">Create New ServiceType</a>
 </p>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateBreedPet">
-	        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-	        <div class="form-group">
-		        <label>TypePet</label> 
-		        @Html.DropDownListFor(m => m.TypePetId, ViewBag.TypePet as IEnumerable<SelectListItem>, "Select TypePet", new {@class = "form-control"})
-	        </div>
-            <div class="form-group">
-                <label asp-for="breedPetName" class="control-label"></label>
-                <input asp-for="breedPetName" class="form-control" />
-                <span asp-validation-for="breedPetName" class="text-danger"></span>
-            </div>
+@if (ViewBag.TypePet == null)
+{
+	<div class="col-md-8">
+		<div class="card-body">
+			<h5 class="card-title text-center">Complete the TypePet List</h5>
+		</div>
+	</div>
+}
+else
+{
+	<hr/>
+	<div class="row">
+		<div class="col-md-4">
+			<form asp-action="CreateBreedPet">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div class="form-group">
+					<label>TypePet</label>
+					@Html.DropDownListFor(m => m.TypePetId, ViewBag.TypePet as IEnumerable<SelectListItem>, "Select TypePet", new {@class = "form-control"})
+				</div>
+				<div class="form-group">
+					<label asp-for="breedPetName" class="control-label"></label>
+					<input asp-for="breedPetName" class="form-control"/>
+					<span asp-validation-for="breedPetName" class="text-danger"></span>
+				</div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+				<div class="form-group">
+					<input type="submit" value="Create" class="btn btn-primary"/>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div>
 
-<div>
-    <a asp-action="GetBreedPets">Back to List</a>
-</div>
-
+		<a asp-action="GetBreedPets">Back to List</a>
+	</div>
+}
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
