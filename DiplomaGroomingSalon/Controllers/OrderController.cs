@@ -28,15 +28,13 @@ namespace DiplomaGroomingSalon.Controllers
 		private readonly IOrderService _orderService;
 		private readonly IAppointmentService _appointmentService;
         private readonly IPriceCascadingService _priceCascadingService;
-		private readonly DBContext _dbContext;
-		public OrderController(IOrderService orderService, IAppointmentService appointmentService, IPriceCascadingService priceCascadingService, DBContext dbContext)
+        public OrderController(IOrderService orderService, IAppointmentService appointmentService, IPriceCascadingService priceCascadingService)
 		{
 			_orderService = orderService;
 			_appointmentService = appointmentService;
 			_priceCascadingService = priceCascadingService;
-			_dbContext = dbContext;
-			
-		}
+
+        }
         [Authorize]
         [HttpGet]
         public IActionResult CreateOrder()

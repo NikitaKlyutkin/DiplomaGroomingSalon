@@ -22,12 +22,12 @@ namespace DiplomaGroomingSalon.Service.Implementations
 		private readonly IBaseRepository<Order> _orderRepository;
 		private readonly IBaseRepository<Appointment> _appointmentRepository;
 		private readonly IBaseRepository<Profile> _profileRepository;
-		private readonly IBaseRepository<TypePet> _typePetRepository;
-		public OrderService(IBaseRepository<Order> orderRepository, IBaseRepository<Appointment> appointmentRepository, IBaseRepository<TypePet> typePetRepository, IBaseRepository<Profile> profileRepository)
+
+		public OrderService(IBaseRepository<Order> orderRepository, IBaseRepository<Appointment> appointmentRepository, IBaseRepository<Profile> profileRepository)
 		{
 			_orderRepository = orderRepository;
 			_appointmentRepository = appointmentRepository;
-			_typePetRepository = typePetRepository;
+			
 			_profileRepository = profileRepository;
 		}
 		public IBaseResponse<List<Order>> GetOrdersAll()
