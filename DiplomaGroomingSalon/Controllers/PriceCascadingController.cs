@@ -86,7 +86,7 @@ namespace DiplomaGroomingSalon.Controllers
 	        {
 				var response = _priceCascadingService.GetTypePets();
 				var typePets = response.Data;
-				ViewBag.TypePet = new SelectList(typePets, "IdTypePet", "typePetName");
+				ViewBag.TypePet = new SelectList(typePets, "Id", "typePetName");
 				return View();
 			}
 
@@ -121,7 +121,7 @@ namespace DiplomaGroomingSalon.Controllers
 				var responseTypePet = _priceCascadingService.GetTypePets();
 				var typePets = responseTypePet.Data.ToList();
 				ViewBag.BreedPetBP = "true";
-				ViewBag.TypePetBP = new SelectList(typePets, "IdTypePet", "typePetName");
+				ViewBag.TypePetBP = new SelectList(typePets, "Id", "typePetName");
 				return View();
 			}
 	        else if(_priceCascadingService.GetBreedPets().Data == null)
@@ -161,7 +161,7 @@ namespace DiplomaGroomingSalon.Controllers
             var breedPets = response.Data;
 
             var SubCategory_List = breedPets.Where(s => s.TypePetId == TypePetId)
-	            .Select(c => new { Id = c.IdBreedPet, Name = c.breedPetName }).ToList();
+	            .Select(c => new { Id = c.Id, Name = c.breedPetName }).ToList();
 
             return Json(SubCategory_List);
 		}
@@ -171,7 +171,7 @@ namespace DiplomaGroomingSalon.Controllers
 			var serviceTypes = response.Data;
 
 			var SubCategory_List = serviceTypes.Where(s => s.BreedPetId == BreedPetId)
-				.Select(c => new { Id = c.IdServiceType, Name = c.serviceTypeName }).ToList();
+				.Select(c => new { Id = c.Id, Name = c.serviceTypeName }).ToList();
 			return Json(SubCategory_List);
 		}
 		public IActionResult GetPriceForCascading(Guid ServiceTypeId)
@@ -179,8 +179,8 @@ namespace DiplomaGroomingSalon.Controllers
 			var response = _priceCascadingService.GetServiceTypes();
 			var serviceTypes = response.Data;
 
-			var SubCategory_List = serviceTypes.Where(s => s.IdServiceType == ServiceTypeId)
-				.Select(c => new { Id = c.IdServiceType, Name = c.Price }).ToList();
+			var SubCategory_List = serviceTypes.Where(s => s.Id == ServiceTypeId)
+				.Select(c => new { Id = c.Id, Name = c.Price }).ToList();
 			return Json(SubCategory_List);
 		}
         [Authorize(Roles = "Admin")]
@@ -199,10 +199,10 @@ namespace DiplomaGroomingSalon.Controllers
         [HttpPost]
         public async Task<IActionResult> EditTypePet(TypePetViewModel viewModel)
         {
-            ModelState.Remove("IdTypePet");
+            ModelState.Remove("Id");
             ModelState.Remove("TypePetId");
             if (ModelState.IsValid)
-                await _priceCascadingService.EditTypePet(viewModel.IdTypePet, viewModel);
+                await _priceCascadingService.EditTypePet(viewModel.Id, viewModel);
             return RedirectToAction("GetTypePets");
         }
         [Authorize(Roles = "Admin")]
@@ -221,10 +221,10 @@ namespace DiplomaGroomingSalon.Controllers
         [HttpPost]
         public async Task<IActionResult> EditBreedPet(BreedPetViewModel viewModel)
         {
-            ModelState.Remove("IdBreedPet");
+            ModelState.Remove("Id");
             ModelState.Remove("TypePetId");
             if (ModelState.IsValid)
-                await _priceCascadingService.EditBreedPet(viewModel.IdBreedPet, viewModel);
+                await _priceCascadingService.EditBreedPet(viewModel.Id, viewModel);
             return RedirectToAction("GetBreedPets");
         }
         [Authorize(Roles = "Admin")]
@@ -243,11 +243,11 @@ namespace DiplomaGroomingSalon.Controllers
         [HttpPost]
         public async Task<IActionResult> EditServiceType(ServiceTypeViewModel viewModel)
         {
-            ModelState.Remove("IdServiceType");
+            ModelState.Remove("Id");
             ModelState.Remove("TypePetId");
             ModelState.Remove("BreedPetId");
             if (ModelState.IsValid)
-                await _priceCascadingService.EditServiceType(viewModel.IdServiceType, viewModel);
+                await _priceCascadingService.EditServiceType(viewModel.Id, viewModel);
             return RedirectToAction("GetServiceTypes");
         }
         [Authorize(Roles = "Admin")]

@@ -1,16 +1,16 @@
-﻿@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.BreedPet>
+﻿@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.Breed>
 
 @{
     ViewData["Title"] = "GetBreedPets";
 }
 
-<h1>GetBreedPets</h1>
+<h1>GetBreeds</h1>
 
 <p>
-	<a asp-action="CreateTypePet">Create New TypePet</a>
+	<a asp-action="CreateTypePet">Create New PetType</a>
 </p>
 <p>
-	<a asp-action="CreateBreedPet">Create New BreedPet</a>
+	<a asp-action="CreateBreedPet">Create New Breed</a>
 </p>
 <p>
 	<a asp-action="CreateServiceType">Create New ServiceType</a>
@@ -29,13 +29,13 @@ else
 		<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.IdBreedPet)
+				@Html.DisplayNameFor(model => model.Id)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.breedPetName)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.TypePet.typePetName)
+				@Html.DisplayNameFor(model => model.PetType.typePetName)
 			</th>
 		</tr>
 		</thead>
@@ -44,17 +44,17 @@ else
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(modelItem => item.IdBreedPet)
+					@Html.DisplayFor(modelItem => item.Id)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.breedPetName)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.TypePet.typePetName)
+					@Html.DisplayFor(modelItem => item.PetType.typePetName)
 				</td>
 				<td>
-					@Html.ActionLink("Edit", "EditBreedPet", new {id = item.IdBreedPet}) |
-						@Html.ActionLink("Delete All(including BreedPet)", "DeleteBreedPets", new {id=item.IdBreedPet})
+					@Html.ActionLink("Edit", "EditBreedPet", new {id = item.Id}) |
+						@Html.ActionLink("Delete All(including Breed)", "DeleteBreedPets", new {id=item.Id})
 				</td>
 			</tr>
 		}

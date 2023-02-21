@@ -8,10 +8,10 @@
 
 <h4>ServiceTypeViewModel</h4>
 <p>
-	<a asp-action="CreateTypePet">Create New TypePet</a>
+	<a asp-action="CreateTypePet">Create New PetType</a>
 </p>
 <p>
-	<a asp-action="CreateBreedPet">Create New BreedPet</a>
+	<a asp-action="CreateBreedPet">Create New Breed</a>
 </p>
 <p>
 	<a asp-action="CreateServiceType">Create New ServiceType</a>
@@ -20,7 +20,7 @@
 {
 	<div class="col-md-8">
 		<div class="card-body">
-			<h5 class="card-title text-center">Complete the TypePet List</h5>
+			<h5 class="card-title text-center">Complete the PetType List</h5>
 		</div>
 	</div>
 }
@@ -28,7 +28,7 @@ else if (ViewBag.BreedPetBP == null)
 {
 	<div class="col-md-8">
 		<div class="card-body">
-			<h5 class="card-title text-center">Complete the BreedPet List</h5>
+			<h5 class="card-title text-center">Complete the Breed List</h5>
 		</div>
 	</div>
 }
@@ -40,9 +40,9 @@ else
 			<form asp-action="CreateServiceType">
 				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 				<div class="form-group">
-					<label>TypePet</label>
+					<label>PetType</label>
 					@Html.DropDownListFor(m => m.TypePetId,
-						ViewBag.TypePetBP as IEnumerable<SelectListItem>, "Select TypePet",
+						ViewBag.TypePetBP as IEnumerable<SelectListItem>, "Select PetType",
 						new {@class = "form-control"})
 				</div>
 				<div class="form-group">

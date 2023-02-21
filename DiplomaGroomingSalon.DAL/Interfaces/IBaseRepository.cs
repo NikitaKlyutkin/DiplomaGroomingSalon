@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DiplomaGroomingSalon.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,9 @@ namespace DiplomaGroomingSalon.DAL.Interfaces
 	{
 		Task Create(T entity);
 
-		IQueryable<T> GetAll();
+        Task<IEnumerable<T>> GetAll();
 
-		Task Delete(T entity);
+        Task Delete(T entity);
         Task DeleteRange(T entity);
         Task<T> Update(T entity);
 	}

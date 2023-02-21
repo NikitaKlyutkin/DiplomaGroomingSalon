@@ -7,10 +7,10 @@
 <h1>GetServiceTypes</h1>
 
 <p>
-	<a asp-action="CreateTypePet">Create New TypePet</a>
+	<a asp-action="CreateTypePet">Create New PetType</a>
 </p>
 <p>
-	<a asp-action="CreateBreedPet">Create New BreedPet</a>
+	<a asp-action="CreateBreedPet">Create New Breed</a>
 </p>
 <p>
 	<a asp-action="CreateServiceType">Create New ServiceType</a>
@@ -35,10 +35,10 @@ else
 				@Html.DisplayNameFor(model => model.Price)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.BreedPet.breedPetName)
+				@Html.DisplayNameFor(model => model.Breed.breedPetName)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.BreedPet.TypePet.typePetName)
+				@Html.DisplayNameFor(model => model.Breed.PetType.typePetName)
 			</th>
 			<th></th>
 		</tr>
@@ -54,14 +54,14 @@ else
 					@Html.DisplayFor(modelItem => item.Price)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.BreedPet.breedPetName)
+					@Html.DisplayFor(modelItem => item.Breed.breedPetName)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.BreedPet.TypePet.typePetName)
+					@Html.DisplayFor(modelItem => item.Breed.PetType.typePetName)
 				</td>
 				<td>
-					@Html.ActionLink("Edit", "EditServiceType", new {id = item.IdServiceType}) |
-					@Html.ActionLink("Delete ServiceType and Price", "DeleteServiceTypes", new {id = item.IdServiceType})
+					@Html.ActionLink("Edit", "EditServiceType", new {id = item.Id}) |
+					@Html.ActionLink("Delete ServiceType and Price", "DeleteServiceTypes", new {id = item.Id})
 				</td>
 			</tr>
 		}

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.TypePet>
+﻿@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.PetType>
 
 @{
 	ViewData["Title"] = "GetTypePets";
@@ -6,10 +6,10 @@
 
 <h1>GetServiceTypes</h1>
 <p>
-	<a asp-action="CreateTypePet">Create New TypePet</a>
+	<a asp-action="CreateTypePet">Create New PetType</a>
 </p>
 <p>
-	<a asp-action="CreateBreedPet">Create New BreedPet</a>
+	<a asp-action="CreateBreedPet">Create New Breed</a>
 </p>
 <p>
 	<a asp-action="CreateServiceType">Create New ServiceType</a>
@@ -28,7 +28,7 @@ else
 		<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.IdTypePet)
+				@Html.DisplayNameFor(model => model.Id)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.typePetName)
@@ -41,14 +41,14 @@ else
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(modelItem => item.IdTypePet)
+					@Html.DisplayFor(modelItem => item.Id)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.typePetName)
 				</td>
 				<td>
-					@Html.ActionLink("Edit", "EditTypePet", new {id = item.IdTypePet}) |
-						@Html.ActionLink("Delete All(including TypePet)", "DeleteTypePets", new {id = item.IdTypePet})
+					@Html.ActionLink("Edit", "EditTypePet", new {id = item.Id}) |
+						@Html.ActionLink("Delete All(including PetType)", "DeleteTypePets", new {id = item.Id})
 				</td>
 			</tr>
 		}

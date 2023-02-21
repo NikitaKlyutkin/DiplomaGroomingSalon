@@ -37,8 +37,8 @@ namespace DiplomaGroomingSalon
 			services.AddDbContext<DBContext>(opts => opts.UseSqlServer(connectionStr));
 			services.AddScoped<IBaseRepository<Appointment>, AppointmentRepository>();
 			services.AddScoped<IBaseRepository<Order>, OrderRepository>();
-			services.AddScoped<IBaseRepository<TypePet>, TypePetRepository>();
-            services.AddScoped<IBaseRepository<BreedPet>, BreedPetRepository>();
+			services.AddScoped<IBaseRepository<PetType>, PetTypeRepository>();
+            services.AddScoped<IBaseRepository<Breed>, BreedPetRepository>();
 			services.AddScoped<IBaseRepository<ServiceType>, ServiceTypeRepository>();
             services.AddScoped<IBaseRepository<User>, UserRepository>();
             services.AddScoped<IBaseRepository<Profile>, ProfileRepository>();

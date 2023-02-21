@@ -4,14 +4,14 @@
     ViewData["Title"] = "CreateBreedPet";
 }
 
-<h1>CreateBreedPet</h1>
+<h1>CreateBreed</h1>
 
-<h4>BreedPetViewModel</h4>
+<h4>BreedViewModel</h4>
 <p>
-	<a asp-action="CreateTypePet">Create New TypePet</a>
+	<a asp-action="CreateTypePet">Create New PetType</a>
 </p>
 <p>
-	<a asp-action="CreateBreedPet">Create New BreedPet</a>
+	<a asp-action="CreateBreedPet">Create New Breed</a>
 </p>
 <p>
 	<a asp-action="CreateServiceType">Create New ServiceType</a>
@@ -20,7 +20,7 @@
 {
 	<div class="col-md-8">
 		<div class="card-body">
-			<h5 class="card-title text-center">Complete the TypePet List</h5>
+			<h5 class="card-title text-center">Complete the PetType List</h5>
 		</div>
 	</div>
 }
@@ -32,8 +32,8 @@ else
 			<form asp-action="CreateBreedPet">
 				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 				<div class="form-group">
-					<label>TypePet</label>
-					@Html.DropDownListFor(m => m.TypePetId, ViewBag.TypePet as IEnumerable<SelectListItem>, "Select TypePet", new {@class = "form-control"})
+					<label>PetType</label>
+					@Html.DropDownListFor(m => m.TypePetId, ViewBag.TypePet as IEnumerable<SelectListItem>, "Select PetType", new {@class = "form-control"})
 				</div>
 				<div class="form-group">
 					<label asp-for="breedPetName" class="control-label"></label>

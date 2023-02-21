@@ -18,8 +18,8 @@ namespace DiplomaGroomingSalon.DAL
 		public DbSet<Profile> Profiles { get; set; }
 		public DbSet<Order> Orders { get; set; }
 		public DbSet<Appointment> Appointments { get; set; }
-		public DbSet<TypePet> TypePets { get; set; }
-		public DbSet<BreedPet> BreedPets { get; set; }
+		public DbSet<PetType> PetTypes { get; set; }
+		public DbSet<Breed> BreedPets { get; set; }
 		public DbSet<ServiceType> ServiceTypes { get; set; }
 
 

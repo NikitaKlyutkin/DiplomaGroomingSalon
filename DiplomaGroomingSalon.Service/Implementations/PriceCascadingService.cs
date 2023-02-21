@@ -17,63 +17,31 @@ namespace DiplomaGroomingSalon.Service.Implementations
 {
 	public class PriceCascadingService : IPriceCascadingService
 	{
-		private readonly IBaseRepository<TypePet> _typePetRepository;
-		private readonly IBaseRepository<BreedPet> _breedPetRepository;
+		private readonly IBaseRepository<PetType> _typePetRepository;
+		private readonly IBaseRepository<Breed> _breedPetRepository;
 		private readonly IBaseRepository<ServiceType> _serviceTypeRepository;
-		public PriceCascadingService(IBaseRepository<TypePet> typePetRepository, IBaseRepository<BreedPet> breedPetRepository, IBaseRepository<ServiceType> serviceTypeRepository)
+		public PriceCascadingService(IBaseRepository<PetType> typePetRepository, IBaseRepository<Breed> breedPetRepository, IBaseRepository<ServiceType> serviceTypeRepository)
 		{
 			_typePetRepository = typePetRepository;
 			_breedPetRepository = breedPetRepository;
 			_serviceTypeRepository = serviceTypeRepository;
 			
 		}
-
-		public IBaseResponse<List<TypePet>> GetTypePets()
+        public IBaseResponse<List<Breed>> GetBreedPets()
 		{
-			var baseResponse = new BaseResponse<IEnumerable<TypePet>>();
+			var baseResponse = new BaseResponse<IEnumerable<Breed>>();
 			try
 			{
-				var typePets = _typePetRepository.GetAll().ToList();
-
-				if (!typePets.Any())
-				{
-					return new BaseResponse<List<TypePet>>()
-					{
-						Description = "Found 0 items",
-						StatusCode = StatusCode.OK
-					};
-				}
-				return new BaseResponse<List<TypePet>>()
-				{
-					Data = typePets,
-					StatusCode = StatusCode.OK
-				};
-			}
-			catch (Exception ex)
-			{
-				return new BaseResponse<List<TypePet>>()
-				{
-					Description = $"[GetTypePets] : {ex.Message}",
-					StatusCode = StatusCode.InternalServerError
-				};
-			}
-
-		}
-		public IBaseResponse<List<BreedPet>> GetBreedPets()
-		{
-			var baseResponse = new BaseResponse<IEnumerable<BreedPet>>();
-			try
-			{
-				var breedPets = _breedPetRepository.GetAll().Include(x => x.TypePet).ToList();
+				var breedPets = _breedPetRepository.GetAll().Include(x => x.PetType).ToList();
                 if (!breedPets.Any())
 				{
-					return new BaseResponse<List<BreedPet>>()
+					return new BaseResponse<List<Breed>>()
 					{
 						Description = "Found 0 items",
 						StatusCode = StatusCode.OK
 					};
 				}
-				return new BaseResponse<List<BreedPet>>()
+				return new BaseResponse<List<Breed>>()
 				{
 					Data = breedPets,
 					StatusCode = StatusCode.OK
@@ -81,7 +49,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			}
 			catch (Exception ex)
 			{
-				return new BaseResponse<List<BreedPet>>()
+				return new BaseResponse<List<Breed>>()
 				{
 					Description = $"[GetBreedPets] : {ex.Message}",
 					StatusCode = StatusCode.InternalServerError
@@ -94,7 +62,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			var baseResponse = new BaseResponse<IEnumerable<ServiceType>>();
 			try
 			{
-				var serviceTypes = _serviceTypeRepository.GetAll().Include(x => x.BreedPet.TypePet).ToList();
+				var serviceTypes = _serviceTypeRepository.GetAll().Include(x => x.Breed.PetType).ToList();
 
 				if (!serviceTypes.Any())
 				{
@@ -125,9 +93,9 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			var baseResponse = new BaseResponse<TypePetViewModel>();
 			try
 			{
-				var typePet = new TypePet()
+				var typePet = new PetType()
 				{
-					IdTypePet = Guid.NewGuid(),
+					Id = Guid.NewGuid(),
 					typePetName = typePetViewModel.typePetName
 				};
 
@@ -150,9 +118,9 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			var baseResponse = new BaseResponse<BreedPetViewModel>();
 			try
 			{
-				var breedPet = new BreedPet()
+				var breedPet = new Breed()
 				{
-					IdBreedPet = new Guid(),
+					Id = new Guid(),
 					TypePetId = breedPetViewModel.TypePetId,
 					breedPetName = breedPetViewModel.breedPetName
 				};
@@ -178,7 +146,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			{
 				var serviceType = new ServiceType()
 				{
-					IdServiceType = new Guid(),
+					Id = new Guid(),
 					BreedPetId = serviceTypeViewModel.BreedPetId,
 					TypePetId = serviceTypeViewModel.TypePetId,
 					Price = serviceTypeViewModel.Price,
@@ -204,7 +172,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
         {
             try
             {
-                var typepet = await _typePetRepository.GetAll().FirstOrDefaultAsync(x => x.IdTypePet == id);
+                var typepet = await _typePetRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
                 if (typepet == null)
                 {
                     return new BaseResponse<TypePetViewModel>()
@@ -216,7 +184,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 
                 var data = new TypePetViewModel()
                 {
-					IdTypePet = typepet.IdTypePet,
+					Id = typepet.Id,
 					typePetName = typepet.typePetName,
 					//TypePetId = typepet.TypePetId
 
@@ -241,7 +209,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
         {
             try
             {
-                var breedpet = await _breedPetRepository.GetAll().Include(x=>x.TypePet).FirstOrDefaultAsync(x => x.IdBreedPet == id);
+                var breedpet = await _breedPetRepository.GetAll().Include(x=>x.PetType).FirstOrDefaultAsync(x => x.Id == id);
                 if (breedpet == null)
                 {
                     return new BaseResponse<BreedPetViewModel>()
@@ -254,10 +222,10 @@ namespace DiplomaGroomingSalon.Service.Implementations
                 var data = new BreedPetViewModel()
                 {
                  
-                    IdBreedPet = breedpet.IdBreedPet,
+                    Id = breedpet.Id,
 					breedPetName = breedpet.breedPetName,
 					TypePetId = breedpet.TypePetId,
-                    TypePetName = breedpet.TypePet.typePetName
+                    TypePetName = breedpet.PetType.typePetName
                     
 
                 };
@@ -281,7 +249,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
         {
             try
             {
-                var servicetype = await _serviceTypeRepository.GetAll().Include(x=>x.BreedPet.TypePet).FirstOrDefaultAsync(x => x.IdServiceType == id);
+                var servicetype = await _serviceTypeRepository.GetAll().Include(x=>x.Breed.PetType).FirstOrDefaultAsync(x => x.Id == id);
                 if (servicetype == null)
                 {
                     return new BaseResponse<ServiceTypeViewModel>()
@@ -293,10 +261,10 @@ namespace DiplomaGroomingSalon.Service.Implementations
 
                 var data = new ServiceTypeViewModel()
                 {
-                   IdServiceType = servicetype.IdServiceType,
+                   Id = servicetype.Id,
 				   serviceTypeName = servicetype.serviceTypeName,
-                   TypePetName = servicetype.BreedPet.TypePet.typePetName,
-                   BreedPetName = servicetype.BreedPet.breedPetName,
+                   TypePetName = servicetype.Breed.PetType.typePetName,
+                   BreedPetName = servicetype.Breed.breedPetName,
 				   TypePetId = servicetype.TypePetId,
 				   BreedPetId = servicetype.BreedPetId,
 				   Price = servicetype.Price
@@ -318,27 +286,27 @@ namespace DiplomaGroomingSalon.Service.Implementations
                 };
             }
         }
-        public async Task<IBaseResponse<TypePet>> EditTypePet(Guid id, TypePetViewModel model)
+        public async Task<IBaseResponse<PetType>> EditTypePet(Guid id, TypePetViewModel model)
         {
             try
             {
-                var typepet = await _typePetRepository.GetAll().FirstOrDefaultAsync(x => x.IdTypePet == id);
+                var typepet = await _typePetRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
                 if (typepet == null)
 				{
-                    return new BaseResponse<TypePet>()
+                    return new BaseResponse<PetType>()
                     {
                         Description = "Not found",
                         StatusCode = StatusCode.NotFound
                     };
                 }
-                typepet.IdTypePet=model.IdTypePet;
+                typepet.Id=model.Id;
 				typepet.typePetName=model.typePetName;
                 //typepet.TypePetId = model.TypePetId;
 
                 await _typePetRepository.Update(typepet);
 
 
-                return new BaseResponse<TypePet>()
+                return new BaseResponse<PetType>()
                 {
                     Data = typepet,
                     StatusCode = StatusCode.OK,
@@ -346,34 +314,34 @@ namespace DiplomaGroomingSalon.Service.Implementations
             }
             catch (Exception ex)
 			{
-                return new BaseResponse<TypePet>()
+                return new BaseResponse<PetType>()
                 {
                     Description = $"[EditTypePet] : {ex.Message}",
                     StatusCode = StatusCode.InternalServerError
                 };
             }
         }
-        public async Task<IBaseResponse<BreedPet>> EditBreedPet(Guid id, BreedPetViewModel model)
+        public async Task<IBaseResponse<Breed>> EditBreedPet(Guid id, BreedPetViewModel model)
         {
             try
             {
-                var breedpet = await _breedPetRepository.GetAll().FirstOrDefaultAsync(x => x.IdBreedPet == id);
+                var breedpet = await _breedPetRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
                 if (breedpet == null)
                 {
-                    return new BaseResponse<BreedPet>()
+                    return new BaseResponse<Breed>()
                     {
                         Description = "Not found",
                         StatusCode = StatusCode.NotFound
                     };
                 }
-                breedpet.IdBreedPet = model.IdBreedPet;
+                breedpet.Id = model.Id;
 				breedpet.breedPetName = model.breedPetName;
 				breedpet.TypePetId = model.TypePetId;
 
                 await _breedPetRepository.Update(breedpet);
 
 
-                return new BaseResponse<BreedPet>()
+                return new BaseResponse<Breed>()
                 {
                     Data = breedpet,
                     StatusCode = StatusCode.OK,
@@ -381,7 +349,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
             }
             catch (Exception ex)
             {
-                return new BaseResponse<BreedPet>()
+                return new BaseResponse<Breed>()
                 {
                     Description = $"[EditBreedPet] : {ex.Message}",
                     StatusCode = StatusCode.InternalServerError
@@ -392,7 +360,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
         {
             try
             {
-                var servicetype = await _serviceTypeRepository.GetAll().FirstOrDefaultAsync(x => x.IdServiceType == id);
+                var servicetype = await _serviceTypeRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
                 if (servicetype == null)
                 {
                     return new BaseResponse<ServiceType>()
@@ -401,7 +369,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
                         StatusCode = StatusCode.NotFound
                     };
                 }
-                servicetype.IdServiceType = model.IdServiceType;
+                servicetype.Id = model.Id;
                 servicetype.TypePetId = model.TypePetId;
 				servicetype.BreedPetId = model.BreedPetId;
                 servicetype.serviceTypeName = model.serviceTypeName;
@@ -429,7 +397,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
         {
             try
             {
-                var typepet = await _typePetRepository.GetAll().FirstOrDefaultAsync(x => x.IdTypePet == id);
+                var typepet = await _typePetRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
                 if (typepet == null)
                 {
                     return new BaseResponse<bool>()
@@ -476,7 +444,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
         {
             try
             {
-                var breedpet = await _breedPetRepository.GetAll().FirstOrDefaultAsync(x => x.IdBreedPet == id);
+                var breedpet = await _breedPetRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
                 if (breedpet == null)
                 {
                     return new BaseResponse<bool>()
@@ -517,7 +485,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
         {
 	        try
 	        {
-		        var serviceType = await _serviceTypeRepository.GetAll().FirstOrDefaultAsync(x => x.IdServiceType == id);
+		        var serviceType = await _serviceTypeRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
 		        if (serviceType == null)
 		        {
 			        return new BaseResponse<bool>()

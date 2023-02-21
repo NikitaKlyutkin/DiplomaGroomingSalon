@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DiplomaGroomingSalon.DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaGroomingSalon.DAL.Repositories
 {
@@ -22,12 +23,12 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 			await _db.SaveChangesAsync();
 		}
 
-		public IQueryable<Appointment> GetAll()
-		{
-			return _db.Appointments;
-		}
+        public async Task<IEnumerable<Appointment>> GetAll()
+        {
+            return (await _db.Appointments.ToListAsync());
+        }
 
-		public async Task Delete(Appointment entity)
+        public async Task Delete(Appointment entity)
 		{
 			_db.Appointments.Remove(entity);
 			await _db.SaveChangesAsync();

@@ -4,16 +4,16 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaGroomingSalon.Domain.Entities
 {
-	public class TypePet
+	public class Breed
 	{
 		[Key]
-		public Guid IdTypePet { get; set; }
-		public string typePetName { get; set; }
-		//public Guid TypePetId { get; set; }
+		public Guid Id { get; set; }
+		public string breedPetName { get; set; }
+		public PetType PetType { get; set; }
+		public Guid TypePetId { get; set; }
         public string Description { get; set; }
     }
 }

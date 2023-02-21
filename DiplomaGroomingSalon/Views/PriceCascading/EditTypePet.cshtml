@@ -4,18 +4,18 @@
     ViewData["Title"] = "EditTypePet";
 }
 
-<h1>EditTypePet</h1>
+<h1>EditPetType</h1>
 
-<h4>TypePetViewModel</h4>
+<h4>PetTypeViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="EditTypePet">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="IdTypePet" class="control-label" hidden="text"></label>
-                <input asp-for="IdTypePet" class="form-control" hidden="text" />
-                <span asp-validation-for="IdTypePet" class="text-danger" hidden="text"></span>
+                <label asp-for="Id" class="control-label" hidden="text"></label>
+                <input asp-for="Id" class="form-control" hidden="text" />
+                <span asp-validation-for="Id" class="text-danger" hidden="text"></span>
             </div>
             <div class="form-group">
                 <label asp-for="typePetName" class="control-label"></label>

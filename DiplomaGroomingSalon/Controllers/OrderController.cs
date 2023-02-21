@@ -45,7 +45,7 @@ namespace DiplomaGroomingSalon.Controllers
             var typePets = responseTypePet.Data.ToList();
             
             ViewBag.DateTimeAppointment = new SelectList(appointment, "Id", "DateTimeAppointment");
-			ViewBag.TypePetBPOrder = new SelectList(typePets, "IdTypePet", "typePetName");
+			ViewBag.TypePetBPOrder = new SelectList(typePets, "Id", "typePetName");
 			return View();
 		}
 		[Authorize]
