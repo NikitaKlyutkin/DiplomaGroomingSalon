@@ -1,4 +1,4 @@
-﻿@model DiplomaGroomingSalon.Domain.ViewModels.ServiceTypeViewModel
+﻿@model DiplomaGroomingSalon.Domain.Entities.ServiceType
 
 @{
     ViewData["Title"] = "EditServiceType";
@@ -36,14 +36,14 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BreedPetId" class="control-label" hidden="text"> </label>
-                <input asp-for="BreedPetId" class="form-control" hidden="text" />
-                <span asp-validation-for="BreedPetId" class="text-danger" hidden="text"></span>
+                <label asp-for="BreedId" class="control-label" hidden="text"> </label>
+                <input asp-for="BreedId" class="form-control" hidden="text" />
+                <span asp-validation-for="BreedId" class="text-danger" hidden="text"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TypePetId" class="control-label" hidden="text"></label>
-                <input asp-for="TypePetId" class="form-control" hidden="text" />
-                <span asp-validation-for="TypePetId" class="text-danger" hidden="text"></span>
+                <label asp-for="PetTypeId" class="control-label" hidden="text"></label>
+                <input asp-for="PetTypeId" class="form-control" hidden="text" />
+                <span asp-validation-for="PetTypeId" class="text-danger" hidden="text"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

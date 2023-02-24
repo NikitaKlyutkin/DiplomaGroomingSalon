@@ -1,4 +1,4 @@
-﻿@model DiplomaGroomingSalon.Domain.ViewModels.TypePetViewModel
+﻿@model DiplomaGroomingSalon.Domain.Entities.PetType
 
 @{
     ViewData["Title"] = "EditTypePet";
@@ -22,12 +22,7 @@
                 <input asp-for="typePetName" class="form-control" />
                 <span asp-validation-for="typePetName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="TypePetId" class="control-label" hidden="text"></label>
-                <input asp-for="TypePetId" class="form-control" hidden="text" />
-                <span asp-validation-for="TypePetId" class="text-danger" hidden="text"></span>
-            </div>
-            <div class="form-group">
+	        <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -35,6 +30,6 @@
 </div>
 
 <div>
-    <a asp-action="GetTypePets">Back to List</a>
+    <a asp-action="GetPetTypes">Back to List</a>
 </div>
 

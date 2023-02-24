@@ -21,7 +21,7 @@
 	        </div>
 	        <div class="form-group">
 		        <label> Type Pet</label>
-		        @Html.DropDownListFor(m => m.TypePetId, ViewBag.TypePetBPOrder as IEnumerable<SelectListItem>, "--Select Type Pet--", new {@class = "form-control"})
+		        @Html.DropDownListFor(m => m.PetTypeId, ViewBag.TypePetBPOrder as IEnumerable<SelectListItem>, "--Select Type Pet--", new {@class = "form-control"})
 	        </div>
 	        <div class="form-group">
 		       
@@ -30,8 +30,8 @@
 		        <span asp-validation-for="NamePet" class="text-danger"></span>
 	        </div>
 			<div class="form-group">
-		        <label asp-for="BreedPetId" class="control-label">Breed</label>
-				<select asp-for="BreedPetId" required class="form-control">
+		        <label asp-for="BreedId" class="control-label">Breed</label>
+				<select asp-for="BreedId" required class="form-control">
 					<option value="">--Select Breed Pet--</option>
 				</select>
 			</div>

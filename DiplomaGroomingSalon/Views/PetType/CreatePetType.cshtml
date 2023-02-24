@@ -1,25 +1,25 @@
-﻿@model DiplomaGroomingSalon.Domain.ViewModels.TypePetViewModel
+﻿@model DiplomaGroomingSalon.Domain.ViewModels.PetTypeViewModel
 
 @{
-    ViewData["Title"] = "CreateTypePet";
+    ViewData["Title"] = "CreatePetType";
 }
 
 <h1>CreatePetType</h1>
 
 <h4>PetTypeViewModel</h4>
 <p>
-    <a asp-action="CreateTypePet">Create New PetType</a>
+    <a asp-action="CreatePetType">Create New PetType</a>
 </p>
 <p>
-    <a asp-action="CreateBreedPet">Create New Breed</a>
+    <a asp-controller="Breed" asp-action="CreateBreed">Create New Breed</a>
 </p>
 <p>
-    <a asp-action="CreateServiceType">Create New ServiceType</a>
+    <a asp-controller="ServiceType" asp-action="CreateServiceType">Create New ServiceType</a>
 </p>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreateTypePet">
+        <form asp-action="CreatePetType">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="typePetName" class="control-label"></label>
@@ -34,7 +34,7 @@
 </div>
 
 <div>
-    <a asp-action="GetTypePets">Back to List</a>
+    <a asp-action="GetPetTypes">Back to List</a>
 </div>
 
 @section Scripts {

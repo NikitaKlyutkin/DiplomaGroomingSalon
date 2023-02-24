@@ -4,15 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DiplomaGroomingSalon.Domain.Entities.Interfaces;
 using DiplomaGroomingSalon.Domain.Enum;
 
 namespace DiplomaGroomingSalon.Domain.Entities
 {
 	
-	public class Order 
+	public class Order : IEntity
 	{
 		public Guid Id { get; set; }
-		public StatusOrder StatusOrder { get; set; }
+        public string Description { get; set; }
+        public StatusOrder StatusOrder { get; set; }
 		public Profile Profile { get; set; }
 		public Guid ProfileId { get; set; }
         public Appointment Appointment { get; set; }

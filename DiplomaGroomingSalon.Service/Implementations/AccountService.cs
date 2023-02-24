@@ -18,12 +18,12 @@ namespace DiplomaGroomingSalon.Service.Implementations
 {
 	public class AccountService : IAccountService
 	{
-		private readonly IBaseRepository<Profile> _proFileRepository;
-		private readonly IBaseRepository<User> _userRepository;
+		private readonly IAccountRepository<Profile> _proFileRepository;
+		private readonly IAccountRepository<User> _userRepository;
 		private readonly ILogger<AccountService> _logger;
 
-		public AccountService(IBaseRepository<User> userRepository,
-			ILogger<AccountService> logger, IBaseRepository<Profile> proFileRepository)
+		public AccountService(IAccountRepository<User> userRepository,
+			ILogger<AccountService> logger, IAccountRepository<Profile> proFileRepository)
 		{
 			_userRepository = userRepository;
 			_logger = logger;
@@ -35,7 +35,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 		{
 			try
 			{
-				var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Name == model.Name);
+				var user = await _userRepository.GetByNameAsync(model.Name);
 				if (user != null)
 				{
 					return new BaseResponse<ClaimsIdentity>()
@@ -83,7 +83,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 		{
 			try
 			{
-				var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Name == model.Name);
+				var user = await _userRepository.GetByNameAsync(model.Name);
 				if (user == null)
 				{
 					return new BaseResponse<ClaimsIdentity>()
@@ -122,7 +122,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 		{
 			try
 			{
-				var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Name == model.UserName);
+				var user = await _userRepository.GetByNameAsync(model.UserName);
 				if (user == null)
 				{
 					return new BaseResponse<bool>()

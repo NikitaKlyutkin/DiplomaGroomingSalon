@@ -21,17 +21,16 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 			await _db.PetTypes.AddAsync(entity);
 			await _db.SaveChangesAsync();
 		}
-        private IQueryable<PetType> GetAllPrivate()
-        {
-            return _db.PetTypes;
-        }
         public async Task<IEnumerable<PetType>> GetAll()
         {
-            var type = GetAllPrivate();
-            return await type.ToListAsync();
+            return await _db.PetTypes.ToListAsync();
+        }
+        public async Task<PetType?> GetByIdAsync(Guid id)
+        {
+            return await _db.PetTypes.FirstOrDefaultAsync(x=>x.Id == id);
         }
 
-		public async Task Delete(PetType entity)
+        public async Task Delete(PetType entity)
 		{
 			_db.PetTypes.Remove(entity);
 			await _db.SaveChangesAsync();

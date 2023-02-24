@@ -12,6 +12,7 @@ using DiplomaGroomingSalon.DAL;
 using DiplomaGroomingSalon.DAL.Interfaces;
 using DiplomaGroomingSalon.DAL.Repositories;
 using DiplomaGroomingSalon.Domain.Entities;
+using DiplomaGroomingSalon.Domain.Entities.Interfaces;
 using DiplomaGroomingSalon.Service.Implementations;
 using DiplomaGroomingSalon.Service.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -38,14 +39,16 @@ namespace DiplomaGroomingSalon
 			services.AddScoped<IBaseRepository<Appointment>, AppointmentRepository>();
 			services.AddScoped<IBaseRepository<Order>, OrderRepository>();
 			services.AddScoped<IBaseRepository<PetType>, PetTypeRepository>();
-            services.AddScoped<IBaseRepository<Breed>, BreedPetRepository>();
+            services.AddScoped<IBaseRepository<Breed>, BreedRepository>();
 			services.AddScoped<IBaseRepository<ServiceType>, ServiceTypeRepository>();
-            services.AddScoped<IBaseRepository<User>, UserRepository>();
-            services.AddScoped<IBaseRepository<Profile>, ProfileRepository>();
+            services.AddScoped<IAccountRepository<User>, UserRepository>();
+            services.AddScoped<IAccountRepository<Profile>, ProfileRepository>();
 
             services.AddScoped<IAppointmentService, AppointmentService>();
 			services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IPriceCascadingService, PriceCascadingService>();
+            services.AddScoped<ICRUDDataService<PetType>, PetTypeService>();
+            services.AddScoped<ICRUDDataService<Breed>, BreedService>();
+            services.AddScoped<ICRUDDataService<ServiceType>, ServiceTypeService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IProfileService, ProfileService>();
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

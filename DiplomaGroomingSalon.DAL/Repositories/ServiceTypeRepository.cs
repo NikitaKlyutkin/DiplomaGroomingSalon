@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DiplomaGroomingSalon.DAL.Interfaces;
 using DiplomaGroomingSalon.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaGroomingSalon.DAL.Repositories
 {
@@ -21,12 +22,16 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 			await _db.SaveChangesAsync();
 		}
 
-		public IQueryable<ServiceType> GetAll()
-		{
-			return _db.ServiceTypes;
-		}
+        public async Task<IEnumerable<ServiceType>> GetAll()
+        {
+            return await _db.ServiceTypes.Include(x=>x.Breed.PetType).ToListAsync();
+        }
+        public async Task<ServiceType?> GetByIdAsync(Guid id)
+        {
+            return await _db.ServiceTypes.FirstOrDefaultAsync(x => x.Id == id);
+        }
 
-		public async Task Delete(ServiceType entity)
+        public async Task Delete(ServiceType entity)
 		{
 			_db.ServiceTypes.Remove(entity);
 			await _db.SaveChangesAsync();

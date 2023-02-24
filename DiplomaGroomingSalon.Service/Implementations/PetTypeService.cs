@@ -1,28 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using DiplomaGroomingSalon.DAL.Interfaces;
+﻿using DiplomaGroomingSalon.DAL.Interfaces;
 using DiplomaGroomingSalon.Domain.Entities;
 using DiplomaGroomingSalon.Domain.Enum;
 using DiplomaGroomingSalon.Domain.Response;
-using DiplomaGroomingSalon.Domain.ViewModels;
 using DiplomaGroomingSalon.Service.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaGroomingSalon.Service.Implementations
 {
     public class PetTypeService : ICRUDDataService<PetType>
     {
-        private readonly IBaseRepository<PetType> _typePetRepository;
-        private readonly IBaseRepository<Breed> _breedPetRepository;
+        private readonly IBaseRepository<PetType> _petTypePetRepository;
+        private readonly IBaseRepository<Breed> _breedRepository;
         private readonly IBaseRepository<ServiceType> _serviceTypeRepository;
-        public PetTypeService(IBaseRepository<PetType> typePetRepository, IBaseRepository<Breed> breedPetRepository, IBaseRepository<ServiceType> serviceTypeRepository)
+        public PetTypeService(IBaseRepository<PetType> petTypePetRepository, IBaseRepository<Breed> breedRepository, IBaseRepository<ServiceType> serviceTypeRepository)
         {
-            _typePetRepository = typePetRepository;
-            _breedPetRepository = breedPetRepository;
+            _petTypePetRepository = petTypePetRepository;
+            _breedRepository = breedRepository;
             _serviceTypeRepository = serviceTypeRepository;
 
         }
@@ -31,7 +23,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
             var baseResponse = new BaseResponse<IEnumerable<PetType>>();
             try
             {
-                var typePets = await _typePetRepository.GetAll();
+                var typePets = await _petTypePetRepository.GetAll();
 
                 if (!typePets.Any())
                 {
@@ -61,7 +53,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
         {
             try
             {
-                var typepet = await _typePetRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var typepet = await _petTypePetRepository.GetByIdAsync(id);
                 if (typepet == null)
                 {
                     return new BaseResponse<PetType>()
@@ -105,7 +97,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
                     typePetName = model.typePetName
                 };
 
-                await _typePetRepository.Create(typePet);
+                await _petTypePetRepository.Create(typePet);
 
             }
             catch (Exception ex)
@@ -123,7 +115,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
         {
             try
             {
-                var typepet = _typePetRepository.GetAll().Result.FirstOrDefault(x => x.Id == id);
+                var typepet = await _petTypePetRepository.GetByIdAsync(id);
                 if (typepet == null)
                 {
                     return new BaseResponse<PetType>()
@@ -135,7 +127,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
                 typepet.Id = model.Id;
                 typepet.typePetName = model.typePetName;
 
-                await _typePetRepository.Update(typepet);
+                await _petTypePetRepository.Update(typepet);
 
 
                 return new BaseResponse<PetType>()
@@ -154,9 +146,52 @@ namespace DiplomaGroomingSalon.Service.Implementations
             }
         }
 
-        public Task<IBaseResponse<bool>> Delete(Guid id)
+        public async Task<IBaseResponse<bool>> Delete(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var typepet = await _petTypePetRepository.GetByIdAsync(id);
+                if (typepet == null)
+                {
+                    return new BaseResponse<bool>()
+                    {
+                        Description = "Not found",
+                        StatusCode = StatusCode.NotFound,
+                        Data = false
+                    };
+                }
+                else
+                {
+                  var breedpet = _breedRepository.GetAll().Result.FirstOrDefault(x => x.PetTypeId == id);
+                  var servicetype = _serviceTypeRepository.GetAll().Result.FirstOrDefault(x => x.PetTypeId == id);
+                    if (servicetype != null)
+                    {
+                        await _serviceTypeRepository.DeleteRange(servicetype);
+                    }
+
+                    if (breedpet != null)
+                    {
+                        await _breedRepository.DeleteRange(breedpet);
+                    }
+
+                    await _petTypePetRepository.Delete(typepet);
+                }
+
+
+                return new BaseResponse<bool>()
+                {
+                    Data = true,
+                    StatusCode = StatusCode.OK
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<bool>()
+                {
+                    Description = $"[DeleteTypePet] : {ex.Message}",
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
         }
     }
 }

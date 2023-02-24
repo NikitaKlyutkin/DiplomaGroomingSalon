@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Data;
+using DiplomaGroomingSalon.Domain.Entities.Interfaces;
 using DiplomaGroomingSalon.Domain.Enum;
 
 namespace DiplomaGroomingSalon.Domain.Entities
 {
-	public class User
+	public class User : IEntity
 	{
 		
 		public Guid Id { get; set; }

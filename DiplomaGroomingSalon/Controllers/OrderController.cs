@@ -27,21 +27,22 @@ namespace DiplomaGroomingSalon.Controllers
 	{
 		private readonly IOrderService _orderService;
 		private readonly IAppointmentService _appointmentService;
-        private readonly IPriceCascadingService _priceCascadingService;
-        public OrderController(IOrderService orderService, IAppointmentService appointmentService, IPriceCascadingService priceCascadingService)
+		private readonly ICRUDDataService<PetType> _pettypeService;
+
+        public OrderController(IOrderService orderService, IAppointmentService appointmentService, ICRUDDataService<PetType> pettypeService)
 		{
 			_orderService = orderService;
 			_appointmentService = appointmentService;
-			_priceCascadingService = priceCascadingService;
+			_pettypeService = pettypeService;
 
         }
         [Authorize]
         [HttpGet]
-        public IActionResult CreateOrder()
+        public async Task<IActionResult> CreateOrder()
         {
-            var response = _appointmentService.GetAppointments();
+            var response = await _appointmentService.GetAppointments();
             var appointment = response.Data;
-            var responseTypePet = _priceCascadingService.GetTypePets();
+            var responseTypePet = await _pettypeService.GetAll();
             var typePets = responseTypePet.Data.ToList();
             
             ViewBag.DateTimeAppointment = new SelectList(appointment, "Id", "DateTimeAppointment");

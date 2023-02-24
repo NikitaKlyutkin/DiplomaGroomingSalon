@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DiplomaGroomingSalon.DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaGroomingSalon.DAL.Repositories
 {
-	public class UserRepository : IBaseRepository<User>
+	public class UserRepository : IAccountRepository<User>
 	{
 		private readonly DBContext _db;
 
@@ -22,20 +23,20 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 			await _db.SaveChangesAsync();
 		}
 
-		public IQueryable<User> GetAll()
-		{
-			return _db.Users;
-		}
-
-		public async Task Delete(User entity)
-		{
-			_db.Users.Remove(entity);
-			await _db.SaveChangesAsync();
-		}
-
-        public Task DeleteRange(User entity)
+        public Task<IEnumerable<User>> GetAll()
         {
             throw new NotImplementedException();
+        }
+
+
+        public async Task<User?> GetByNameAsync(string name)
+        {
+            return await _db.Users.SingleOrDefaultAsync(x => x.Name == name);
+        }
+
+        public async Task<User?> GetByIdAsync(Guid id)
+        {
+            return await _db.Users.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<User> Update(User entity)

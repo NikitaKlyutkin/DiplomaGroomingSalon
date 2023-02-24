@@ -25,7 +25,11 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 
         public async Task<IEnumerable<Appointment>> GetAll()
         {
-            return (await _db.Appointments.ToListAsync());
+            return await _db.Appointments.ToListAsync();
+        }
+        public async Task<Appointment?> GetByIdAsync(Guid id)
+        {
+            return await _db.Appointments.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task Delete(Appointment entity)
@@ -33,6 +37,11 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 			_db.Appointments.Remove(entity);
 			await _db.SaveChangesAsync();
 		}
+
+        public void DeleteByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
 
         public Task DeleteRange(Appointment entity)
         {

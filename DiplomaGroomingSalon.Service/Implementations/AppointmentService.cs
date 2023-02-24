@@ -49,12 +49,13 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			return baseResponse;
 	    }
 
-		public IBaseResponse<List<Appointment>> GetAppointments()
+		public async Task<IBaseResponse<List<Appointment>>> GetAppointments()
 		{
 		    var baseResponse = new BaseResponse<IEnumerable<Appointment>>();
 		    try
 		    {
-			    var appointments = _appointmentRepository.GetAll().ToList();
+                var appointmentsData = await _appointmentRepository.GetAll();
+                var appointments = appointmentsData.ToList();
 			    var appointmentsTrue = new List<Appointment>();
 				
 			    if (!appointments.Any())

@@ -4,16 +4,7 @@ using DiplomaGroomingSalon.Domain.Entities;
 using DiplomaGroomingSalon.Domain.Enum;
 using DiplomaGroomingSalon.Domain.Response;
 using DiplomaGroomingSalon.Domain.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using DiplomaGroomingSalon.Service.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using Microsoft.VisualBasic;
 
 namespace DiplomaGroomingSalon.Service.Implementations
 {
@@ -21,21 +12,20 @@ namespace DiplomaGroomingSalon.Service.Implementations
 	{
 		private readonly IBaseRepository<Order> _orderRepository;
 		private readonly IBaseRepository<Appointment> _appointmentRepository;
-		private readonly IBaseRepository<Profile> _profileRepository;
+		private readonly IAccountRepository<Profile> _profileRepository;
 
-		public OrderService(IBaseRepository<Order> orderRepository, IBaseRepository<Appointment> appointmentRepository, IBaseRepository<Profile> profileRepository)
+		public OrderService(IBaseRepository<Order> orderRepository, IBaseRepository<Appointment> appointmentRepository, IAccountRepository<Profile> profileRepository)
 		{
 			_orderRepository = orderRepository;
 			_appointmentRepository = appointmentRepository;
-			
 			_profileRepository = profileRepository;
 		}
-		public IBaseResponse<List<Order>> GetOrdersAll()
+		public async Task<IBaseResponse<List<Order>>> GetOrdersAll()
 		{
 			var baseResponse = new BaseResponse<IEnumerable<Order>>();
 			try
 			{
-				var orders = _orderRepository.GetAll().Include(x => x.ServiceType).ToList();
+				var orders = await _orderRepository.GetAll();
 				if (!orders.Any())
 				{
 					return new BaseResponse<List<Order>>()
@@ -46,7 +36,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 				}
 				return new BaseResponse<List<Order>>()
 				{
-					Data = orders,
+					Data = orders.ToList(),
 					StatusCode = StatusCode.OK
 				};
 			}
@@ -60,12 +50,12 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			}
 
 		}
-		public IBaseResponse<List<Order>> GetOrdersByUser()
+		public async Task<IBaseResponse<List<Order>>> GetOrdersByUser()
 		{
 			var baseResponse = new BaseResponse<IEnumerable<Order>>();
 			try
 			{
-				var orders = _orderRepository.GetAll().Include(x => x.ServiceType).ToList();
+				var orders = await _orderRepository.GetAll();
 				if (!orders.Any())
 				{
 					return new BaseResponse<List<Order>>()
@@ -76,7 +66,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 				}
 				return new BaseResponse<List<Order>>()
 				{
-					Data = orders,
+					Data = orders.ToList(),
 					StatusCode = StatusCode.OK
 				};
 			}
@@ -94,21 +84,20 @@ namespace DiplomaGroomingSalon.Service.Implementations
         {
             try
             {
-                var profile = await _profileRepository.GetAll()
-                    .Select(x => new ProfileViewModel()
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        Surname = x.Surname,
-                        Phone = x.Phone,
-                        Email = x.Email,
-                        UserName = x.User.Name
-                    })
-                    .FirstOrDefaultAsync(x => x.UserName == userName);
+                var profile = await _profileRepository.GetByNameAsync(userName);
+                var profileView = new ProfileViewModel()
+                {
+                    Id = profile.Id,
+                    Name = profile.Name,
+                    Surname = profile.Surname,
+                    Phone = profile.Phone,
+                    Email = profile.Email,
+                    UserId = profile.UserId
+                };
 
                 return new BaseResponse<ProfileViewModel>()
                 {
-                    Data = profile,
+                    Data = profileView,
                     StatusCode = StatusCode.OK
                 };
             }
@@ -135,14 +124,13 @@ namespace DiplomaGroomingSalon.Service.Implementations
 					NamePet = orderViewModel.NamePet,
 					ProfileId = ProfileId,
                     AppointmentId = orderViewModel.AppointmentId,
-					TypePetId = orderViewModel.TypePetId,
-					BreedPetId = orderViewModel.BreedPetId,
+					TypePetId = orderViewModel.PetTypeId,
+					BreedPetId = orderViewModel.BreedId,
 					ServiceTypeId = orderViewModel.ServiceTypeId,
 					Price = orderViewModel.Price
 				};
 
-				var appointmentRepository = _appointmentRepository.GetAll()
-					.FirstOrDefault(x => x.Id == orderViewModel.AppointmentId);
+				var appointmentRepository = _appointmentRepository.GetAll().Result.FirstOrDefault(x => x.Id == orderViewModel.AppointmentId);
 				var appointment = new Appointment()
 				{
 					Id = order.AppointmentId,

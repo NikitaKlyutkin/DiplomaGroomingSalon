@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DiplomaGroomingSalon.DAL.Interfaces;
 using DiplomaGroomingSalon.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaGroomingSalon.DAL.Repositories
 {
@@ -22,12 +23,17 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 			await _db.SaveChangesAsync();
 		}
 
-		public IQueryable<Order> GetAll()
-		{
-			return _db.Orders;
-		}
+        public async Task<IEnumerable<Order>> GetAll()
+        {
+            return await _db.Orders.ToListAsync();
+        }
 
-		public async Task Delete(Order entity)
+        public async Task<Order?> GetByIdAsync(Guid id)
+        {
+            return await _db.Orders.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task Delete(Order entity)
 		{
 			_db.Orders.Remove(entity);
 			await _db.SaveChangesAsync();
@@ -37,6 +43,7 @@ namespace DiplomaGroomingSalon.DAL.Repositories
         {
             throw new NotImplementedException();
         }
+
 
         public async Task<Order> Update(Order entity)
 		{

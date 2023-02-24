@@ -1,18 +1,18 @@
 ﻿@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.PetType>
 
 @{
-	ViewData["Title"] = "GetTypePets";
+	ViewData["Title"] = "GetPetTypes";
 }
 
 <h1>GetServiceTypes</h1>
 <p>
-	<a asp-action="CreateTypePet">Create New PetType</a>
+	<a asp-action="CreatePetType">Create New PetType</a>
 </p>
 <p>
-	<a asp-action="CreateBreedPet">Create New Breed</a>
+	<a asp-controller="Breed" asp-action="CreateBreed">Create New Breed</a>
 </p>
 <p>
-	<a asp-action="CreateServiceType">Create New ServiceType</a>
+	<a asp-controller="ServiceType" asp-action="CreateServiceType">Create New ServiceType</a>
 </p>
 @if (Model == null)
 {
@@ -47,8 +47,8 @@ else
 					@Html.DisplayFor(modelItem => item.typePetName)
 				</td>
 				<td>
-					@Html.ActionLink("Edit", "EditTypePet", new {id = item.Id}) |
-						@Html.ActionLink("Delete All(including PetType)", "DeleteTypePets", new {id = item.Id})
+					@Html.ActionLink("Edit", "EditPetType", new {id = item.Id}) |
+					@Html.ActionLink("Delete All(including PetType)", "DeletePetType", new {id = item.Id})
 				</td>
 			</tr>
 		}

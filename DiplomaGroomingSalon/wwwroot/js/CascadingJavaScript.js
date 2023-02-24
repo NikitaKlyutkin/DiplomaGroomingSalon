@@ -1,17 +1,17 @@
 ﻿$(document).ready(function () {
 
-    $("#BreedPetId").attr("disabled", true);
+    $("#BreedId").attr("disabled", true);
     $("#ServiceTypeId").attr("disabled", true);
-    $("#TypePetId").change(function () {
+    $("#PetTypeId").change(function () {
 
-            $.get("/PriceCascading/GetBreedForCascading",
-                { TypePetId: $("#TypePetId").val() },
+        $.get("/ServiceJS/GetBreedForCascading",
+                { PetTypeId: $("#PetTypeId").val() },
                 function (data) {
                     if (data != null) {
-                        $("#BreedPetId").empty();
+                        $("#BreedId").empty();
                         $("#ServiceTypeId").empty();
-                        $("#BreedPetId").attr("disabled", false);
-                        $("#BreedPetId").append('<option value="">--Select Breed Pet--</option>');
+                        $("#BreedId").attr("disabled", false);
+                        $("#BreedId").append('<option value="">--Select Breed Pet--</option>');
                         $("#ServiceTypeId").attr("disabled", true);
                         $("#ServiceTypeId").append('<option value="">--Select Service Type--</option>');
                        
@@ -19,21 +19,21 @@
                         $("#Price").append('<option value="">--Price---</option>');
                         $.each(data,
                             function (i, item) {
-                                $("select#BreedPetId").append(`<option value="${item.id}">${item.name}</option>`);
+                                $("select#BreedId").append(`<option value="${item.id}">${item.name}</option>`);
                             });
                     } else {
                         alert("Select TypePet");
-                        $("#BreedPetId").empty();
+                        $("#BreedId").empty();
                         $("#Price").empty();
-                        $("#BreedPetId").attr("disabled", true);
+                        $("#BreedId").attr("disabled", true);
                         $("#ServiceTypeId").attr("disabled", true);
                     }
                 });
     })
 
-        $("#BreedPetId").change(function() {
-            $.get("/PriceCascading/GetServiceForCascading",
-                { BreedPetId: $("#BreedPetId").val() },
+        $("#BreedId").change(function() {
+            $.get("/ServiceJS/GetServiceForCascading",
+                { BreedId: $("#BreedId").val() },
                 function (data) {
                     if (data != null) {
                         $("#ServiceTypeId").empty();
@@ -48,10 +48,10 @@
                             });
                     } else {
                         alert("Select Breed Pet");
-                        $("#BreedPetId").empty();
+                        $("#BreedId").empty();
                         $("#ServiceTypeId").empty();
                         $("#Price").empty();
-                        $("#BreedPetId").attr("disabled", true);
+                        $("#BreedId").attr("disabled", true);
                         $("#ServiceTypeId").attr("disabled", true);
                         $("#Price").attr("disabled", true);
                     }
@@ -59,7 +59,7 @@
         })
 
     $("#ServiceTypeId").change(function () {
-        $.getJSON("/PriceCascading/GetPriceForCascading",
+        $.getJSON("/ServiceJS/GetPriceForCascading",
                 { ServiceTypeId: $("#ServiceTypeId").val() },
             function (data) {
                 if (data != null) {

@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DiplomaGroomingSalon.DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaGroomingSalon.DAL.Repositories
 {
-	public class ProfileRepository : IBaseRepository<Profile>
+	public class ProfileRepository : IAccountRepository<Profile>
 	{
 		private readonly DBContext _db;
 
@@ -22,18 +23,17 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 			await _db.SaveChangesAsync();
 		}
 
-		public IQueryable<Profile> GetAll()
-		{
-			return _db.Profiles;
-		}
+        public async Task<IEnumerable<Profile>> GetAll()
+        {
+            return await _db.Profiles.ToListAsync();
+        }
 
-		public async Task Delete(Profile entity)
-		{
-			_db.Profiles.Remove(entity);
-			await _db.SaveChangesAsync();
-		}
+        public async Task<Profile?> GetByNameAsync(string name)
+        {
+            return await _db.Profiles.SingleOrDefaultAsync(x => x.User.Name == name);
+        }
 
-		public async Task<Profile> Update(Profile entity)
+        public async Task<Profile> Update(Profile entity)
 		{
 			_db.Profiles.Update(entity);
 			await _db.SaveChangesAsync();
@@ -41,9 +41,10 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 			return entity;
 		}
 
-        public Task DeleteRange(Profile entity)
+
+        public async Task<Profile?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _db.Profiles.SingleOrDefaultAsync(x => x.Id == id);
         }
     }
 }
