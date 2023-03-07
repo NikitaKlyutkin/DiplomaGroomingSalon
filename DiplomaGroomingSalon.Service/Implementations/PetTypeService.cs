@@ -66,7 +66,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
                 var data = new PetType()
                 {
                     Id = typepet.Id,
-                    typePetName = typepet.typePetName,
+                    PetTypeName = typepet.PetTypeName,
 
                 };
 
@@ -94,7 +94,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
                 var typePet = new PetType()
                 {
                     Id = Guid.NewGuid(),
-                    typePetName = model.typePetName
+                    PetTypeName = model.PetTypeName
                 };
 
                 await _petTypePetRepository.Create(typePet);
@@ -125,7 +125,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
                     };
                 }
                 typepet.Id = model.Id;
-                typepet.typePetName = model.typePetName;
+                typepet.PetTypeName = model.PetTypeName;
 
                 await _petTypePetRepository.Update(typepet);
 

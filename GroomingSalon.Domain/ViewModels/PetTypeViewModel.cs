@@ -11,7 +11,7 @@ namespace DiplomaGroomingSalon.Domain.ViewModels
 	{
         [Key]
         public Guid Id { get; set; }
-        public string typePetName { get; set; }
+        public string PetTypeName { get; set; }
         public Guid PetTypeId { get; set; }
         public string Description { get; set; }
     }

@@ -31,7 +31,7 @@ else
 				@Html.DisplayNameFor(model => model.Id)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.typePetName)
+				@Html.DisplayNameFor(model => model.PetTypeName)
 			</th>
 			<th></th>
 		</tr>
@@ -44,7 +44,7 @@ else
 					@Html.DisplayFor(modelItem => item.Id)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.typePetName)
+					@Html.DisplayFor(modelItem => item.PetTypeName)
 				</td>
 				<td>
 					@Html.ActionLink("Edit", "EditPetType", new {id = item.Id}) |

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Principal;
+using DiplomaGroomingSalon.Domain.Enum;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -27,26 +28,54 @@ namespace DiplomaGroomingSalon.Controllers
 	{
 		private readonly IOrderService _orderService;
 		private readonly IAppointmentService _appointmentService;
-		private readonly ICRUDDataService<PetType> _pettypeService;
+		private readonly ICRUDDataService<PetType> _petTypeService;
 
-        public OrderController(IOrderService orderService, IAppointmentService appointmentService, ICRUDDataService<PetType> pettypeService)
+        public OrderController(IOrderService orderService, IAppointmentService appointmentService, ICRUDDataService<PetType> petTypeService)
 		{
 			_orderService = orderService;
 			_appointmentService = appointmentService;
-			_pettypeService = pettypeService;
+			_petTypeService = petTypeService;
 
         }
-        [Authorize]
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+		public async Task<IActionResult> GetOrdersByAdmin()
+        {
+	        var response = await _orderService.GetOrdersByAdmin();
+
+	        if (response.StatusCode == Domain.Enum.StatusCode.OK)
+	        {
+		        return View(response.Data.ToList());
+	        }
+	        return View(response.Description);
+        }
+		[Authorize(Roles = "User")]
+		[HttpGet]
+		public async Task<IActionResult> GetOrdersByUser()
+        {
+	        var nameUser = User.Identity.Name;
+	        var profileUser = await _orderService.GetProfileOrder(nameUser);
+	        var profileId = profileUser.Data.Id;
+			var response = await _orderService.GetOrdersByAdmin();
+			ViewBag.ReportStates = new SelectList(Enum.GetNames(typeof(StatusOrder)));
+
+			if (response.StatusCode == Domain.Enum.StatusCode.OK)
+	        {
+		        return View(response.Data.Where(x=>x.ProfileId == profileId));
+	        }
+	        return View(response.Description);
+        }
+		[Authorize]
         [HttpGet]
         public async Task<IActionResult> CreateOrder()
         {
             var response = await _appointmentService.GetAppointments();
             var appointment = response.Data;
-            var responseTypePet = await _pettypeService.GetAll();
+            var responseTypePet = await _petTypeService.GetAll();
             var typePets = responseTypePet.Data.ToList();
             
             ViewBag.DateTimeAppointment = new SelectList(appointment, "Id", "DateTimeAppointment");
-			ViewBag.TypePetBPOrder = new SelectList(typePets, "Id", "typePetName");
+			ViewBag.TypePetBPOrder = new SelectList(typePets, "Id", "PetTypeName");
 			return View();
 		}
 		[Authorize]
@@ -55,10 +84,10 @@ namespace DiplomaGroomingSalon.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-                var NameUser = User.Identity.Name;
-                var ProfileUser = await _orderService.GetProfileOrder(NameUser);
-                var ProfileId = ProfileUser.Data.Id;
-                var response = await _orderService.CreateOrder(model, ProfileId);
+                var nameUser = User.Identity.Name;
+                var profileUser = await _orderService.GetProfileOrder(nameUser);
+                var profileId = profileUser.Data.Id;
+                var response = await _orderService.CreateOrder(model, profileId);
 
 				if (response.StatusCode == Domain.Enum.StatusCode.OK)
 				{
@@ -69,5 +98,6 @@ namespace DiplomaGroomingSalon.Controllers
 			}
 			return StatusCode(StatusCodes.Status500InternalServerError);
 		}
+
 	}
 }

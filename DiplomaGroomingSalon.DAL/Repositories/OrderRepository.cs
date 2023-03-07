@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DiplomaGroomingSalon.DAL.Interfaces;
+﻿using DiplomaGroomingSalon.DAL.Interfaces;
 using DiplomaGroomingSalon.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +20,9 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 
         public async Task<IEnumerable<Order>> GetAll()
         {
-            return await _db.Orders.ToListAsync();
+            return await _db.Orders.Include(x=>x.Appointment)
+                .Include(x=>x.ServiceType.Breed.PetType)
+                .Include(x=>x.Profile).ToListAsync();
         }
 
         public async Task<Order?> GetByIdAsync(Guid id)

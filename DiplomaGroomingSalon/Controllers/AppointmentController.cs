@@ -1,26 +1,34 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Linq;
+using System.Threading.Tasks;
+using DiplomaGroomingSalon.Domain.Enum;
 using DiplomaGroomingSalon.Domain.ViewModels;
+using DiplomaGroomingSalon.Service.Implementations;
 using DiplomaGroomingSalon.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using NuGet.Protocol;
+using static MessagePack.MessagePackSerializer;
 
 namespace DiplomaGroomingSalon.Controllers
 {
     public class AppointmentController : Controller
 	{
 		private readonly IAppointmentService _appointmentService;
+		private readonly IProfileService _profileService;
 
-		public AppointmentController(IAppointmentService appointmentService)
+		public AppointmentController(IAppointmentService appointmentService, IProfileService profileService)
 		{
 			_appointmentService = appointmentService;
+			_profileService = profileService;
 		}
         [Authorize(Roles = "Admin")]
         [HttpGet]
 		public IActionResult CreateAppointment()
 		{
-			var appointmentViewModel = new AppointmentViewModel();
-			return View(appointmentViewModel);
+			return View();
 		}
         [Authorize(Roles = "Admin")]
         [HttpPost]

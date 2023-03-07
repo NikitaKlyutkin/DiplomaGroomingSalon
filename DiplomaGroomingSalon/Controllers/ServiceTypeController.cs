@@ -43,7 +43,7 @@ namespace DiplomaGroomingSalon.Controllers
 			if (dataPetType != null && dataBreed != null)
 			{
 				ViewBag.BreedPetBP = "true";
-				ViewBag.TypePetBP = new SelectList(dataPetType, "Id", "typePetName");
+				ViewBag.TypePetBP = new SelectList(dataPetType, "Id", "PetTypeName");
 				return View();
 			}
 			else if (dataBreed == null)

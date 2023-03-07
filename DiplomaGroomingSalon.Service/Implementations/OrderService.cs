@@ -20,7 +20,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			_appointmentRepository = appointmentRepository;
 			_profileRepository = profileRepository;
 		}
-		public async Task<IBaseResponse<List<Order>>> GetOrdersAll()
+		public async Task<IBaseResponse<List<Order>>> GetOrdersByAdmin()
 		{
 			var baseResponse = new BaseResponse<IEnumerable<Order>>();
 			try
@@ -50,37 +50,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			}
 
 		}
-		public async Task<IBaseResponse<List<Order>>> GetOrdersByUser()
-		{
-			var baseResponse = new BaseResponse<IEnumerable<Order>>();
-			try
-			{
-				var orders = await _orderRepository.GetAll();
-				if (!orders.Any())
-				{
-					return new BaseResponse<List<Order>>()
-					{
-						Description = "Found 0 items",
-						StatusCode = StatusCode.OK
-					};
-				}
-				return new BaseResponse<List<Order>>()
-				{
-					Data = orders.ToList(),
-					StatusCode = StatusCode.OK
-				};
-			}
-			catch (Exception ex)
-			{
-				return new BaseResponse<List<Order>>()
-				{
-					Description = $"[GetOrders] : {ex.Message}",
-					StatusCode = StatusCode.InternalServerError
-				};
-			}
-
-		}
-        public async Task<BaseResponse<ProfileViewModel>> GetProfileOrder(string userName)
+		public async Task<BaseResponse<ProfileViewModel>> GetProfileOrder(string userName)
         {
             try
             {
@@ -129,8 +99,9 @@ namespace DiplomaGroomingSalon.Service.Implementations
 					ServiceTypeId = orderViewModel.ServiceTypeId,
 					Price = orderViewModel.Price
 				};
+                var appointmentData = await _appointmentRepository.GetAll();
 
-				var appointmentRepository = _appointmentRepository.GetAll().Result.FirstOrDefault(x => x.Id == orderViewModel.AppointmentId);
+                var appointmentRepository = appointmentData.FirstOrDefault(x => x.Id == orderViewModel.AppointmentId);
 				var appointment = new Appointment()
 				{
 					Id = order.AppointmentId,

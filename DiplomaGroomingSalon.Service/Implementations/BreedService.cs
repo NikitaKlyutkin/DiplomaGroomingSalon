@@ -62,9 +62,9 @@ public class BreedService : ICRUDDataService<Breed>
 			var data = new Breed
 			{
 				Id = breedpet.Id,
-				breedPetName = breedpet.breedPetName,
+				BreedName = breedpet.BreedName,
 				PetTypeId = breedpet.PetTypeId,
-				PetTypeName = breedpet.PetType.typePetName
+				PetTypeName = breedpet.PetType.PetTypeName
 			};
 
 			return new BaseResponse<Breed>
@@ -92,7 +92,7 @@ public class BreedService : ICRUDDataService<Breed>
 			{
 				Id = new Guid(),
 				PetTypeId = model.PetTypeId,
-				breedPetName = model.breedPetName
+				BreedName = model.BreedName
 			};
 
 			await _breedRepository.Create(breedPet);
@@ -113,23 +113,23 @@ public class BreedService : ICRUDDataService<Breed>
 	{
 		try
 		{
-			var breedpet = await _breedRepository.GetByIdAsync(id);
-			if (breedpet == null)
+			var breedPetAsync = await _breedRepository.GetByIdAsync(id);
+			if (breedPetAsync == null)
 				return new BaseResponse<Breed>
 				{
 					Description = "Not found",
 					StatusCode = StatusCode.NotFound
 				};
-			breedpet.Id = model.Id;
-			breedpet.breedPetName = model.breedPetName;
-			breedpet.PetTypeId = model.PetTypeId;
+			breedPetAsync.Id = model.Id;
+			breedPetAsync.BreedName = model.BreedName;
+			breedPetAsync.PetTypeId = model.PetTypeId;
 
-			await _breedRepository.Update(breedpet);
+			await _breedRepository.Update(breedPetAsync);
 
 
 			return new BaseResponse<Breed>
 			{
-				Data = breedpet,
+				Data = breedPetAsync,
 				StatusCode = StatusCode.OK
 			};
 		}
@@ -147,8 +147,8 @@ public class BreedService : ICRUDDataService<Breed>
 	{
 		try
 		{
-			var breedpet = await _breedRepository.GetByIdAsync(id);
-			if (breedpet == null)
+			var breedPetAsync = await _breedRepository.GetByIdAsync(id);
+			if (breedPetAsync == null)
 			{
 				return new BaseResponse<bool>
 				{
@@ -161,7 +161,7 @@ public class BreedService : ICRUDDataService<Breed>
 			var servicetype = _serviceTypeRepository.GetAll().Result.FirstOrDefault(x => x.BreedId == id);
 			if (servicetype != null) await _serviceTypeRepository.DeleteRange(servicetype);
 
-			await _breedRepository.Delete(breedpet);
+			await _breedRepository.Delete(breedPetAsync);
 
 
 			return new BaseResponse<bool>

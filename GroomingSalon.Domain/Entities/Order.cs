@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DiplomaGroomingSalon.Domain.Entities.Interfaces;
 using DiplomaGroomingSalon.Domain.Enum;
 
@@ -18,7 +13,7 @@ namespace DiplomaGroomingSalon.Domain.Entities
 		public Profile Profile { get; set; }
 		public Guid ProfileId { get; set; }
         public Appointment Appointment { get; set; }
-		public Guid AppointmentId { get; set; }
+        public Guid AppointmentId { get; set; }
 		public string NamePet { get; set; }
 		public Guid TypePetId { get; set; }
 		public Guid BreedPetId { get; set; }

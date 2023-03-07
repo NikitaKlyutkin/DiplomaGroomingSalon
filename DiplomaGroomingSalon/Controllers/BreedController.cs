@@ -43,7 +43,7 @@ namespace DiplomaGroomingSalon.Controllers
 			{
 				var response = await _petTypeService.GetAll();
 				var typePets = response.Data;
-				ViewBag.TypePet = new SelectList(typePets, "Id", "typePetName");
+				ViewBag.TypePet = new SelectList(typePets, "Id", "PetTypeName");
 				return View();
 			}
 

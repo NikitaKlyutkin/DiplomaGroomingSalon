@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DiplomaGroomingSalon.Domain.Entities.Interfaces;
 
 namespace DiplomaGroomingSalon.Domain.Entities
@@ -12,7 +8,7 @@ namespace DiplomaGroomingSalon.Domain.Entities
 	{
 		[Key]
 		public Guid Id { get; set; }
-		public string breedPetName { get; set; }
+		public string BreedName { get; set; }
 		public PetType PetType { get; set; }
 		public Guid PetTypeId { get; set; }
         public string PetTypeName { get; set; }

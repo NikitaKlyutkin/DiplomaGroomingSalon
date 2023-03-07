@@ -11,7 +11,7 @@ namespace DiplomaGroomingSalon.Service.Interfaces
 {
 	public interface IOrderService
 	{
-        Task<IBaseResponse<List<Order>>> GetOrdersAll();
+        Task<IBaseResponse<List<Order>>> GetOrdersByAdmin();
 		Task<IBaseResponse<OrderViewModel>> CreateOrder(OrderViewModel orderViewModel, Guid ProfileId);
         Task<BaseResponse<ProfileViewModel>> GetProfileOrder(string userName);
 

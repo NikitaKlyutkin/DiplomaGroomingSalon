@@ -74,9 +74,9 @@ namespace DiplomaGroomingSalon.Service.Implementations
                 var data = new ServiceType()
                 {
                     Id = servicetype.Id,
-                    serviceTypeName = servicetype.serviceTypeName,
-                    TypePetName = servicetype.Breed.PetType.typePetName,
-                    BreedPetName = servicetype.Breed.breedPetName,
+                    ServiceTypeName = servicetype.ServiceTypeName,
+                    PetTypeName = servicetype.Breed.PetType.PetTypeName,
+                    BreedName = servicetype.Breed.BreedName,
                     PetTypeId = servicetype.PetTypeId,
                     BreedId = servicetype.BreedId,
                     Price = servicetype.Price
@@ -110,7 +110,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
                     BreedId = model.BreedId,
                     PetTypeId = model.PetTypeId,
                     Price = model.Price,
-                    serviceTypeName = model.serviceTypeName
+                    ServiceTypeName = model.ServiceTypeName
 
                 };
 
@@ -144,7 +144,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
                 servicetype.Id = model.Id;
                 servicetype.PetTypeId = model.PetTypeId;
                 servicetype.BreedId = model.BreedId;
-                servicetype.serviceTypeName = model.serviceTypeName;
+                servicetype.ServiceTypeName = model.ServiceTypeName;
                 servicetype.Price = model.Price;
 
                 await _serviceTypeRepository.Update(servicetype);

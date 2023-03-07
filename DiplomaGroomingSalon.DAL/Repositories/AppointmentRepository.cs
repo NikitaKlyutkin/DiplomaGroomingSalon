@@ -1,9 +1,4 @@
 ﻿using DiplomaGroomingSalon.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DiplomaGroomingSalon.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,11 +32,6 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 			_db.Appointments.Remove(entity);
 			await _db.SaveChangesAsync();
 		}
-
-        public void DeleteByIdAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task DeleteRange(Appointment entity)
         {

@@ -29,16 +29,16 @@ else
 		<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.serviceTypeName)
+				@Html.DisplayNameFor(model => model.ServiceTypeName)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Price)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Breed.breedPetName)
+				@Html.DisplayNameFor(model => model.Breed.BreedName)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Breed.PetType.typePetName)
+				@Html.DisplayNameFor(model => model.Breed.PetType.PetTypeName)
 			</th>
 			<th></th>
 		</tr>
@@ -48,16 +48,16 @@ else
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(modelItem => item.serviceTypeName)
+					@Html.DisplayFor(modelItem => item.ServiceTypeName)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.Price)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Breed.breedPetName)
+					@Html.DisplayFor(modelItem => item.Breed.BreedName)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Breed.PetType.typePetName)
+					@Html.DisplayFor(modelItem => item.Breed.PetType.PetTypeName)
 				</td>
 				<td>
 					@Html.ActionLink("Edit", "EditServiceType", new {id = item.Id}) |

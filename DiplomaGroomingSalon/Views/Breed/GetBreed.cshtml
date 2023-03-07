@@ -32,10 +32,10 @@ else
 				@Html.DisplayNameFor(model => model.Id)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.breedPetName)
+				@Html.DisplayNameFor(model => model.BreedName)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.PetType.typePetName)
+				@Html.DisplayNameFor(model => model.PetType.PetTypeName)
 			</th>
 		</tr>
 		</thead>
@@ -47,10 +47,10 @@ else
 					@Html.DisplayFor(modelItem => item.Id)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.breedPetName)
+					@Html.DisplayFor(modelItem => item.BreedName)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.PetType.typePetName)
+					@Html.DisplayFor(modelItem => item.PetType.PetTypeName)
 				</td>
 				<td>
 					@Html.ActionLink("Edit", "EditBreed", new {id = item.Id}) |

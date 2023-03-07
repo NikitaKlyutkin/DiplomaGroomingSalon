@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DiplomaGroomingSalon.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using DiplomaGroomingSalon.DAL.Repositories;
 
 namespace DiplomaGroomingSalon.Service.Implementations
 {

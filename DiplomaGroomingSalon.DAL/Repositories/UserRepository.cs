@@ -1,10 +1,6 @@
 ﻿using DiplomaGroomingSalon.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DiplomaGroomingSalon.DAL.Interfaces;
+using DiplomaGroomingSalon.Domain.Enum;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaGroomingSalon.DAL.Repositories
@@ -23,10 +19,10 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 			await _db.SaveChangesAsync();
 		}
 
-        public Task<IEnumerable<User>> GetAll()
+        public async Task<IEnumerable<User>> GetAll()
         {
-            throw new NotImplementedException();
-        }
+			return await _db.Users.ToListAsync();
+		}
 
 
         public async Task<User?> GetByNameAsync(string name)
@@ -38,6 +34,7 @@ namespace DiplomaGroomingSalon.DAL.Repositories
         {
             return await _db.Users.SingleOrDefaultAsync(x => x.Id == id);
         }
+
 
         public async Task<User> Update(User entity)
 		{

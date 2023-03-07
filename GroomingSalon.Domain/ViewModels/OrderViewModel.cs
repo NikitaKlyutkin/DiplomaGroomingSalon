@@ -12,7 +12,7 @@ namespace DiplomaGroomingSalon.Domain.ViewModels
         public Profile Profile { get; set; }
         public Guid ProfileId { get; set; }
 		public Appointment Appointment { get; set; }
-        public Guid AppointmentId { get; set; }
+		public Guid AppointmentId { get; set; }
         public string NamePet { get; set; }
 		public Guid PetTypeId { get; set; }
         public Guid BreedId { get; set; }

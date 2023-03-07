@@ -11,11 +11,12 @@ namespace DiplomaGroomingSalon.Service
 	{
 		private readonly ICRUDDataService<Breed> _breedService;
 		private readonly ICRUDDataService<ServiceType> _serviceTypeService;
-
-		public ServiceJSController(ICRUDDataService<Breed> breedService, ICRUDDataService<ServiceType> serviceTypeService)
+		private readonly IAppointmentService _appointmentService;
+		public ServiceJSController(ICRUDDataService<Breed> breedService, ICRUDDataService<ServiceType> serviceTypeService, IAppointmentService appointmentService)
 		{
 			_breedService = breedService;
 			_serviceTypeService = serviceTypeService;
+			_appointmentService = appointmentService;
 		}
 		public async Task<IActionResult> GetBreedForCascading(Guid PetTypeId)
 		{
@@ -23,7 +24,7 @@ namespace DiplomaGroomingSalon.Service
 			var breedPets = response.Data;
 
 			var SubCategory_List = breedPets.Where(s => s.PetTypeId == PetTypeId)
-				.Select(c => new { Id = c.Id, Name = c.breedPetName }).ToList();
+				.Select(c => new { Id = c.Id, Name = c.BreedName }).ToList();
 
 			return Json(SubCategory_List);
 		}
@@ -34,7 +35,7 @@ namespace DiplomaGroomingSalon.Service
 			var serviceTypes = response.Data;
 
 			var SubCategory_List = serviceTypes.Where(s => s.BreedId == BreedId)
-				.Select(c => new { Id = c.Id, Name = c.serviceTypeName }).ToList();
+				.Select(c => new { Id = c.Id, Name = c.ServiceTypeName }).ToList();
 			return Json(SubCategory_List);
 		}
 

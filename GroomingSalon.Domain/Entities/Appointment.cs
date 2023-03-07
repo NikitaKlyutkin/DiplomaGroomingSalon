@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DiplomaGroomingSalon.Domain.Entities.Interfaces;
 
 namespace DiplomaGroomingSalon.Domain.Entities
@@ -16,6 +10,6 @@ namespace DiplomaGroomingSalon.Domain.Entities
         public DateTime DateTimeAppointment { get; set; }
 
 		public bool StatusAppointment { get; set; }
-        public string Description { get; set; }
+		public string Description { get; set; }
     }
 }
