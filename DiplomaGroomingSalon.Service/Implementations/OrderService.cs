@@ -57,7 +57,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
                 var profile = await _profileRepository.GetByNameAsync(userName);
                 var profileView = new ProfileViewModel()
                 {
-                    Id = profile.Id,
+                    Id = profile!.Id,
                     Name = profile.Name,
                     Surname = profile.Surname,
                     Phone = profile.Phone,
@@ -123,5 +123,86 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			}
 			return baseResponse;
 		}
+
+        public async Task<IBaseResponse<Order>> Edit(Guid id, Order model)
+        {
+	        try
+	        {
+		        var orderAsync = await _orderRepository.GetByIdAsync(id);
+		        if (orderAsync == null)
+			        return new BaseResponse<Order>
+			        {
+				        Description = "Not found",
+				        StatusCode = StatusCode.NotFound
+			        };
+		        orderAsync.Id = model.Id;
+				orderAsync.TypePetId = model.TypePetId;
+				orderAsync.BreedPetId = model.BreedPetId;
+				orderAsync.ServiceTypeId = model.ServiceTypeId;
+				orderAsync.AppointmentId = model.AppointmentId;
+				orderAsync.ProfileId = model.ProfileId;
+		        orderAsync.StatusOrder  = model.StatusOrder;
+				orderAsync.Price = model.Price;
+				orderAsync.NamePet = model.NamePet;
+				orderAsync.Description = model.Description;
+				await _orderRepository.Update(orderAsync);
+
+				return new BaseResponse<Order>
+		        {
+			        Data = orderAsync,
+			        StatusCode = StatusCode.OK
+		        };
+	        }
+	        catch (Exception ex)
+	        {
+		        return new BaseResponse<Order>
+		        {
+			        Description = $"[EditOrder] : {ex.Message}",
+			        StatusCode = StatusCode.InternalServerError
+		        };
+	        }
+        }
+
+        public async Task<IBaseResponse<Order>> GetById(Guid id)
+        {
+	        try
+	        {
+		        var orderAsync = await _orderRepository.GetByIdAsync(id);
+		        if (orderAsync == null)
+			        return new BaseResponse<Order>
+			        {
+				        Description = "Not Found",
+				        StatusCode = StatusCode.NotFound
+			        };
+
+		        var data = new Order()
+		        {
+			        Id = orderAsync.Id,
+					Appointment = orderAsync.Appointment,
+					AppointmentId = orderAsync.AppointmentId,
+					Profile = orderAsync.Profile,
+					ProfileId = orderAsync.ProfileId,
+					ServiceType = orderAsync.ServiceType,
+					ServiceTypeId = orderAsync.ServiceTypeId,
+					Price = orderAsync.Price,
+					StatusOrder = orderAsync.StatusOrder,
+					NamePet = orderAsync.NamePet
+		        };
+
+		        return new BaseResponse<Order>
+		        {
+			        StatusCode = StatusCode.OK,
+			        Data = data
+		        };
+	        }
+	        catch (Exception ex)
+	        {
+		        return new BaseResponse<Order>
+		        {
+			        Description = $"[GetOrder] : {ex.Message}",
+			        StatusCode = StatusCode.InternalServerError
+		        };
+	        }
+        }
 	}
 }

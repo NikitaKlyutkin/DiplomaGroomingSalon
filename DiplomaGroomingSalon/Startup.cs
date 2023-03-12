@@ -1,22 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DiplomaGroomingSalon.DAL;
 using DiplomaGroomingSalon.DAL.Interfaces;
 using DiplomaGroomingSalon.DAL.Repositories;
 using DiplomaGroomingSalon.Domain.Entities;
-using DiplomaGroomingSalon.Domain.Entities.Interfaces;
 using DiplomaGroomingSalon.Service.Implementations;
 using DiplomaGroomingSalon.Service.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaGroomingSalon

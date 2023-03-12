@@ -50,7 +50,7 @@ namespace DiplomaGroomingSalon.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAppointments()
 		{
-			var response = await _appointmentService.GetAppointments();
+			var response = await _appointmentService.GetAppointmentsFree();
 			if (response.StatusCode == Domain.Enum.StatusCode.OK)
 			{
 				return View(response.Data);

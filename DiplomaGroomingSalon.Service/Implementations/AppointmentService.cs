@@ -6,6 +6,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using DiplomaGroomingSalon.DAL.Interfaces;
+using DiplomaGroomingSalon.DAL.Repositories;
 using DiplomaGroomingSalon.Domain.Entities;
 using DiplomaGroomingSalon.Domain.Enum;
 using DiplomaGroomingSalon.Domain.Response;
@@ -49,7 +50,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			return baseResponse;
 	    }
 
-		public async Task<IBaseResponse<List<Appointment>>> GetAppointments()
+		public async Task<IBaseResponse<List<Appointment>>> GetAppointmentsFree()
 		{
 		    var baseResponse = new BaseResponse<IEnumerable<Appointment>>();
 		    try
@@ -69,7 +70,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 
 				foreach (var appointment in appointments)
 				{
-					if (appointment.StatusAppointment == true)
+					if (appointment.StatusAppointment == true && appointment.DateTimeAppointment > DateTime.Now.AddHours(2))
 					{
 						appointmentsTrue.Add(appointment);
 					}
@@ -84,10 +85,79 @@ namespace DiplomaGroomingSalon.Service.Implementations
 		    {
 			    return new BaseResponse<List<Appointment>>()
 			    {
-				    Description = $"[GetAppointments] : {ex.Message}",
+				    Description = $"[GetAppointmentsFree] : {ex.Message}",
 				    StatusCode = StatusCode.InternalServerError
 			    };
 			}
 	    }
-    }
+		public async Task<IBaseResponse<Appointment>> UpdateAppointment(Guid id,Appointment model)
+		{
+			try
+			{
+				var appointmentAsync = await _appointmentRepository.GetByIdAsync(id);
+				if (appointmentAsync == null)
+				{
+					return new BaseResponse<Appointment>
+					{
+						Description = "Not found",
+						StatusCode = StatusCode.NotFound
+					};
+				}
+				appointmentAsync.Id = model.Id;
+				appointmentAsync.DateTimeAppointment = model.DateTimeAppointment;
+				appointmentAsync.StatusAppointment = model.StatusAppointment;
+				appointmentAsync.Description = model.Description;
+				await _appointmentRepository.Update(appointmentAsync);
+				return new BaseResponse<Appointment>
+				{
+					Data = appointmentAsync,
+					StatusCode = StatusCode.OK
+				};
+			}
+			catch (Exception ex)
+			{
+				return new BaseResponse<Appointment>
+				{
+					Description = $"[UpdateAppointment] : {ex.Message}",
+					StatusCode = StatusCode.InternalServerError
+				};
+			}
+		}
+
+		public async Task<IBaseResponse<Appointment>> GetById(Guid id)
+		{
+			try
+			{
+				var appointmentAsync = await _appointmentRepository.GetByIdAsync(id);
+				if (appointmentAsync == null)
+					return new BaseResponse<Appointment>
+					{
+						Description = "Not Found",
+						StatusCode = StatusCode.NotFound
+					};
+
+				var data = new Appointment()
+				{
+					Id = appointmentAsync.Id,
+					DateTimeAppointment = appointmentAsync.DateTimeAppointment,
+					StatusAppointment = appointmentAsync.StatusAppointment,
+					Description = appointmentAsync.Description
+				};
+
+				return new BaseResponse<Appointment>
+				{
+					StatusCode = StatusCode.OK,
+					Data = data
+				};
+			}
+			catch (Exception ex)
+			{
+				return new BaseResponse<Appointment>
+				{
+					Description = $"[GetAppointment] : {ex.Message}",
+					StatusCode = StatusCode.InternalServerError
+				};
+			}
+		}
+	}
 }

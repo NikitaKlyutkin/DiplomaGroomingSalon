@@ -1,26 +1,14 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using DiplomaGroomingSalon.Domain.ViewModels;
-using DiplomaGroomingSalon.Service.Implementations;
 using DiplomaGroomingSalon.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using DiplomaGroomingSalon.DAL;
 using DiplomaGroomingSalon.Domain.Entities;
-using DiplomaGroomingSalon.Domain.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Principal;
 using DiplomaGroomingSalon.Domain.Enum;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using static MessagePack.MessagePackSerializer;
 
 namespace DiplomaGroomingSalon.Controllers
 {
@@ -49,6 +37,46 @@ namespace DiplomaGroomingSalon.Controllers
 	        }
 	        return View(response.Description);
         }
+		[Authorize(Roles = "Admin")]
+		[HttpGet]
+		public async Task<IActionResult> GetActualOrders()
+		{
+			var responseAsync = await _orderService.GetOrdersByAdmin();
+			var response = responseAsync.Data.Where(x => x.StatusOrder == StatusOrder.During);
+
+			if (responseAsync.StatusCode == Domain.Enum.StatusCode.OK)
+			{
+				return View(response.ToList());
+			}
+			return View(responseAsync.Description);
+		}
+		[Authorize(Roles = "Admin")]
+		[HttpGet]
+		public async Task<IActionResult> GetCompletedOrders()
+		{
+			var responseAsync = await _orderService.GetOrdersByAdmin();
+			var response = responseAsync.Data.Where(x => x.StatusOrder == StatusOrder.Сompleted);
+
+			if (responseAsync.StatusCode == Domain.Enum.StatusCode.OK)
+			{
+				return View(response.ToList());
+			}
+			return View(responseAsync.Description);
+		}
+		[Authorize(Roles = "Admin")]
+		[HttpGet]
+		public async Task<IActionResult> GetCancellationsOrders()
+		{
+			var responseAsync = await _orderService.GetOrdersByAdmin();
+			var response = responseAsync.Data
+				.Where(x => x.StatusOrder == StatusOrder.Cancellations || x.StatusOrder == StatusOrder.NotDone);
+
+			if (responseAsync.StatusCode == Domain.Enum.StatusCode.OK)
+			{
+				return View(response.ToList());
+			}
+			return View(responseAsync.Description);
+		}
 		[Authorize(Roles = "User")]
 		[HttpGet]
 		public async Task<IActionResult> GetOrdersByUser()
@@ -69,7 +97,7 @@ namespace DiplomaGroomingSalon.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateOrder()
         {
-            var response = await _appointmentService.GetAppointments();
+            var response = await _appointmentService.GetAppointmentsFree();
             var appointment = response.Data;
             var responseTypePet = await _petTypeService.GetAll();
             var typePets = responseTypePet.Data.ToList();
@@ -97,6 +125,127 @@ namespace DiplomaGroomingSalon.Controllers
 
 			}
 			return StatusCode(StatusCodes.Status500InternalServerError);
+		}
+		[Authorize(Roles = "Admin")]
+		[HttpGet]
+		public async Task<IActionResult> DetailOrder(Guid id)
+		{
+			var response = await _orderService.GetById(id);
+			if (response.StatusCode == Domain.Enum.StatusCode.OK)
+			{
+				return View(response.Data);
+			}
+			ModelState.AddModelError("", response.Description);
+			return View();
+		}
+
+		[Authorize(Roles = "Admin")]
+		[HttpPost]
+		public async Task<IActionResult> DetailOrder(Order viewModel)
+		{
+			if (ModelState.IsValid)
+			{
+				if (viewModel.StatusOrder == StatusOrder.Cancellations && viewModel.Appointment.DateTimeAppointment > DateTime.Now.AddHours(2))
+				{
+					var appointmentAsync = await _appointmentService.GetById(viewModel.AppointmentId);
+					var appointmentData = appointmentAsync.Data;
+					var appointment = new Appointment()
+					{
+						Id = appointmentData!.Id,
+						DateTimeAppointment = appointmentData.DateTimeAppointment,
+						StatusAppointment = true,
+						Description = appointmentData.Description
+					};
+					await _appointmentService.UpdateAppointment(appointment.Id, appointment);
+				}
+				else
+				{
+					var appointmentAsync = await _appointmentService.GetById(viewModel.AppointmentId);
+					var appointmentData = appointmentAsync.Data;
+					var appointment = new Appointment()
+					{
+						Id = appointmentData!.Id,
+						DateTimeAppointment = appointmentData.DateTimeAppointment,
+						StatusAppointment = false,
+						Description = appointmentData.Description
+					};
+					await _appointmentService.UpdateAppointment(appointment.Id, appointment);
+				}
+				await _orderService.Edit(viewModel.Id, viewModel);
+			}
+
+			return RedirectToAction("GetOrdersByAdmin");
+		}
+		[Authorize(Roles = "User")]
+		public async Task<IActionResult> CancellationsOrder(Guid id, Order viewModel)
+		{
+			if (ModelState.IsValid)
+			{
+				var getOrderById = await _orderService.GetById(id);
+				var orderAsync = getOrderById.Data;
+				
+				viewModel.NamePet = orderAsync.NamePet;
+				viewModel.TypePetId = orderAsync.TypePetId;
+				viewModel.BreedPetId = orderAsync.BreedPetId;
+				viewModel.ServiceTypeId = orderAsync.ServiceTypeId;
+				viewModel.ProfileId = orderAsync.ProfileId;
+				viewModel.AppointmentId = orderAsync.AppointmentId;
+				viewModel.Price = orderAsync.Price;
+				viewModel.StatusOrder = StatusOrder.Cancellations;
+				viewModel.Description = orderAsync.Description;
+
+				var getAppointment = await _appointmentService.GetById(orderAsync.AppointmentId);
+				var appointmentAsync = getAppointment.Data;
+				if (appointmentAsync.DateTimeAppointment > DateTime.Now.AddHours(2))
+				{
+					var appointment = new Appointment()
+					{
+						Id = appointmentAsync.Id,
+						DateTimeAppointment = appointmentAsync.DateTimeAppointment,
+						StatusAppointment = true,
+						Description = appointmentAsync.Description
+					};
+					await _appointmentService.UpdateAppointment(appointment.Id, appointment);
+				}
+				await _orderService.Edit(id, viewModel);
+			}
+			return RedirectToAction("GetOrdersByUser");
+		}
+
+		public async Task<IActionResult> RestoringOrder(Guid id, Order viewModel)
+		{
+			if (ModelState.IsValid)
+			{
+				var getOrderById = await _orderService.GetById(id);
+				var orderAsync = getOrderById.Data;
+
+				viewModel.NamePet = orderAsync.NamePet;
+				viewModel.TypePetId = orderAsync.TypePetId;
+				viewModel.BreedPetId = orderAsync.BreedPetId;
+				viewModel.ServiceTypeId = orderAsync.ServiceTypeId;
+				viewModel.ProfileId = orderAsync.ProfileId;
+				viewModel.AppointmentId = orderAsync.AppointmentId;
+				viewModel.Price = orderAsync.Price;
+				viewModel.StatusOrder = StatusOrder.During;
+				viewModel.Description = orderAsync.Description;
+
+				var getAppointment = await _appointmentService.GetById(orderAsync.AppointmentId);
+				var appointmentAsync = getAppointment.Data;
+
+				if (appointmentAsync.StatusAppointment == true && appointmentAsync.DateTimeAppointment > DateTime.Now.AddHours(2))
+				{
+					var appointment = new Appointment()
+					{
+						Id = appointmentAsync.Id,
+						DateTimeAppointment = appointmentAsync.DateTimeAppointment,
+						StatusAppointment = false,
+						Description = appointmentAsync.Description
+					};
+					await _appointmentService.UpdateAppointment(appointment.Id, appointment);
+					await _orderService.Edit(id, viewModel);
+				}
+			}
+			return RedirectToAction("GetOrdersByUser");
 		}
 
 	}

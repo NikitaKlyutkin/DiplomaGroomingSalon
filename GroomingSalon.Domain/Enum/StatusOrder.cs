@@ -9,6 +9,9 @@ namespace DiplomaGroomingSalon.Domain.Enum
 		[Display(Name = "Not done")]
 		NotDone = 1,
 		[Display(Name = "During")]
-		During = 2
+		During = 2,
+		[Display(Name = "Cancellations")]
+		Cancellations = 3
+
 	}
 }

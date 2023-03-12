@@ -61,8 +61,8 @@ namespace DiplomaGroomingSalon.Service.Implementations
 
             try
             {
-                var servicetype = await _serviceTypeRepository.GetByIdAsync(id);
-                if (servicetype == null)
+                var serviceType = await _serviceTypeRepository.GetByIdAsync(id);
+                if (serviceType == null)
                 {
                     return new BaseResponse<ServiceType>()
                     {
@@ -73,13 +73,12 @@ namespace DiplomaGroomingSalon.Service.Implementations
 
                 var data = new ServiceType()
                 {
-                    Id = servicetype.Id,
-                    ServiceTypeName = servicetype.ServiceTypeName,
-                    PetTypeName = servicetype.Breed.PetType.PetTypeName,
-                    BreedName = servicetype.Breed.BreedName,
-                    PetTypeId = servicetype.PetTypeId,
-                    BreedId = servicetype.BreedId,
-                    Price = servicetype.Price
+                    Id = serviceType.Id,
+                    ServiceTypeName = serviceType.ServiceTypeName,
+                    Breed = serviceType.Breed,
+                    PetTypeId = serviceType.PetTypeId,
+                    BreedId = serviceType.BreedId,
+                    Price = serviceType.Price
 
                 };
 

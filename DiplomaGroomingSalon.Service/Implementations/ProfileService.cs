@@ -4,14 +4,7 @@ using DiplomaGroomingSalon.Domain.Enum;
 using DiplomaGroomingSalon.Domain.Response;
 using DiplomaGroomingSalon.Domain.ViewModels;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DiplomaGroomingSalon.Service.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using DiplomaGroomingSalon.DAL.Repositories;
 
 namespace DiplomaGroomingSalon.Service.Implementations
 {
@@ -34,7 +27,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
                 var profile = await _profileRepository.GetByNameAsync(userName);
                 var profileView =  new Profile()
 					{
-						Id = profile.Id,
+						Id = profile!.Id,
 						Name = profile.Name,
 						Surname = profile.Surname,
 						Phone = profile.Phone,
@@ -66,7 +59,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			{
 				var profile = await _profileRepository.GetByIdAsync(model.Id);
 
-				profile.Name = model.Name;
+				profile!.Name = model.Name;
 				profile.Surname = model.Surname;
 				profile.Phone = model.Phone;
 				profile.Email = model.Email;

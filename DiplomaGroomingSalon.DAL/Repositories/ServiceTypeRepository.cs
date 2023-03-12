@@ -23,7 +23,7 @@ namespace DiplomaGroomingSalon.DAL.Repositories
         }
         public async Task<ServiceType?> GetByIdAsync(Guid id)
         {
-            return await _db.ServiceTypes.FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.ServiceTypes.Include(x => x.Breed.PetType).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task Delete(ServiceType entity)

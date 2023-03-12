@@ -14,7 +14,10 @@ namespace DiplomaGroomingSalon.Service.Interfaces
         Task<IBaseResponse<List<Order>>> GetOrdersByAdmin();
 		Task<IBaseResponse<OrderViewModel>> CreateOrder(OrderViewModel orderViewModel, Guid ProfileId);
         Task<BaseResponse<ProfileViewModel>> GetProfileOrder(string userName);
+        Task<IBaseResponse<Order>> GetById(Guid id);
+        Task<IBaseResponse<Order>> Edit(Guid id, Order model);
 
 
-    }
+
+	}
 }

@@ -1,0 +1,102 @@
+﻿@using DiplomaGroomingSalon.Domain.Enum
+@model DiplomaGroomingSalon.Domain.Entities.Order
+
+@{
+	ViewData["Title"] = "DetailOrder";
+}
+
+
+<h1>DetailOrder</h1>
+
+<h4>Order</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="DetailOrder">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	        <div class="form-group">
+		        <label asp-for="Id" class="control-label" hidden="text"></label>
+				<input asp-for="Id" class="form-control" hidden="text" />
+				<span asp-validation-for="Id" class="text-danger" hidden="text"></span>
+	        </div>
+	        <div class="form-group">
+				<label asp-for="ProfileId" class="control-label"hidden="text"></label>
+				<input asp-for="ProfileId" class="form-control" hidden="text" />
+				<span asp-validation-for="ProfileId" class="text-danger" hidden="text"></span>
+	        </div>
+	        <div class="form-group">
+		        <label asp-for="Profile.Name" class="control-label"></label>
+		        <input readonly asp-for="Profile.Name" class="form-control" />
+		        <span asp-validation-for="Profile.Name" class="text-danger"></span>
+	        </div>
+	        <div class="form-group">
+		        <label asp-for="Profile.Surname" class="control-label"></label>
+				<input readonly asp-for="Profile.Surname" class="form-control" />
+		        <span asp-validation-for="Profile.Surname" class="text-danger"></span>
+	        </div>
+	        <div class="form-group">
+		        <label asp-for="Profile.Phone" class="control-label"></label>
+				<input readonly asp-for="Profile.Phone" class="form-control" />
+		        <span asp-validation-for="Profile.Phone" class="text-danger"></span>
+	        </div>
+	        <div class="form-group">
+		        <label asp-for="Profile.Email" class="control-label"></label>
+				<input readonly asp-for="Profile.Email" class="form-control" />
+		        <span asp-validation-for="Profile.Email" class="text-danger"></span>
+	        </div>
+	        <div class="form-group">
+				<label asp-for="AppointmentId" class="control-label" hidden="text"></label>
+				<input asp-for="AppointmentId" class="form-control" hidden="text" />
+				<span asp-validation-for="AppointmentId" class="text-danger" hidden="text"></span>
+	        </div>
+            <div class="form-group">
+                <label asp-for="Appointment.DateTimeAppointment" class="control-label"></label>
+				<input readonly asp-for="Appointment.DateTimeAppointment" class="form-control" />
+                <span asp-validation-for="Appointment.DateTimeAppointment" class="text-danger"></span>
+            </div>
+	        <div class="form-group">
+		        <label asp-for="NamePet" class="control-label"></label>
+				<input readonly asp-for="NamePet" class="form-control" />
+		        <span asp-validation-for="NamePet" class="text-danger"></span>
+	        </div>
+	        <div class="form-group">
+				<label asp-for="ServiceTypeId" class="control-label" hidden="text"></label>
+				<input asp-for="ServiceTypeId" class="form-control" hidden="text" />
+				<span asp-validation-for="ServiceTypeId" class=" text-danger" hidden="text"></span>
+	        </div>
+            <div class="form-group">
+                <label asp-for="ServiceType.Breed.PetType.PetTypeName" class="control-label"></label>
+				<input readonly asp-for="ServiceType.Breed.PetType.PetTypeName" class="form-control" />
+                <span asp-validation-for="ServiceType.Breed.PetType.PetTypeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ServiceType.Breed.BreedName" class="control-label"></label>
+				<input readonly asp-for="ServiceType.Breed.BreedName" class="form-control" />
+                <span asp-validation-for="ServiceType.Breed.BreedName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ServiceType.ServiceTypeName" class="control-label"></label>
+				<input readonly asp-for="ServiceType.ServiceTypeName" class="form-control" />
+                <span asp-validation-for="ServiceType.ServiceTypeName" class=" text-danger"></span>
+            </div>
+	        <div class="form-group">
+		        <label asp-for="Price" class="control-label"></label>
+				<input readonly asp-for="Price" class="form-control" />
+		        <span asp-validation-for="Price" class="text-danger"></span>
+	        </div>
+	        <div class="form-group">
+		        <label asp-for="StatusOrder" class="control-label"></label>
+				<select asp-for="StatusOrder" asp-items="Html.GetEnumSelectList<StatusOrder>()" class="form-control"></select>
+		        <span asp-validation-for="StatusOrder" class="text-danger"></span>
+	        </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="GetOrdersByAdmin">Back to List</a>
+</div>
+

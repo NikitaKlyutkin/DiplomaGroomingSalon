@@ -12,7 +12,11 @@ namespace DiplomaGroomingSalon.Service.Interfaces
     public interface IAppointmentService
     {
 	    Task<IBaseResponse<AppointmentViewModel>> CreateAppointment(AppointmentViewModel appointmentViewModel);
-        Task<IBaseResponse<List<Appointment>>> GetAppointments();
+        Task<IBaseResponse<List<Appointment>>> GetAppointmentsFree();
+        Task<IBaseResponse<Appointment>> UpdateAppointment(Guid id, Appointment model);
+        Task<IBaseResponse<Appointment>> GetById(Guid id);
+
+
 
 
 

@@ -14,8 +14,8 @@
         <form asp-action="EditBreed">
 	        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 	        <div class="form-group">
-		        <label asp-for="PetTypeName" class="control-label"></label>
-                <input class="form-control" type="text" asp-for="PetTypeName" readonly>
+		        <label asp-for="PetType.PetTypeName" class="control-label"></label>
+                <input class="form-control" type="text" asp-for="PetType.PetTypeName" readonly>
 	        </div>
 	        <div class="form-group">
                 <label asp-for="Id" class="control-label"hidden="text"></label>

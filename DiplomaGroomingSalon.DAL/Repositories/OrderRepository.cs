@@ -27,7 +27,9 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 
         public async Task<Order?> GetByIdAsync(Guid id)
         {
-            return await _db.Orders.FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.Orders.Include(x => x.ServiceType.Breed.PetType)
+                .Include(x => x.Profile)
+                .Include(x=>x.Appointment).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task Delete(Order entity)

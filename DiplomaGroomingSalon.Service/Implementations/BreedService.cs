@@ -63,9 +63,9 @@ public class BreedService : ICRUDDataService<Breed>
 			{
 				Id = breedpet.Id,
 				BreedName = breedpet.BreedName,
+				PetType = breedpet.PetType,
 				PetTypeId = breedpet.PetTypeId,
-				PetTypeName = breedpet.PetType.PetTypeName
-			};
+            };
 
 			return new BaseResponse<Breed>
 			{

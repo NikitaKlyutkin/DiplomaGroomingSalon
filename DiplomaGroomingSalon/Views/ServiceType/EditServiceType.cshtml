@@ -18,12 +18,12 @@
 		        <span asp-validation-for="Id" class="text-danger" hidden="text"></span>
 	        </div>
 	        <div class="form-group">
-		        <label asp-for="PetTypeName" class="control-label"></label>
-		        <input class="form-control" type="text" asp-for="PetTypeName" readonly>
+		        <label asp-for="Breed.PetType.PetTypeName" class="control-label"></label>
+                <input class="form-control" type="text" asp-for="Breed.PetType.PetTypeName" readonly>
 	        </div>
 	        <div class="form-group">
-		        <label asp-for="BreedName" class="control-label"></label>
-		        <input class="form-control" type="text" asp-for="BreedName" readonly>
+		        <label asp-for="Breed.BreedName" class="control-label"></label>
+		        <input class="form-control" type="text" asp-for="Breed.BreedName" readonly>
 	        </div>
             <div class="form-group">
                 <label asp-for="ServiceTypeName" class="control-label"></label>
