@@ -1,6 +1,7 @@
 using DiplomaGroomingSalon.DAL.Interfaces;
 using DiplomaGroomingSalon.Domain.Entities;
 using DiplomaGroomingSalon.Domain.Enum;
+using DiplomaGroomingSalon.Domain.Response;
 using DiplomaGroomingSalon.Service.Implementations;
 using Moq;
 
@@ -15,6 +16,8 @@ namespace DiplomaGroomingSalon.Service.Tests
 
             // arrange
             var orderRepositoryMock = new Mock<IBaseRepository<Order>>();
+            orderRepositoryMock.Setup(repo => repo.GetAll())
+                .ReturnsAsync(new[] { new Order() });
             var orderService = new OrderService(
                 orderRepositoryMock.Object,
                 Mock.Of<IBaseRepository<Appointment>>(),
