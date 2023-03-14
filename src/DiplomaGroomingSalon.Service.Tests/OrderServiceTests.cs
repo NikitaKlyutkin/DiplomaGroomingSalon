@@ -1,5 +1,6 @@
 using DiplomaGroomingSalon.DAL.Interfaces;
 using DiplomaGroomingSalon.Domain.Entities;
+using DiplomaGroomingSalon.Domain.Enum;
 using DiplomaGroomingSalon.Service.Implementations;
 using Moq;
 
@@ -13,15 +14,18 @@ namespace DiplomaGroomingSalon.Service.Tests
             // Mock, Fake, Stub
 
             // arrange
+            var orderRepositoryMock = new Mock<IBaseRepository<Order>>();
             var orderService = new OrderService(
-                Mock.Of<IBaseRepository<Order>>(),
+                orderRepositoryMock.Object,
                 Mock.Of<IBaseRepository<Appointment>>(),
                 Mock.Of<IAccountRepository<Profile>>()); // sub (subject), sut (sytem under test)
 
             // act
-            _ = await orderService.GetOrdersByAdmin();
+            var result = await orderService.GetOrdersByAdmin();
 
             // assert
+            orderRepositoryMock.Verify(repo => repo.GetAll(), Times.AtLeastOnce());
+            Assert.Equal(StatusCode.OK, result.StatusCode);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 					return new BaseResponse<List<Order>>()
 					{
 						Description = "Found 0 items",
-						StatusCode = StatusCode.OK
+						StatusCode = StatusCode.NotFound
 					};
 				}
 				return new BaseResponse<List<Order>>()
