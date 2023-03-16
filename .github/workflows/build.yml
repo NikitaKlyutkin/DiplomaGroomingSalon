@@ -38,7 +38,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Artifact
-        path: ./src
+        path: ~/output
         if-no-files-found: error
   
   
