@@ -34,17 +34,12 @@ jobs:
       run: dotnet publish --no-restore --configuration Release --output ~/output
       working-directory: ./src
       
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v3.1.2
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3
       with:
-        path: build
-        name: build-files
-        
-    - name: Download Artifacts
-      uses: actions/download-artifact@v2.1.1
-      with:
-        path: build
-        name: build-files
+        name: Artifact
+        path: ./src
+        if-no-files-found: error
   
   
     
