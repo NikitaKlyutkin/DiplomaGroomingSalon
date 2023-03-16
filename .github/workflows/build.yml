@@ -34,7 +34,7 @@ jobs:
       run: dotnet publish --no-restore --configuration Release --output ~/output
       working-directory: ./src
     - name: Upload Artifacts
-      uses: actions/upload-artifacts@v3
+      uses: actions/upload-artifact@v3.1.2
       with:
         path: build
         name: build-files
