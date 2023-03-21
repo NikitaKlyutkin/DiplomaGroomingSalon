@@ -65,46 +65,30 @@
 {
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script>
-		$(document).ready(function() {
-			var form = document.getElementById("profileFormId");
-			var saveBtn = document.getElementById("saveProfileId");
-
-			saveBtn.addEventListener("click", function(event) {
-				if (!form.checkValidity()) {
-					event.preventDefault();
-					event.stopPropagation();
-				//	alert("Please fill out all required fields.");
+		$('#saveProfileId').on('click', function (e) {
+			e.preventDefault();
+			var data = $('#profileFormId').serialize();
+			$.ajax({
+				url: '@Url.Action("Save", "Profile")',
+				type: 'POST',
+				data: data,
+				success: function (response) {
+					Swal.fire({
+						title: 'Information',
+						text: response.description,
+						icon: 'success',
+						confirmButtonText: 'Okey'
+					});
+				},
+				error: function (data) {
+					Swal.fire({
+						title: 'Information',
+						text: 'Validation error',
+						icon: 'error',
+						confirmButtonText: 'Okey'
+					});
 				}
-
-				form.classList.add("was-validated");
-			}, false);
-
-			form.addEventListener("submit", function(event) {
-				event.preventDefault();
-				var data = $('#profileFormId').serialize();
-
-				$.ajax({
-					url: '@Url.Action("Save", "Profile")',
-					type: 'POST',
-					data: data,
-					success: function (response) {
-						Swal.fire({
-							title: 'Information',
-							text: response.description,
-							icon: 'success',
-							confirmButtonText: 'Okey'
-						});
-					},
-					error: function (data) {
-						Swal.fire({
-							title: 'Information',
-							text: 'Validation error',
-							icon: 'error',
-							confirmButtonText: 'Okey'
-						});
-					}
-				});
-			}, false);
+			});
 		});
 
 		$(document).ready(function() {
