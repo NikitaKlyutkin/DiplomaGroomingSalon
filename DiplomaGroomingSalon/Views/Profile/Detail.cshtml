@@ -13,26 +13,26 @@
                     <h5 class="card-title">Profile data</h5>
                     <div class="mb-3">
                         <label class="form-label text-black-50">Name</label>
-						<input type="text" class="form-control" asp-for="Name" required>
-                        <div class="form-text"></div>
+	                    <input type="text" class="form-control" asp-for="Surname" required>
+	                    <div class="form-text"></div>
                     </div>
                     <div class="mb-3">
 	                    <label class="form-label text-black-50">Surname</label>
-                        <input type="text" required class="form-control" asp-for="Surname">
+                        <input type="text" class="form-control" asp-for="Surname" required>
 	                    <div class="form-text"></div>
                     </div>
                     <div class="mb-3">
 	                    <label class="form-label text-black-50">Phone</label>
-                        <input type="text" required class="form-control" asp-for="Phone">
+                        <input type="text" class="form-control" asp-for="Phone" required>
 	                    <div class="form-text"></div>
                     </div>
                     <div class="mb-3">
 	                    <label class="form-label text-black-50">E-mail</label>
-                        <input type="text" required class="form-control" asp-for="Email">
+                        <input type="text" class="form-control" asp-for="Email" required>
 	                    <div class="form-text"></div>
                     </div>
                     <div class="card-buttons-group">
-						<input class='btn btn-primary' id="saveProfileId" value="Save">
+						<button type="submit" class='btn btn-primary' id='saveProfileId'>Save</button>
                     </div>
                 </form>
             </div>
@@ -65,30 +65,45 @@
 {
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script>
-		$('#saveProfileId').on('click', function (e) {
-			e.preventDefault();
-			var data = $('#profileFormId').serialize();
-			$.ajax({
-				url: '@Url.Action("Save", "Profile")',
-				type: 'POST',
-				data: data,
-				success: function (response) {
-					Swal.fire({
-						title: 'Information',
-						text: response.description,
-						icon: 'success',
-						confirmButtonText: 'Okey'
-					});
-				},
-				error: function (data) {
-					Swal.fire({
-						title: 'Information',
-						text: 'Validation error',
-						icon: 'error',
-						confirmButtonText: 'Okey'
-					});
+		$(document).ready(function() {
+			var form = document.getElementById("profileFormId");
+			var saveBtn = document.getElementById("saveProfileId");
+
+			saveBtn.addEventListener("click", function(event) {
+				if (!form.checkValidity()) {
+					event.preventDefault();
+					event.stopPropagation();
 				}
-			});
+
+				form.classList.add("was-validated");
+			}, false);
+
+			form.addEventListener("submit", function(event) {
+				event.preventDefault();
+				var data = $('#profileFormId').serialize();
+
+				$.ajax({
+					url: '@Url.Action("Save", "Profile")',
+					type: 'POST',
+					data: data,
+					success: function (response) {
+						Swal.fire({
+							title: 'Information',
+							text: response.description,
+							icon: 'success',
+							confirmButtonText: 'Okey'
+						});
+					},
+					error: function (data) {
+						Swal.fire({
+							title: 'Information',
+							text: 'Validation error',
+							icon: 'error',
+							confirmButtonText: 'Okey'
+						});
+					}
+				});
+			}, false);
 		});
 
 		$('#saveAccountId').on('click', function (e) {
