@@ -15,10 +15,7 @@ namespace DiplomaGroomingSalon.Service.Interfaces
         Task<IBaseResponse<List<Appointment>>> GetAppointmentsFree();
         Task<IBaseResponse<Appointment>> UpdateAppointment(Guid id, Appointment model);
         Task<IBaseResponse<Appointment>> GetById(Guid id);
-
-
-
-
+        Task<IBaseResponse<bool>> Delete(Guid id);
 
     }
 }

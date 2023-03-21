@@ -159,5 +159,41 @@ namespace DiplomaGroomingSalon.Service.Implementations
 				};
 			}
 		}
+
+		public async Task<IBaseResponse<bool>> Delete(Guid id)
+		{
+			try
+			{
+				var appointment = await _appointmentRepository.GetByIdAsync(id);
+				if (appointment == null)
+				{
+					return new BaseResponse<bool>()
+					{
+						Description = "Not found",
+						StatusCode = StatusCode.NotFound,
+						Data = false
+					};
+				}
+				else
+				{
+					await _appointmentRepository.Delete(appointment);
+				}
+
+
+				return new BaseResponse<bool>()
+				{
+					Data = true,
+					StatusCode = StatusCode.OK
+				};
+			}
+			catch (Exception ex)
+			{
+				return new BaseResponse<bool>()
+				{
+					Description = $"[DeleteAppointment] : {ex.Message}",
+					StatusCode = StatusCode.InternalServerError
+				};
+			}
+		}
 	}
 }

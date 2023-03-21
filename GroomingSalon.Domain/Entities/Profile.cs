@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using DiplomaGroomingSalon.Domain.Entities.Interfaces;
 
 namespace DiplomaGroomingSalon.Domain.Entities
 {
+
 	public class Profile : IEntity
 	{
 		public Guid Id { get; set; }

@@ -20,7 +20,7 @@ namespace DiplomaGroomingSalon.Service.Implementations
 			_appointmentRepository = appointmentRepository;
 			_profileRepository = profileRepository;
 		}
-		public async Task<IBaseResponse<List<Order>>> GetOrdersByAdmin()
+		public async Task<IBaseResponse<List<Order>>> GetOrders()
 		{
 			var baseResponse = new BaseResponse<IEnumerable<Order>>();
 			try

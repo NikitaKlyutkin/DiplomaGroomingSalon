@@ -13,26 +13,26 @@
                     <h5 class="card-title">Profile data</h5>
                     <div class="mb-3">
                         <label class="form-label text-black-50">Name</label>
-                        <input type="text" class="form-control" asp-for="Name">
+						<input type="text" class="form-control" asp-for="Name" required>
                         <div class="form-text"></div>
                     </div>
                     <div class="mb-3">
 	                    <label class="form-label text-black-50">Surname</label>
-	                    <input type="text" class="form-control" asp-for="Surname">
+                        <input type="text" required class="form-control" asp-for="Surname">
 	                    <div class="form-text"></div>
                     </div>
                     <div class="mb-3">
 	                    <label class="form-label text-black-50">Phone</label>
-	                    <input type="text" class="form-control" asp-for="Phone">
+                        <input type="text" required class="form-control" asp-for="Phone">
 	                    <div class="form-text"></div>
                     </div>
                     <div class="mb-3">
 	                    <label class="form-label text-black-50">E-mail</label>
-	                    <input type="text" class="form-control" asp-for="Email">
+                        <input type="text" required class="form-control" asp-for="Email">
 	                    <div class="form-text"></div>
                     </div>
                     <div class="card-buttons-group">
-                        <button class='btn btn-primary' id='saveProfileId'>Save</button>
+						<input class='btn btn-primary' id="saveProfileId" value="Save">
                     </div>
                 </form>
             </div>
@@ -65,60 +65,61 @@
 {
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script>
-	    $('#saveProfileId').on('click', function (e) {
-            e.preventDefault();
-            var data = $('#profileFormId').serialize();
-            $.ajax({
-                url: '@Url.Action("Save", "Profile")',
-                type: 'POST',
-                data: data,
-                success: function (response) {
-	                Swal.fire({
-                        title: 'Information',
-		                text: response.description,
-		                icon: 'success',
-		                confirmButtonText: 'Okey'
-	                });
-                },
-                error: function (data) {
-	                Swal.fire({
-                        title: 'Information',
-                        text: 'Validation error',
-		                icon: 'error',
-                        confirmButtonText: 'Okey'
-	                });
-                }
-            });
-        });
+		$('#saveProfileId').on('click', function (e) {
+			e.preventDefault();
+			var data = $('#profileFormId').serialize();
+			$.ajax({
+				url: '@Url.Action("Save", "Profile")',
+				type: 'POST',
+				data: data,
+				success: function (response) {
+					Swal.fire({
+						title: 'Information',
+						text: response.description,
+						icon: 'success',
+						confirmButtonText: 'Okey'
+					});
+				},
+				error: function (data) {
+					Swal.fire({
+						title: 'Information',
+						text: 'Validation error',
+						icon: 'error',
+						confirmButtonText: 'Okey'
+					});
+				}
+			});
+		});
 
-        $('#saveAccountId').on('click', function (e) {
-            e.preventDefault();
+		$('#saveAccountId').on('click', function (e) {
+			e.preventDefault();
 
-            $('#UserName').removeAttr('disabled');
-            var data = $('#accountFormId').serialize();
-            $('#UserName').attr('disabled', 'disabled');
+			$('#UserName').removeAttr('disabled');
+			var data = $('#accountFormId').serialize();
+			$('#UserName').attr('disabled', 'disabled');
 
-            $.ajax({
-                url: '@Url.Action("ChangePassword", "Account")',
-                type: 'POST',
-                data: data,
-                success: function (response) {
-	                Swal.fire({
-                        title: 'Information',
-		                text: response.description,
-		                icon: 'success',
-		                confirmButtonText: 'Okey'
-	                });
-                },
-                error: function (response) {
-	                Swal.fire({
-                        title: 'Information',
-		                text: response.responseJSON.errorMessage,
-		                icon: 'error',
-		                confirmButtonText: 'Okey'
-	                });
-                }
-            });
-        });
-    </script>
+			$.ajax({
+				url: '@Url.Action("ChangePassword", "Account")',
+				type: 'POST',
+				data: data,
+				success: function (response) {
+					Swal.fire({
+						title: 'Information',
+						text: response.description,
+						icon: 'success',
+						confirmButtonText: 'Okey'
+					});
+				},
+				error: function (response) {
+					Swal.fire({
+						title: 'Information',
+						text: response.responseJSON.errorMessage,
+						icon: 'error',
+						confirmButtonText: 'Okey'
+					});
+				}
+			});
+		});
+
+	</script>
 }

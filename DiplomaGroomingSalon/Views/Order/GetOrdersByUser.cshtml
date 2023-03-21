@@ -7,48 +7,60 @@
     ViewData["Title"] = "My Orders";
 	
 }
-<h1>GetOrdersByUser</h1>
+@if (Model != null)
+{
+	<h1>GetOrdersByUser</h1>
 
-<p>
-	<a asp-action="CreateOrder">Create New</a>
-</p>
-<head>
-	<meta name="viewport" content="width=device-width" />
-	<link href="~/css/mvc-grid/mvc-grid.css" rel="stylesheet" />
-</head>
-<div class="row">
-	<div class="col-12">
-		@Html.Grid(Model).Build(columns =>
-		{
-			columns.Add(model => model.Appointment.DateTimeAppointment).Titled("Date Appointment").Sortable(true);
-			columns.Add(model => model.NamePet).Titled("Nickname").Filterable(true);
-			columns.Add(model => model.ServiceType.Breed.PetType.PetTypeName).Titled("Pet Type");
-			columns.Add(model => model.ServiceType.Breed.BreedName).Titled("Breed");
-			columns.Add(model => model.Price).Titled("Price");
-			columns.Add(model => model.StatusOrder).Titled("Status").Filterable(GridFilterType.Multi);
-			columns.Add().RenderedAs(o =>
+	<p>
+		<a asp-action="CreateOrder">Create New</a>
+	</p>
+	<head>
+		<meta name="viewport" content="width=device-width"/>
+		<link href="~/css/mvc-grid/mvc-grid.css" rel="stylesheet"/>
+	</head>
+	<div class="row">
+		<div class="col-12">
+			@Html.Grid(Model).Build(columns =>
 			{
-				if (o.StatusOrder == StatusOrder.During)
+				columns.Add(model => model.Appointment.DateTimeAppointment).Titled("Date Appointment").Sortable(true);
+				columns.Add(model => model.NamePet).Titled("Nickname").Filterable(true);
+				columns.Add(model => model.ServiceType.Breed.PetType.PetTypeName).Titled("Pet Type");
+				columns.Add(model => model.ServiceType.Breed.BreedName).Titled("Breed");
+				columns.Add(model => model.Price).Titled("Price");
+				columns.Add(model => model.StatusOrder).Titled("Status").Filterable(GridFilterType.Multi);
+				columns.Add().RenderedAs(o =>
 				{
-					return Html.ActionLink("Cancellations Order", "CancellationsOrder", new {id = o.Id});
-				}
-				else
-				{
-					if (o.Appointment.DateTimeAppointment > DateTime.Now.AddHours(2))
+					if (o.StatusOrder == StatusOrder.During)
 					{
-						return Html.ActionLink("Restoring Order", "RestoringOrder", new {id = o.Id});
+						return Html.ActionLink("Cancellations Order", "CancellationsOrder", new {id = o.Id});
 					}
 					else
 					{
-						return null;
+						if (o.Appointment.DateTimeAppointment > DateTime.Now.AddHours(2))
+						{
+							return Html.ActionLink("Restoring Order", "RestoringOrder", new {id = o.Id});
+						}
+						else
+						{
+							return null;
+						}
 					}
-				}
-			});
-		}).Using(GridFilterMode.Excel).Pageable(page => { page.RowsPerPage = 10; }).Empty("No data found")
+				});
+			}).Using(GridFilterMode.Excel).Pageable(page => { page.RowsPerPage = 10; }).Empty("No data found")
+		</div>
 	</div>
-</div>
-<script src="~/js/mvc-grid/mvc-grid.js"></script>
-<script>
-	document.querySelectorAll(".mvc-grid").forEach(element => new MvcGrid(element));
-</script>
+	<script src="~/js/mvc-grid/mvc-grid.js"></script>
+	<script>
+		document.querySelectorAll(".mvc-grid").forEach(element => new MvcGrid(element));
+	</script>
+}
+else
+{
+	<div class="col-md-8">
+		<div class="card-body">
+			<h5 class="card-title text-center">Orders is empty</h5>
+		</div>
+	</div>
+}
+
 

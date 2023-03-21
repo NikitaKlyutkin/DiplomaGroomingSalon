@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
 using DiplomaGroomingSalon.Domain.Enum;
@@ -56,6 +57,16 @@ namespace DiplomaGroomingSalon.Controllers
 				return View(response.Data);
 			}
 			return View("Error", $"{response.Description}");
+		}
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> DeleteAppointment(Guid id)
+		{
+			var response = await _appointmentService.Delete(id);
+			if (response.StatusCode == Domain.Enum.StatusCode.OK)
+			{
+				return RedirectToAction("GetAppointments");
+			}
+			return View(response.Description);
 		}
 	}
 }

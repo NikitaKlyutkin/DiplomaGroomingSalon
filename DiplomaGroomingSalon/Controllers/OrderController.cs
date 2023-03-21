@@ -29,53 +29,53 @@ namespace DiplomaGroomingSalon.Controllers
         [HttpGet]
 		public async Task<IActionResult> GetOrdersByAdmin()
         {
-	        var response = await _orderService.GetOrdersByAdmin();
+	        var response = await _orderService.GetOrders();
 
-	        if (response.StatusCode == Domain.Enum.StatusCode.OK)
+	        if (response.Data != null)
 	        {
 		        return View(response.Data.ToList());
 	        }
-	        return View(response.Description);
+	        return View();
         }
 		[Authorize(Roles = "Admin")]
 		[HttpGet]
 		public async Task<IActionResult> GetActualOrders()
 		{
-			var responseAsync = await _orderService.GetOrdersByAdmin();
+			var responseAsync = await _orderService.GetOrders();
 			var response = responseAsync.Data.Where(x => x.StatusOrder == StatusOrder.During);
 
-			if (responseAsync.StatusCode == Domain.Enum.StatusCode.OK)
+			if (responseAsync.Data != null)
 			{
 				return View(response.ToList());
 			}
-			return View(responseAsync.Description);
+			return View();
 		}
 		[Authorize(Roles = "Admin")]
 		[HttpGet]
 		public async Task<IActionResult> GetCompletedOrders()
 		{
-			var responseAsync = await _orderService.GetOrdersByAdmin();
+			var responseAsync = await _orderService.GetOrders();
 			var response = responseAsync.Data.Where(x => x.StatusOrder == StatusOrder.Сompleted);
 
-			if (responseAsync.StatusCode == Domain.Enum.StatusCode.OK)
+			if (responseAsync.Data != null)
 			{
 				return View(response.ToList());
 			}
-			return View(responseAsync.Description);
+			return View();
 		}
 		[Authorize(Roles = "Admin")]
 		[HttpGet]
 		public async Task<IActionResult> GetCancellationsOrders()
 		{
-			var responseAsync = await _orderService.GetOrdersByAdmin();
+			var responseAsync = await _orderService.GetOrders();
 			var response = responseAsync.Data
 				.Where(x => x.StatusOrder == StatusOrder.Cancellations || x.StatusOrder == StatusOrder.NotDone);
 
-			if (responseAsync.StatusCode == Domain.Enum.StatusCode.OK)
+			if (responseAsync.Data != null)
 			{
 				return View(response.ToList());
 			}
-			return View(responseAsync.Description);
+			return View();
 		}
 		[Authorize(Roles = "User")]
 		[HttpGet]
@@ -84,14 +84,14 @@ namespace DiplomaGroomingSalon.Controllers
 	        var nameUser = User.Identity.Name;
 	        var profileUser = await _orderService.GetProfileOrder(nameUser);
 	        var profileId = profileUser.Data.Id;
-			var response = await _orderService.GetOrdersByAdmin();
+			var response = await _orderService.GetOrders();
 			ViewBag.ReportStates = new SelectList(Enum.GetNames(typeof(StatusOrder)));
 
-			if (response.StatusCode == Domain.Enum.StatusCode.OK)
+			if (response.Data != null)
 	        {
 		        return View(response.Data.Where(x=>x.ProfileId == profileId));
 	        }
-	        return View(response.Description);
+	        return View();
         }
 		[Authorize]
         [HttpGet]
@@ -100,11 +100,25 @@ namespace DiplomaGroomingSalon.Controllers
             var response = await _appointmentService.GetAppointmentsFree();
             var appointment = response.Data;
             var responseTypePet = await _petTypeService.GetAll();
-            var typePets = responseTypePet.Data.ToList();
-            
-            ViewBag.DateTimeAppointment = new SelectList(appointment, "Id", "DateTimeAppointment");
-			ViewBag.TypePetBPOrder = new SelectList(typePets, "Id", "PetTypeName");
-			return View();
+            var typePets = responseTypePet.Data;
+            if (appointment != null)
+            {
+	            ViewBag.DateTimeAppointment = new SelectList(appointment, "Id", "DateTimeAppointment");
+            }
+            else
+            {
+				ViewBag.DateTimeAppointment = null;
+            }
+
+            if (typePets != null)
+            {
+	            ViewBag.TypePetBPOrder = new SelectList(typePets, "Id", "PetTypeName");
+            }
+            else
+            {
+				ViewBag.TypePetBPOrder = null;
+            }
+            return View();
 		}
 		[Authorize]
 		[HttpPost]

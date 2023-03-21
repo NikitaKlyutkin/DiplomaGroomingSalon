@@ -7,45 +7,56 @@
 	ViewData["Title"] = "AllOrders";
 	
 }
-<h1>Get All Orders</h1>
+@if (Model != null)
+{
+	<h1>Get All Orders</h1>
 
-<p>
-	<a asp-action="CreateOrder">Create New</a>
-</p>
-<p>
-	<a asp-action="GetOrdersByAdmin">Get All Orders</a>
-</p>
-<p>
-	<a asp-action="GetActualOrders">Get Actual Orders</a>
-</p>
-<p>
-	<a asp-action="GetCompletedOrders">Get Completed Orders</a>
-</p>
-<p>
-	<a asp-action="GetCancellationsOrders">Get Cancellations Orders</a>
-</p>
-<head>
-	<meta name="viewport" content="width=device-width" />
-	<link href="~/css/mvc-grid/mvc-grid.css" rel="stylesheet" />
-</head>
-<div class="row">
-	<div class="col-12">
-		@Html.Grid(Model).Build(columns =>
-		{
-			columns.Add(model => model.Appointment.DateTimeAppointment).Titled("Date Appointment").Sortable(true);
-			columns.Add(model => model.Profile.Name).Titled("Name").Filterable(true);
-			columns.Add(model => model.Profile.Phone).Titled("Phone").Filterable(true);
-			columns.Add(model => model.NamePet).Titled("Nickname").Filterable(true);
-			columns.Add(model => model.ServiceType.Breed.PetType.PetTypeName).Titled("Pet Type");
-			columns.Add(model => model.ServiceType.Breed.BreedName).Titled("Breed");
-			columns.Add(model => model.Price).Titled("Price");
-			columns.Add(model => model.StatusOrder).Titled("Status").Filterable(GridFilterType.Multi);
-			columns.Add().RenderedAs(o => Html.ActionLink("Detail and Edit Status", "DetailOrder", new {id = o.Id}));
-		}).Using(GridFilterMode.Excel).Pageable(page => { page.RowsPerPage = 10; }).Empty("No data found")
+	<p>
+		<a asp-action="CreateOrder">Create New</a>
+	</p>
+	<p>
+		<a asp-action="GetOrdersByAdmin">Get All Orders</a>
+	</p>
+	<p>
+		<a asp-action="GetActualOrders">Get Actual Orders</a>
+	</p>
+	<p>
+		<a asp-action="GetCompletedOrders">Get Completed Orders</a>
+	</p>
+	<p>
+		<a asp-action="GetCancellationsOrders">Get Cancellations Orders</a>
+	</p>
+	<head>
+		<meta name="viewport" content="width=device-width"/>
+		<link href="~/css/mvc-grid/mvc-grid.css" rel="stylesheet"/>
+	</head>
+	<div class="row">
+		<div class="col-12">
+			@Html.Grid(Model).Build(columns =>
+			{
+				columns.Add(model => model.Appointment.DateTimeAppointment).Titled("Date Appointment").Sortable(true);
+				columns.Add(model => model.Profile.Name).Titled("Name").Filterable(true);
+				columns.Add(model => model.Profile.Phone).Titled("Phone").Filterable(true);
+				columns.Add(model => model.NamePet).Titled("Nickname").Filterable(true);
+				columns.Add(model => model.ServiceType.Breed.PetType.PetTypeName).Titled("Pet Type");
+				columns.Add(model => model.ServiceType.Breed.BreedName).Titled("Breed");
+				columns.Add(model => model.Price).Titled("Price");
+				columns.Add(model => model.StatusOrder).Titled("Status").Filterable(GridFilterType.Multi);
+				columns.Add().RenderedAs(o => Html.ActionLink("Detail and Edit Status", "DetailOrder", new {id = o.Id}));
+			}).Using(GridFilterMode.Excel).Pageable(page => { page.RowsPerPage = 10; }).Empty("No data found")
+		</div>
 	</div>
-</div>
-<script src="~/js/mvc-grid/mvc-grid.js"></script>
-<script>
-	document.querySelectorAll(".mvc-grid").forEach(element => new MvcGrid(element));
-</script>
+	<script src="~/js/mvc-grid/mvc-grid.js"></script>
+	<script>
+		document.querySelectorAll(".mvc-grid").forEach(element => new MvcGrid(element));
+	</script>
+}
+else
+{
+	<div class="col-md-8">
+		<div class="card-body">
+			<h5 class="card-title text-center">Orders is empty</h5>
+		</div>
+	</div>
+}
 

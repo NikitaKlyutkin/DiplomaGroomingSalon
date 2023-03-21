@@ -51,7 +51,7 @@ namespace DiplomaGroomingSalon.DAL
 			});
 			modelBuilder.Entity<Profile>(builder =>
 			{
-				builder.ToTable("Profiles").HasKey(x => x.Id);
+                builder.ToTable("Profiles").HasKey(x => x.Id);
 
 				builder.Property(x => x.Id).ValueGeneratedOnAdd();
 				builder.Property(x => x.Name);
@@ -66,6 +66,7 @@ namespace DiplomaGroomingSalon.DAL
 					UserId = new Guid("08027984-8ecb-4dde-a9b3-bcaec5bc7604")
 				});
 			});
+
 			modelBuilder.Entity<Order>(builder =>
 			{
 				builder.ToTable("Orders").HasKey(x => x.Id);

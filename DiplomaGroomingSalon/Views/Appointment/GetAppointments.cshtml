@@ -1,35 +1,41 @@
-﻿@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.Appointment>
+﻿@using NonFactors.Mvc.Grid
+@using DiplomaGroomingSalon.Domain.Enum
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.Appointment>
 
 @{
     ViewData["Title"] = "GetAppointmentsFree";
 }
+@if (Model != null)
+{
+	<h1>GetAppointmentsFree</h1>
 
-<h1>GetAppointmentsFree</h1>
-
-<p>
-    <a asp-action="CreateAppointment">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DateTimeAppointment)
-            </th>
-	        <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                    @Html.DisplayFor(modelItem => item.DateTimeAppointment)
-            </td>
-	        <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
+	<p>
+		<a asp-action="CreateAppointment">Create New</a>
+	</p>
+	<head>
+		<meta name="viewport" content="width=device-width"/>
+		<link href="~/css/mvc-grid/mvc-grid.css" rel="stylesheet"/>
+	</head>
+	<div class="row">
+		<div class="col-12">
+			@Html.Grid(Model).Build(columns =>
+			{
+				columns.Add(model => model.DateTimeAppointment).Titled("Date Appointment").Sortable(true);
+				columns.Add().RenderedAs(o => Html.ActionLink("Delete", "DeleteAppointment", new {id = o.Id}));
+			}).Using(GridFilterMode.Excel).Pageable(page => { page.RowsPerPage = 10; }).Empty("No data found")
+		</div>
+	</div>
+	<script src="~/js/mvc-grid/mvc-grid.js"></script>
+	<script>
+		document.querySelectorAll(".mvc-grid").forEach(element => new MvcGrid(element));
+	</script>
 }
-    </tbody>
-</table>
+else
+{
+	<div class="col-md-8">
+		<div class="card-body">
+			<h5 class="card-title text-center">Appointment is empty</h5>
+		</div>
+	</div>
+}
