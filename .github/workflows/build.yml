@@ -32,16 +32,18 @@ jobs:
       working-directory: ./src
     - name: Publish
       run: dotnet publish --no-restore --configuration Release --output ~/output
-      working-directory: ./src
-      
+      working-directory: ./src      
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
         name: Artifact
         path: ~/output
         if-no-files-found: error
-  
-  
-    
-  
-    
+
+  tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Update DB
+      run: dotnet ef database update

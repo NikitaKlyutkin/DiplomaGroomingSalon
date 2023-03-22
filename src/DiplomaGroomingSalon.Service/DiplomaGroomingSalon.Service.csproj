@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DiplomaGroomingSalon.DAL\DiplomaGroomingSalon.DAL.csproj" />
+    <Compile Remove="Profile\**" />
+    <EmbeddedResource Remove="Profile\**" />
+    <None Remove="Profile\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Profile\" />
+    <ProjectReference Include="..\DiplomaGroomingSalon.DAL\DiplomaGroomingSalon.DAL.csproj" />
   </ItemGroup>
 
 </Project>

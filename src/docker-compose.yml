@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  diplomagroomingsalon:
+    image: ${DOCKER_REGISTRY-}diplomagroomingsalon
+    build:
+      context: .
+      dockerfile: DiplomaGroomingSalon/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: Data Source=database; Initial Catalog=DiplomaGroomingSalon;User Id=sa;Password=TMS-NET-07@;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False; MultipleActiveResultSets=True
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: TMS-NET-07@
+    ports:
+      - "1433:1433"

@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  diplomagroomingsalon:
+    image: ${DOCKER_REGISTRY-}diplomagroomingsalon:${DOCKER_TAG}
+    ports:
+      - "80"
+      - "443"
