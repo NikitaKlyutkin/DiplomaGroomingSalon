@@ -14,6 +14,7 @@ namespace DiplomaGroomingSalon.IntegrationTests
         public async Task RegisterShouldReturnErrorWhenUserExists()
         {
             // arrange
+            var userName = Guid.NewGuid().ToString("N").Substring(0,10);
             var optionsBuilder = new DbContextOptionsBuilder<DBContext>();
             optionsBuilder.UseSqlServer("Data Source= localhost; Initial Catalog=DiplomaGroomingSalon;User Id=sa;Password=TMS-NET-07@;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False; MultipleActiveResultSets=True");
 
@@ -21,15 +22,18 @@ namespace DiplomaGroomingSalon.IntegrationTests
             {
                 await context.Users.AddAsync(new Domain.Entities.User {
                     Id = Guid.NewGuid(),
-                    Name = "UserName"
+                    Name = userName,
+                    Password = "password",
                 });
+
+                await context.SaveChangesAsync();
             }
 
             // act
             var client = new HttpClient();
             var form = new Dictionary<string, string>
             {
-                { "Name", "UserName" },
+                { "Name", userName },
                 { "Password", "12345678" },
                 { "PasswordConfirm", "12345678" }
             };
