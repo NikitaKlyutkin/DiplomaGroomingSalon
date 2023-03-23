@@ -66,14 +66,21 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore DiplomaGroomingSalon.sln
       working-directory: ./src
+    - name: Login to Docker
+      uses: docker/login-action@v2
+      with:
+        username: ${{ env.DOCKER_USERNAME }}
+        password: ${{ env.DOCKER_PASSWORD }}
     - name: Set up environment
       uses: isbang/compose-action@v1.4.1
       with:
+        up-flags: --no-build
         compose-file: |
           ./src/docker-compose.yml
           ./src/docker-compose.ci.yml
       env:
-        DOCKER_TAG: ${{ env.DOCKER_TAG }}
+        DOCKER_TAG: ${{ env.DOCKER_TAG }}        
+        DOCKER_USERNAME: ${{ env.DOCKER_USERNAME }}
     - name: Build
       run: dotnet build DiplomaGroomingSalon.sln --no-restore --configuration Release
       working-directory: ./src
