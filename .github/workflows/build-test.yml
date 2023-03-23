@@ -75,8 +75,8 @@ jobs:
       env:
         DOCKER_TAG: ${{ env.DOCKER_TAG }}
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build DiplomaGroomingSalon.sln --no-restore --configuration Release
       working-directory: ./src
     - name: Test
-      run: dotnet test --no-build --verbosity normal --configuration Release --filter Category=Integration
+      run: dotnet test DiplomaGroomingSalon.sln --no-build --verbosity normal --configuration Release --filter Category=Integration
       working-directory: ./src
