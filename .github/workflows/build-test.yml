@@ -70,8 +70,8 @@ jobs:
       uses: isbang/compose-action@v1.4.1
       with:
         compose-file: |
-          "./src/docker-compose.yml"
-          "./src/docker-compose.ci.yml"
+          ./src/docker-compose.yml
+          ./src/docker-compose.ci.yml
       env:
         DOCKER_TAG: ${{ env.DOCKER_TAG }}
     - name: Build
