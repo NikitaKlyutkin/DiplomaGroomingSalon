@@ -38,6 +38,8 @@ namespace DiplomaGroomingSalon.IntegrationTests
             var response = await client.PostAsync("http://localhost:5005/account/register", requestContent);
             var responseContent = await response.Content.ReadAsStringAsync();
 
+            Console.WriteLine(HttpUtility.HtmlDecode(responseContent));
+
             // assert
             Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
             Assert.NotNull(responseContent);
