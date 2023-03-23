@@ -25,13 +25,13 @@ jobs:
       run: dotnet restore
       working-directory: ./src
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build DiplomaGroomingSalon.sln --no-restore --configuration Release
       working-directory: ./src
     - name: Test
-      run: dotnet test --no-build --verbosity normal --configuration Release
-      working-directory: ./src
+      run: dotnet test DiplomaGroomingSalon.sln --no-build --verbosity normal --configuration Release
+      working-directory: ./src 
     - name: Publish
-      run: dotnet publish --no-restore --configuration Release --output ~/output
+      run: dotnet publish DiplomaGroomingSalon --no-restore --configuration Release --output ~/output
       working-directory: ./src      
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
