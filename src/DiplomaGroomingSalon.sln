@@ -17,6 +17,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{6DD6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiplomaGroomingSalon.Service", "DiplomaGroomingSalon.Service\DiplomaGroomingSalon.Service.csproj", "{2A4C5589-CF1E-4741-A76C-FFEAA77822F6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiplomaGroomingSalon.Service.Tests", "DiplomaGroomingSalon.Service.Tests\DiplomaGroomingSalon.Service.Tests.csproj", "{C3DE4677-FF13-43D0-87F8-360BEBE9CE3C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{300E8B55-7701-4A7B-9CA0-9F3FE47E2019}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile-int = Dockerfile-int
+		Readme.md = Readme.md
+	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{1244D165-8704-44E9-83A8-CB57A6B81B84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaGroomingSalon.IntegrationTests", "..\DiplomaGroomingSalon.IntegrationTests\DiplomaGroomingSalon.IntegrationTests.csproj", "{C3D086D3-2F73-41FF-A929-D8D365274222}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +51,18 @@ Global
 		{2A4C5589-CF1E-4741-A76C-FFEAA77822F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A4C5589-CF1E-4741-A76C-FFEAA77822F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A4C5589-CF1E-4741-A76C-FFEAA77822F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3DE4677-FF13-43D0-87F8-360BEBE9CE3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3DE4677-FF13-43D0-87F8-360BEBE9CE3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3DE4677-FF13-43D0-87F8-360BEBE9CE3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3DE4677-FF13-43D0-87F8-360BEBE9CE3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1244D165-8704-44E9-83A8-CB57A6B81B84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1244D165-8704-44E9-83A8-CB57A6B81B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1244D165-8704-44E9-83A8-CB57A6B81B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1244D165-8704-44E9-83A8-CB57A6B81B84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3D086D3-2F73-41FF-A929-D8D365274222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3D086D3-2F73-41FF-A929-D8D365274222}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3D086D3-2F73-41FF-A929-D8D365274222}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3D086D3-2F73-41FF-A929-D8D365274222}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +71,8 @@ Global
 		{DCEA15FB-8296-4446-BD70-F7E89426F732} = {0A65A740-D549-4CA5-A313-711702E34DBE}
 		{94971F5F-457B-4873-B3CB-E48156B6E7D8} = {CC60E14C-E48C-4BFD-8A67-7E19AD8BDFF5}
 		{2A4C5589-CF1E-4741-A76C-FFEAA77822F6} = {6DD636D0-FF42-4CF8-B33B-0F292FDFC6A6}
+		{C3DE4677-FF13-43D0-87F8-360BEBE9CE3C} = {6DD636D0-FF42-4CF8-B33B-0F292FDFC6A6}
+		{C3D086D3-2F73-41FF-A929-D8D365274222} = {300E8B55-7701-4A7B-9CA0-9F3FE47E2019}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2CD0D54C-3198-4A05-BA25-86CD44292362}

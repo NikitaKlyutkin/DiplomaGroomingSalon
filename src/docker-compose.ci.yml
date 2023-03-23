@@ -1,0 +1,7 @@
+version: '3.4'
+
+services:
+  diplomagroomingsalon:
+    image: ${DOCKER_REGISTRY-}${DOCKER_USERNAME}/diplomagroomingsalon:${DOCKER_TAG}
+    ports:
+      - "5005:80"
