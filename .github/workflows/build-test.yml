@@ -39,18 +39,17 @@ jobs:
       run: dotnet publish DiplomaGroomingSalon --no-restore --configuration Release --output ~/output
       working-directory: ./src      
     - name: Login to Docker
-      uses: docker/login-action@v1
+      uses: docker/login-action@v2
       with:
         username: ${{ env.DOCKER_USERNAME }}
         password: ${{ env.DOCKER_PASSWORD }}
     - name: Build and Push Docker Image
-      uses: docker/build-push-action@v1
+      uses: docker/build-push-action@v4
       with:
         push: true
         context: ~/output
         file: ./src/Dockerfile-int
-        name: ${{ env.DOCKER_USERNAME }}/diplomagroomingsalon
-        tags: ${{ env.DOCKER_TAG }}
+        tags: ${{ env.DOCKER_USERNAME }}/diplomagroomingsalon:${{ env.DOCKER_TAG }}
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
