@@ -71,13 +71,10 @@ jobs:
       with:
         username: ${{ env.DOCKER_USERNAME }}
         password: ${{ env.DOCKER_PASSWORD }}
+    - name: Set Docker Compose
+      uses: ndeloof/install-compose-action@v0.0.1
     - name: Set up environment
-      uses: isbang/compose-action@v1.4.1
-      with:
-        up-flags: --no-build
-        compose-file: |
-          ./src/docker-compose.yml
-          ./src/docker-compose.ci.yml
+      run: docker-compose -f docker-compose.yml -f docker-compose.ci.yml up --no-build -d      
       env:
         DOCKER_TAG: ${{ env.DOCKER_TAG }}        
         DOCKER_USERNAME: ${{ env.DOCKER_USERNAME }}
