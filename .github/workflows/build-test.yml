@@ -50,13 +50,7 @@ jobs:
         context: ./src/output
         file: ./src/Dockerfile-int
         tags: ${{ env.DOCKER_USERNAME }}/diplomagroomingsalon:${{ env.DOCKER_TAG }}
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: Artifact
-        path: ~/output
-        if-no-files-found: error
-
+        
   tests:
     needs: build
     
