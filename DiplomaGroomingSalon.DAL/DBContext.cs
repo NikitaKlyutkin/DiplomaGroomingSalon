@@ -10,7 +10,7 @@ namespace DiplomaGroomingSalon.DAL
 		public DBContext(DbContextOptions opts) : base(opts)
 		{
 			//Database.EnsureDeleted();
-			//Database.EnsureCreated();
+			Database.EnsureCreated();
 		}
 
 		public DbSet<User> Users { get; set; }

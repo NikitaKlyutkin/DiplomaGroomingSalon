@@ -12,27 +12,27 @@
                     <input asp-for="Id" hidden="hidden" />
                     <h5 class="card-title">Profile data</h5>
                     <div class="mb-3">
-                        <label class="form-label text-black-50">Name</label>
-	                    <input type="text" class="form-control" asp-for="Name" required>
-	                    <div class="form-text"></div>
+	                    <label class="form-label text-black-50">Name</label>
+	                    <input type="text" class="form-control" asp-for="Name" required minlength="3" maxlength="50">
+	                    <div class="invalid-feedback">Please enter a valid name (3-50 characters).</div>
                     </div>
                     <div class="mb-3">
 	                    <label class="form-label text-black-50">Surname</label>
-                        <input type="text" class="form-control" asp-for="Surname" required>
-	                    <div class="form-text"></div>
+	                    <input type="text" class="form-control" asp-for="Surname" required minlength="3" maxlength="50">
+	                    <div class="invalid-feedback">Please enter a valid surname (3-50 characters).</div>
                     </div>
                     <div class="mb-3">
 	                    <label class="form-label text-black-50">Phone</label>
-                        <input type="text" class="form-control" asp-for="Phone" required>
-	                    <div class="form-text"></div>
+						<input type="tel" class="form-control" placeholder="+375XXXXXXXXX" class="form-control textbox-dg font-weight-bold" asp-for="Phone" pattern="^\+375\d{9}$" required>
+	                    <div class="invalid-feedback">Please enter a valid phone number.</div>
                     </div>
                     <div class="mb-3">
 	                    <label class="form-label text-black-50">E-mail</label>
-                        <input type="text" class="form-control" asp-for="Email" required>
-	                    <div class="form-text"></div>
+	                    <input type="email" class="form-control" placeholder="example@Mail.com" class="form-control textbox-dg font-weight-bold" asp-for="Email" pattern="^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required />
+	                    <div class="invalid-feedback">Please enter a valid email address.</div>
                     </div>
                     <div class="card-buttons-group">
-						<button type="submit" class='btn btn-primary' id='saveProfileId'>Save</button>
+	                    <button type="submit" class='btn btn-primary' id='saveProfileId'>Save</button>
                     </div>
                 </form>
             </div>
@@ -49,10 +49,10 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-black-50">New Password</label>
-                        <input name="NewPassword" class="form-control textbox-dg font-weight-bold text-center" type="password">
+                        <input name="NewPassword" class="form-control textbox-dg font-weight-bold text-center" type="password" required>
                     </div>
                     <div class="card-buttons-group">
-                        <button class='btn btn-primary' id='saveAccountId'>Save</button>
+						<button type="submit" class='btn btn-primary' id='saveAccountId'>Save</button>
                     </div>
                 </form>
             </div>
@@ -107,34 +107,58 @@
 			}, false);
 		});
 
-		$('#saveAccountId').on('click', function (e) {
-			e.preventDefault();
+		$(document).ready(function() {
+			var form = document.getElementById("accountFormId");
+			var saveBtn = document.getElementById("saveAccountId");
 
-			$('#UserName').removeAttr('disabled');
-			var data = $('#accountFormId').serialize();
-			$('#UserName').attr('disabled', 'disabled');
-
-			$.ajax({
-				url: '@Url.Action("ChangePassword", "Account")',
-				type: 'POST',
-				data: data,
-				success: function (response) {
-					Swal.fire({
-						title: 'Information',
-						text: response.description,
-						icon: 'success',
-						confirmButtonText: 'Okey'
-					});
-				},
-				error: function (response) {
-					Swal.fire({
-						title: 'Information',
-						text: response.responseJSON.errorMessage,
-						icon: 'error',
-						confirmButtonText: 'Okey'
-					});
+			saveBtn.addEventListener("click", function(event) {
+				if (!form.checkValidity()) {
+					event.preventDefault();
+					event.stopPropagation();
+					//alert("Please fill out all required fields.");
 				}
-			});
+
+				form.classList.add("was-validated");
+			}, false);
+
+			form.addEventListener("submit", function(event) {
+				event.preventDefault();
+
+				// Get the value of the "NewPassword" field
+				var newPassword = $('input[name="NewPassword"]').val();
+
+				// Check that the value is not an empty string
+				if (newPassword === '') {
+					alert('Please enter a new password.');
+					return;
+				}
+
+				$('#UserName').removeAttr('disabled');
+				var data = $('#accountFormId').serialize();
+				$('#UserName').attr('disabled', 'disabled');
+
+				$.ajax({
+					url: '@Url.Action("ChangePassword", "Account")',
+					type: 'POST',
+					data: data,
+					success: function (response) {
+						Swal.fire({
+							title: 'Information',
+							text: response.description,
+							icon: 'success',
+							confirmButtonText: 'Okey'
+						});
+					},
+					error: function (response) {
+						Swal.fire({
+							title: 'Information',
+							text: response.responseJSON.errorMessage,
+							icon: 'error',
+							confirmButtonText: 'Okey'
+						});
+					}
+				});
+			}, false);
 		});
 
 	</script>
