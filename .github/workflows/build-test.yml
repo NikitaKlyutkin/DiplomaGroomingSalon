@@ -74,6 +74,7 @@ jobs:
     - name: Set Docker Compose
       uses: ndeloof/install-compose-action@v0.0.1
     - name: Set up environment
+      working-directory: ./src
       run: docker-compose -f docker-compose.yml -f docker-compose.ci.yml up --no-build -d      
       env:
         DOCKER_TAG: ${{ env.DOCKER_TAG }}        
