@@ -33,7 +33,7 @@ jobs:
       run: dotnet build --no-restore --configuration Release
       working-directory: ./src
     - name: Test
-      run: dotnet test --no-build --verbosity normal --configuration Release --filter Category=Integration
+      run: dotnet test --no-build --verbosity normal --configuration Release --filter Category!=Integration
       working-directory: ./src
     - name: Publish
       run: dotnet publish --no-restore --configuration Release --output ~/output
@@ -46,9 +46,9 @@ jobs:
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v1
       with:
-        username: ${{ env.DOCKER_USERNAME }}
-        password: ${{ env.DOCKER_PASSWORD }}
         push: true
+        context: ~/output
+        file: ./src/Dockerfile-int
         tags: ${{ env.DOCKER_USERNAME }}/diplomagroomingsalon:${{ env.DOCKER_TAG }}
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
@@ -71,6 +71,14 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ./src
+    - name: Set up environment
+      uses: isbang/compose-action@v1.4.1
+      with:
+        compose-file: |
+          "./src/docker-compose.yml"
+          "./src/docker-compose.ci.yml"
+      env:
+        DOCKER_TAG: ${{ env.DOCKER_TAG }}
     - name: Build
       run: dotnet build --no-restore --configuration Release
       working-directory: ./src

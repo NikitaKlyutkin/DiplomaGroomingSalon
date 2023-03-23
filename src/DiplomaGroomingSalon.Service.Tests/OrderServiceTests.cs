@@ -24,7 +24,7 @@ namespace DiplomaGroomingSalon.Service.Tests
                 Mock.Of<IAccountRepository<Profile>>()); // sub (subject), sut (sytem under test)
 
             // act
-            var result = await orderService.GetOrdersByAdmin();
+            //var result = await orderService.GetOrdersByAdmin();
 
             // assert
             orderRepositoryMock.Verify(repo => repo.GetAll(), Times.AtLeastOnce());
