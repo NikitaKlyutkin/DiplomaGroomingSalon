@@ -5,9 +5,9 @@ using DiplomaGroomingSalon.Domain.Helpers;
 
 namespace DiplomaGroomingSalon.DAL
 {
-	public class DBContext :DbContext
+	public class DBContextGroomingSalon :DbContext
 	{
-		public DBContext(DbContextOptions opts) : base(opts)
+		public DBContextGroomingSalon(DbContextOptions opts) : base(opts)
 		{
 			//Database.EnsureDeleted();
 			Database.EnsureCreated();

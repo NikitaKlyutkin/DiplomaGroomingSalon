@@ -1,49 +1,42 @@
-﻿using DiplomaGroomingSalon.Domain.Entities;
+﻿using System.Threading.Tasks;
 using DiplomaGroomingSalon.Domain.ViewModels;
 using DiplomaGroomingSalon.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
-namespace DiplomaGroomingSalon.Controllers
+namespace DiplomaGroomingSalon.Controllers;
+
+[Authorize]
+public class ProfileController : Controller
 {
-	[Authorize]
-	public class ProfileController : Controller
+	private readonly IProfileService _profileService;
+
+	public ProfileController(IProfileService profileService)
 	{
-		private readonly IProfileService _profileService;
+		_profileService = profileService;
+	}
 
-		public ProfileController(IProfileService profileService)
+	[HttpPost]
+	public async Task<IActionResult> Save(ProfileViewModel model)
+	{
+		ModelState.Remove("Id");
+		ModelState.Remove("UserName");
+		if (ModelState.IsValid)
 		{
-			_profileService = profileService;
+			var response = await _profileService.Save(model);
+			if (response.StatusCode == Domain.Enum.StatusCode.OK) return Json(new {description = response.Description});
 		}
 
-		[HttpPost]
-		public async Task<IActionResult> Save(ProfileViewModel model)
-		{
-			ModelState.Remove("Id");
-			ModelState.Remove("UserName");
-			if (ModelState.IsValid)
-			{
-				var response = await _profileService.Save(model);
-				if (response.StatusCode == Domain.Enum.StatusCode.OK)
-				{
-					return Json(new { description = response.Description });
-				}
-			}
-			return StatusCode(StatusCodes.Status500InternalServerError);
-		}
+		return StatusCode(StatusCodes.Status500InternalServerError);
+	}
 
-		public async Task<IActionResult> Detail()
-		{
-			var userName = User.Identity.Name;
-			var response = await _profileService.GetProfile(userName);
-            var res = response.Data.Id;
-			if (response.StatusCode == Domain.Enum.StatusCode.OK)
-			{
-				return View(response.Data);
-			}
-			return View();
-		}
+	public async Task<IActionResult> Detail()
+	{
+		var userName = User.Identity.Name;
+		var response = await _profileService.GetProfile(userName);
+
+		if (response.StatusCode == Domain.Enum.StatusCode.OK) return View(response.Data);
+		return View();
 	}
 }

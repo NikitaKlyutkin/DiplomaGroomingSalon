@@ -14,18 +14,16 @@ public class BreedService : ICRUDDataService<Breed>
 	public BreedService(IBaseRepository<Breed> breedRepository,
 		IBaseRepository<ServiceType> serviceTypeRepository)
 	{
-		
 		_breedRepository = breedRepository;
 		_serviceTypeRepository = serviceTypeRepository;
 	}
 
 	public async Task<IBaseResponse<List<Breed>>> GetAll()
 	{
-		var baseResponse = new BaseResponse<IEnumerable<Breed>>();
 		try
 		{
-			var breedPets = await _breedRepository.GetAll();
-			if (!breedPets.Any())
+			var breeds = await _breedRepository.GetAll();
+			if (!breeds.Any())
 				return new BaseResponse<List<Breed>>
 				{
 					Description = "Found 0 items",
@@ -33,7 +31,7 @@ public class BreedService : ICRUDDataService<Breed>
 				};
 			return new BaseResponse<List<Breed>>
 			{
-				Data = breedPets.ToList(),
+				Data = breeds.ToList(),
 				StatusCode = StatusCode.OK
 			};
 		}
@@ -41,7 +39,7 @@ public class BreedService : ICRUDDataService<Breed>
 		{
 			return new BaseResponse<List<Breed>>
 			{
-				Description = $"[GetBreedPets] : {ex.Message}",
+				Description = $"[GetBreeds] : {ex.Message}",
 				StatusCode = StatusCode.InternalServerError
 			};
 		}
@@ -51,8 +49,8 @@ public class BreedService : ICRUDDataService<Breed>
 	{
 		try
 		{
-			var breedpet = await _breedRepository.GetByIdAsync(id);
-			if (breedpet == null)
+			var breed = await _breedRepository.GetByIdAsync(id);
+			if (breed == null)
 				return new BaseResponse<Breed>
 				{
 					Description = "Not Found",
@@ -61,11 +59,11 @@ public class BreedService : ICRUDDataService<Breed>
 
 			var data = new Breed
 			{
-				Id = breedpet.Id,
-				BreedName = breedpet.BreedName,
-				PetType = breedpet.PetType,
-				PetTypeId = breedpet.PetTypeId,
-            };
+				Id = breed.Id,
+				BreedName = breed.BreedName,
+				PetType = breed.PetType,
+				PetTypeId = breed.PetTypeId
+			};
 
 			return new BaseResponse<Breed>
 			{
@@ -77,7 +75,7 @@ public class BreedService : ICRUDDataService<Breed>
 		{
 			return new BaseResponse<Breed>
 			{
-				Description = $"[GetBreedPet] : {ex.Message}",
+				Description = $"[GetBreed] : {ex.Message}",
 				StatusCode = StatusCode.InternalServerError
 			};
 		}
@@ -88,20 +86,20 @@ public class BreedService : ICRUDDataService<Breed>
 		var baseResponse = new BaseResponse<Breed>();
 		try
 		{
-			var breedPet = new Breed
+			var breed = new Breed
 			{
 				Id = new Guid(),
 				PetTypeId = model.PetTypeId,
 				BreedName = model.BreedName
 			};
 
-			await _breedRepository.Create(breedPet);
+			await _breedRepository.Create(breed);
 		}
 		catch (Exception ex)
 		{
 			return new BaseResponse<Breed>
 			{
-				Description = $"[CreateBreedPet]: {ex.Message}",
+				Description = $"[CreateBreed]: {ex.Message}",
 				StatusCode = StatusCode.InternalServerError
 			};
 		}
@@ -113,23 +111,23 @@ public class BreedService : ICRUDDataService<Breed>
 	{
 		try
 		{
-			var breedPetAsync = await _breedRepository.GetByIdAsync(id);
-			if (breedPetAsync == null)
+			var breedAsync = await _breedRepository.GetByIdAsync(id);
+			if (breedAsync == null)
 				return new BaseResponse<Breed>
 				{
 					Description = "Not found",
 					StatusCode = StatusCode.NotFound
 				};
-			breedPetAsync.Id = model.Id;
-			breedPetAsync.BreedName = model.BreedName;
-			breedPetAsync.PetTypeId = model.PetTypeId;
+			breedAsync.Id = model.Id;
+			breedAsync.BreedName = model.BreedName;
+			breedAsync.PetTypeId = model.PetTypeId;
 
-			await _breedRepository.Update(breedPetAsync);
+			await _breedRepository.Update(breedAsync);
 
 
 			return new BaseResponse<Breed>
 			{
-				Data = breedPetAsync,
+				Data = breedAsync,
 				StatusCode = StatusCode.OK
 			};
 		}
@@ -137,7 +135,7 @@ public class BreedService : ICRUDDataService<Breed>
 		{
 			return new BaseResponse<Breed>
 			{
-				Description = $"[EditBreedPet] : {ex.Message}",
+				Description = $"[EditBreed] : {ex.Message}",
 				StatusCode = StatusCode.InternalServerError
 			};
 		}
@@ -147,21 +145,19 @@ public class BreedService : ICRUDDataService<Breed>
 	{
 		try
 		{
-			var breedPetAsync = await _breedRepository.GetByIdAsync(id);
-			if (breedPetAsync == null)
-			{
+			var breedAsync = await _breedRepository.GetByIdAsync(id);
+			if (breedAsync == null)
 				return new BaseResponse<bool>
 				{
 					Description = "Not found",
 					StatusCode = StatusCode.NotFound,
 					Data = false
 				};
-			}
 
-			var servicetype = _serviceTypeRepository.GetAll().Result.FirstOrDefault(x => x.BreedId == id);
-			if (servicetype != null) await _serviceTypeRepository.DeleteRange(servicetype);
+			var serviceType = _serviceTypeRepository.GetAll().Result.FirstOrDefault(x => x.BreedId == id);
+			if (serviceType != null) await _serviceTypeRepository.DeleteRange(serviceType);
 
-			await _breedRepository.Delete(breedPetAsync);
+			await _breedRepository.Delete(breedAsync);
 
 
 			return new BaseResponse<bool>
@@ -174,7 +170,7 @@ public class BreedService : ICRUDDataService<Breed>
 		{
 			return new BaseResponse<bool>
 			{
-				Description = $"[DeleteBreedPet] : {ex.Message}",
+				Description = $"[DeleteBreed] : {ex.Message}",
 				StatusCode = StatusCode.InternalServerError
 			};
 		}

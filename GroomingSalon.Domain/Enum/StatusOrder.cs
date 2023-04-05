@@ -12,6 +12,5 @@ namespace DiplomaGroomingSalon.Domain.Enum
 		During = 2,
 		[Display(Name = "Cancellations")]
 		Cancellations = 3
-
 	}
 }

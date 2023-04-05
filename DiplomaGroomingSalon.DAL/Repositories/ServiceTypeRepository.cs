@@ -6,8 +6,8 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 {
 	public class ServiceTypeRepository : IBaseRepository<ServiceType>
 	{
-		private readonly DBContext _db;
-		public ServiceTypeRepository(DBContext db)
+		private readonly DBContextGroomingSalon _db;
+		public ServiceTypeRepository(DBContextGroomingSalon db)
 		{
 			_db = db;
 		}

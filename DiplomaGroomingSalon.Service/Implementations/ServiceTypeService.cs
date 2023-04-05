@@ -1,204 +1,178 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DiplomaGroomingSalon.DAL.Interfaces;
-using DiplomaGroomingSalon.DAL.Repositories;
+﻿using DiplomaGroomingSalon.DAL.Interfaces;
 using DiplomaGroomingSalon.Domain.Entities;
 using DiplomaGroomingSalon.Domain.Enum;
 using DiplomaGroomingSalon.Domain.Response;
-using DiplomaGroomingSalon.Domain.ViewModels;
 using DiplomaGroomingSalon.Service.Interfaces;
 
-namespace DiplomaGroomingSalon.Service.Implementations
+namespace DiplomaGroomingSalon.Service.Implementations;
+
+public class ServiceTypeService : ICRUDDataService<ServiceType>
 {
-    public class ServiceTypeService : ICRUDDataService<ServiceType>
-    {
-        private readonly IBaseRepository<PetType> _petTypePetRepository;
-        private readonly IBaseRepository<Breed> _breedRepository;
-        private readonly IBaseRepository<ServiceType> _serviceTypeRepository;
-        public ServiceTypeService(IBaseRepository<PetType> petTypePetRepository, IBaseRepository<Breed> breedRepository, IBaseRepository<ServiceType> serviceTypeRepository)
-        {
-            _petTypePetRepository = petTypePetRepository;
-            _breedRepository = breedRepository;
-            _serviceTypeRepository = serviceTypeRepository;
+	private readonly IBaseRepository<ServiceType> _serviceTypeRepository;
 
-        }
-        public async Task<IBaseResponse<List<ServiceType>>> GetAll()
-        {
-            var baseResponse = new BaseResponse<IEnumerable<ServiceType>>();
-            try
-            {
-                var serviceTypes = await _serviceTypeRepository.GetAll();
+	public ServiceTypeService(IBaseRepository<ServiceType> serviceTypeRepository)
+	{
+		_serviceTypeRepository = serviceTypeRepository;
+	}
 
-                if (!serviceTypes.Any())
-                {
-                    return new BaseResponse<List<ServiceType>>()
-                    {
-                        Description = "Found 0 items",
-                        StatusCode = StatusCode.OK
-                    };
-                }
-                return new BaseResponse<List<ServiceType>>()
-                {
-                    Data = serviceTypes.ToList(),
-                    StatusCode = StatusCode.OK
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<List<ServiceType>>()
-                {
-                    Description = $"[GetServiceTypes] : {ex.Message}",
-                    StatusCode = StatusCode.InternalServerError
-                };
-            }
-        }
+	public async Task<IBaseResponse<List<ServiceType>>> GetAll()
+	{
+		try
+		{
+			var serviceTypes = await _serviceTypeRepository.GetAll();
 
-        public async Task<IBaseResponse<ServiceType>> GetById(Guid id)
-        {
+			if (!serviceTypes.Any())
+				return new BaseResponse<List<ServiceType>>
+				{
+					Description = "Found 0 items",
+					StatusCode = StatusCode.OK
+				};
+			return new BaseResponse<List<ServiceType>>
+			{
+				Data = serviceTypes.ToList(),
+				StatusCode = StatusCode.OK
+			};
+		}
+		catch (Exception ex)
+		{
+			return new BaseResponse<List<ServiceType>>
+			{
+				Description = $"[GetServiceTypes] : {ex.Message}",
+				StatusCode = StatusCode.InternalServerError
+			};
+		}
+	}
 
-            try
-            {
-                var serviceType = await _serviceTypeRepository.GetByIdAsync(id);
-                if (serviceType == null)
-                {
-                    return new BaseResponse<ServiceType>()
-                    {
-                        Description = "Not Found",
-                        StatusCode = StatusCode.NotFound
-                    };
-                }
+	public async Task<IBaseResponse<ServiceType>> GetById(Guid id)
+	{
+		try
+		{
+			var serviceType = await _serviceTypeRepository.GetByIdAsync(id);
+			if (serviceType == null)
+				return new BaseResponse<ServiceType>
+				{
+					Description = "Not Found",
+					StatusCode = StatusCode.NotFound
+				};
 
-                var data = new ServiceType()
-                {
-                    Id = serviceType.Id,
-                    ServiceTypeName = serviceType.ServiceTypeName,
-                    Breed = serviceType.Breed,
-                    PetTypeId = serviceType.PetTypeId,
-                    BreedId = serviceType.BreedId,
-                    Price = serviceType.Price
+			var data = new ServiceType
+			{
+				Id = serviceType.Id,
+				ServiceTypeName = serviceType.ServiceTypeName,
+				Breed = serviceType.Breed,
+				PetTypeId = serviceType.PetTypeId,
+				BreedId = serviceType.BreedId,
+				Price = serviceType.Price
+			};
 
-                };
+			return new BaseResponse<ServiceType>
+			{
+				StatusCode = StatusCode.OK,
+				Data = data
+			};
+		}
+		catch (Exception ex)
+		{
+			return new BaseResponse<ServiceType>
+			{
+				Description = $"[GetServiceType] : {ex.Message}",
+				StatusCode = StatusCode.InternalServerError
+			};
+		}
+	}
 
-                return new BaseResponse<ServiceType>()
-                {
-                    StatusCode = StatusCode.OK,
-                    Data = data
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<ServiceType>()
-                {
-                    Description = $"[GetBreedPet] : {ex.Message}",
-                    StatusCode = StatusCode.InternalServerError
-                };
-            }
-        }
+	public async Task<IBaseResponse<ServiceType>> Create(ServiceType model)
+	{
+		var baseResponse = new BaseResponse<ServiceType>();
+		try
+		{
+			var serviceType = new ServiceType
+			{
+				Id = new Guid(),
+				BreedId = model.BreedId,
+				PetTypeId = model.PetTypeId,
+				Price = model.Price,
+				ServiceTypeName = model.ServiceTypeName
+			};
 
-        public async Task<IBaseResponse<ServiceType>> Create(ServiceType model)
-        {
-            var baseResponse = new BaseResponse<ServiceType>();
-            try
-            {
-                var serviceType = new ServiceType()
-                {
-                    Id = new Guid(),
-                    BreedId = model.BreedId,
-                    PetTypeId = model.PetTypeId,
-                    Price = model.Price,
-                    ServiceTypeName = model.ServiceTypeName
+			await _serviceTypeRepository.Create(serviceType);
+		}
+		catch (Exception ex)
+		{
+			return new BaseResponse<ServiceType>
+			{
+				Description = $"[CreateServiceType]: {ex.Message}",
+				StatusCode = StatusCode.InternalServerError
+			};
+		}
 
-                };
+		return baseResponse;
+	}
 
-                await _serviceTypeRepository.Create(serviceType);
+	public async Task<IBaseResponse<ServiceType>> Edit(Guid id, ServiceType model)
+	{
+		try
+		{
+			var serviceType = await _serviceTypeRepository.GetByIdAsync(id);
+			if (serviceType == null)
+				return new BaseResponse<ServiceType>
+				{
+					Description = "Not found",
+					StatusCode = StatusCode.NotFound
+				};
+			serviceType.Id = model.Id;
+			serviceType.PetTypeId = model.PetTypeId;
+			serviceType.BreedId = model.BreedId;
+			serviceType.ServiceTypeName = model.ServiceTypeName;
+			serviceType.Price = model.Price;
 
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<ServiceType>()
-                {
-                    Description = $"[CreateServiceType]: {ex.Message}",
-                    StatusCode = StatusCode.InternalServerError
-                };
-            }
-            return baseResponse;
-        }
-
-        public async Task<IBaseResponse<ServiceType>> Edit(Guid id, ServiceType model)
-        {
-            try
-            {
-                var servicetype = await _serviceTypeRepository.GetByIdAsync(id);
-                if (servicetype == null)
-                {
-                    return new BaseResponse<ServiceType>()
-                    {
-                        Description = "Not found",
-                        StatusCode = StatusCode.NotFound
-                    };
-                }
-                servicetype.Id = model.Id;
-                servicetype.PetTypeId = model.PetTypeId;
-                servicetype.BreedId = model.BreedId;
-                servicetype.ServiceTypeName = model.ServiceTypeName;
-                servicetype.Price = model.Price;
-
-                await _serviceTypeRepository.Update(servicetype);
+			await _serviceTypeRepository.Update(serviceType);
 
 
-                return new BaseResponse<ServiceType>()
-                {
-                    Data = servicetype,
-                    StatusCode = StatusCode.OK,
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<ServiceType>()
-                {
-                    Description = $"[EditBreedPet] : {ex.Message}",
-                    StatusCode = StatusCode.InternalServerError
-                };
-            }
-        }
+			return new BaseResponse<ServiceType>
+			{
+				Data = serviceType,
+				StatusCode = StatusCode.OK
+			};
+		}
+		catch (Exception ex)
+		{
+			return new BaseResponse<ServiceType>
+			{
+				Description = $"[EditServiceType] : {ex.Message}",
+				StatusCode = StatusCode.InternalServerError
+			};
+		}
+	}
 
-        public async Task<IBaseResponse<bool>> Delete(Guid id)
-        {
-            try
-            {
-                var serviceType = await _serviceTypeRepository.GetByIdAsync(id);
-                if (serviceType == null)
-                {
-                    return new BaseResponse<bool>()
-                    {
-                        Description = "Not found",
-                        StatusCode = StatusCode.NotFound,
-                        Data = false
-                    };
-                }
-                else
-                {
-                    await _serviceTypeRepository.Delete(serviceType);
-                }
+	public async Task<IBaseResponse<bool>> Delete(Guid id)
+	{
+		try
+		{
+			var serviceType = await _serviceTypeRepository.GetByIdAsync(id);
+			if (serviceType == null)
+				return new BaseResponse<bool>
+				{
+					Description = "Not found",
+					StatusCode = StatusCode.NotFound,
+					Data = false
+				};
+			await _serviceTypeRepository.Delete(serviceType);
 
 
-                return new BaseResponse<bool>()
-                {
-                    Data = true,
-                    StatusCode = StatusCode.OK
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<bool>()
-                {
-                    Description = $"[DeleteServiceType] : {ex.Message}",
-                    StatusCode = StatusCode.InternalServerError
-                };
-            }
-        }
-    }
+			return new BaseResponse<bool>
+			{
+				Data = true,
+				StatusCode = StatusCode.OK
+			};
+		}
+		catch (Exception ex)
+		{
+			return new BaseResponse<bool>
+			{
+				Description = $"[DeleteServiceType] : {ex.Message}",
+				StatusCode = StatusCode.InternalServerError
+			};
+		}
+	}
 }

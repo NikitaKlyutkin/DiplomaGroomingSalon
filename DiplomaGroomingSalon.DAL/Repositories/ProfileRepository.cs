@@ -6,9 +6,9 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 {
 	public class ProfileRepository : IAccountRepository<Profile>
 	{
-		private readonly DBContext _db;
+		private readonly DBContextGroomingSalon _db;
 
-		public ProfileRepository(DBContext db)
+		public ProfileRepository(DBContextGroomingSalon db)
 		{
 			_db = db;
 		}

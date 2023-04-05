@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DiplomaGroomingSalon.Domain.ViewModels
 {
 	public class LoginViewModel
 	{
-		[Required(ErrorMessage = "Введите имя")]
-		[MaxLength(20, ErrorMessage = "Имя должно иметь длину меньше 20 символов")]
-		[MinLength(3, ErrorMessage = "Имя должно иметь длину больше 3 символов")]
+		[Required(ErrorMessage = "Enter your name")]
+		[MaxLength(20, ErrorMessage = "The name must be less than 20 characters long")]
+		[MinLength(3, ErrorMessage = "The name must be longer than 3 characters")]
 		public string Name { get; set; }
-
-		[Required(ErrorMessage = "Введите пароль")]
+		[Required(ErrorMessage = "Enter password")]
 		[DataType(DataType.Password)]
-		[Display(Name = "Пароль")]
+		[Display(Name = "Password")]
 		public string Password { get; set; }
 	}
 }

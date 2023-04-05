@@ -6,9 +6,9 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 {
 	public class OrderRepository : IBaseRepository<Order>
 	{
-		private readonly DBContext _db;
+		private readonly DBContextGroomingSalon _db;
 
-		public OrderRepository(DBContext db)
+		public OrderRepository(DBContextGroomingSalon db)
 		{
 			_db = db;
 		}

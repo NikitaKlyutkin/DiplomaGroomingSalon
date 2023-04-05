@@ -3,85 +3,84 @@ using DiplomaGroomingSalon.Domain.Entities;
 using DiplomaGroomingSalon.Domain.Enum;
 using DiplomaGroomingSalon.Domain.Response;
 using DiplomaGroomingSalon.Domain.ViewModels;
-using Microsoft.Extensions.Logging;
 using DiplomaGroomingSalon.Service.Interfaces;
+using Microsoft.Extensions.Logging;
 
-namespace DiplomaGroomingSalon.Service.Implementations
+namespace DiplomaGroomingSalon.Service.Implementations;
+
+public class ProfileService : IProfileService
 {
-	public class ProfileService : IProfileService
+	private readonly ILogger<ProfileService> _logger;
+	private readonly IAccountRepository<Profile> _profileRepository;
+
+	public ProfileService(IAccountRepository<Profile> profileRepository,
+		ILogger<ProfileService> logger)
 	{
-		private readonly ILogger<ProfileService> _logger;
-		private readonly IAccountRepository<Profile> _profileRepository;
+		_profileRepository = profileRepository;
+		_logger = logger;
+	}
 
-		public ProfileService(IAccountRepository<Profile> profileRepository,
-			ILogger<ProfileService> logger)
+	public async Task<BaseResponse<Profile>> GetProfile(string userName)
+	{
+		try
 		{
-			_profileRepository = profileRepository;
-			_logger = logger;
+			var profile = await _profileRepository.GetByNameAsync(userName);
+			var profileView = new Profile
+			{
+				Id = profile!.Id,
+				Name = profile.Name,
+				Surname = profile.Surname,
+				Phone = profile.Phone,
+				Email = profile.Email,
+				UserName = userName,
+				UserId = profile.UserId
+			};
+
+			return new BaseResponse<Profile>
+			{
+				Data = profileView,
+				StatusCode = StatusCode.OK
+			};
 		}
-
-		public async Task<BaseResponse<Profile>> GetProfile(string userName)
+		catch (Exception ex)
 		{
-			try
-            {
-                var profile = await _profileRepository.GetByNameAsync(userName);
-                var profileView =  new Profile()
-					{
-						Id = profile!.Id,
-						Name = profile.Name,
-						Surname = profile.Surname,
-						Phone = profile.Phone,
-						Email = profile.Email,
-						UserName = userName,
-						UserId = profile.UserId
-                    };
-
-				return new BaseResponse<Profile>()
-				{
-					Data = profileView,
-					StatusCode = StatusCode.OK
-				};
-			}
-			catch (Exception ex)
+			_logger.LogError(ex, $"[ProfileService.GetProfile] error: {ex.Message}");
+			return new BaseResponse<Profile>
 			{
-				_logger.LogError(ex, $"[ProfileService.GetProfile] error: {ex.Message}");
-				return new BaseResponse<Profile>()
-				{
-					StatusCode = StatusCode.InternalServerError,
-					Description = $"Внутренняя ошибка: {ex.Message}"
-				};
-			}
+				StatusCode = StatusCode.InternalServerError,
+				Description = $"Internal error: {ex.Message}"
+			};
 		}
+	}
 
-		public async Task<BaseResponse<Profile>> Save(ProfileViewModel model)
+	public async Task<BaseResponse<Profile>> Save(ProfileViewModel model)
+	{
+		try
 		{
-			try
+			var profile = await _profileRepository.GetByIdAsync(model.Id);
+
+			profile!.Name = model.Name;
+			profile.Surname = model.Surname;
+			profile.Phone = model.Phone;
+			profile.Email = model.Email;
+
+			await _profileRepository.Update(profile);
+
+			return new BaseResponse<Profile>
 			{
-				var profile = await _profileRepository.GetByIdAsync(model.Id);
-
-				profile!.Name = model.Name;
-				profile.Surname = model.Surname;
-				profile.Phone = model.Phone;
-				profile.Email = model.Email;
-
-				await _profileRepository.Update(profile);
-
-				return new BaseResponse<Profile>()
-				{
-					Data = profile,
-					Description = "Данные обновлены",
-					StatusCode = StatusCode.OK
-				};
-			}
-			catch (Exception ex)
+				Data = profile,
+				Description = "Data updated",
+				StatusCode = StatusCode.OK
+			};
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex, $"[ProfileService.Save] error: {ex.Message}");
+			return new BaseResponse<Profile>
 			{
-				_logger.LogError(ex, $"[ProfileService.Save] error: {ex.Message}");
-				return new BaseResponse<Profile>()
-				{
-					StatusCode = StatusCode.InternalServerError,
-					Description = $"Внутренняя ошибка: {ex.Message}"
-				};
-			}
+				StatusCode = StatusCode.InternalServerError,
+				Description = $"Internal error: {ex.Message}"
+			};
 		}
 	}
 }

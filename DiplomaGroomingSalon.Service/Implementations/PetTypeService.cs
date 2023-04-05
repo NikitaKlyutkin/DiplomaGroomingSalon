@@ -4,194 +4,177 @@ using DiplomaGroomingSalon.Domain.Enum;
 using DiplomaGroomingSalon.Domain.Response;
 using DiplomaGroomingSalon.Service.Interfaces;
 
-namespace DiplomaGroomingSalon.Service.Implementations
+namespace DiplomaGroomingSalon.Service.Implementations;
+
+public class PetTypeService : ICRUDDataService<PetType>
 {
-    public class PetTypeService : ICRUDDataService<PetType>
-    {
-        private readonly IBaseRepository<PetType> _petTypePetRepository;
-        private readonly IBaseRepository<Breed> _breedRepository;
-        private readonly IBaseRepository<ServiceType> _serviceTypeRepository;
-        public PetTypeService(IBaseRepository<PetType> petTypePetRepository, IBaseRepository<Breed> breedRepository, IBaseRepository<ServiceType> serviceTypeRepository)
-        {
-            _petTypePetRepository = petTypePetRepository;
-            _breedRepository = breedRepository;
-            _serviceTypeRepository = serviceTypeRepository;
+	private readonly IBaseRepository<Breed> _breedRepository;
+	private readonly IBaseRepository<PetType> _petTypePetRepository;
+	private readonly IBaseRepository<ServiceType> _serviceTypeRepository;
 
-        }
-        public async Task<IBaseResponse<List<PetType>>> GetAll()
-        {
-            var baseResponse = new BaseResponse<IEnumerable<PetType>>();
-            try
-            {
-                var typePets = await _petTypePetRepository.GetAll();
+	public PetTypeService(IBaseRepository<PetType> petTypePetRepository, IBaseRepository<Breed> breedRepository,
+		IBaseRepository<ServiceType> serviceTypeRepository)
+	{
+		_petTypePetRepository = petTypePetRepository;
+		_breedRepository = breedRepository;
+		_serviceTypeRepository = serviceTypeRepository;
+	}
 
-                if (!typePets.Any())
-                {
-                    return new BaseResponse<List<PetType>>()
-                    {
-                        Description = "Found 0 items",
-                        StatusCode = StatusCode.OK
-                    };
-                }
-                return new BaseResponse<List<PetType>>()
-                {
-                    Data = typePets.ToList(),
-                    StatusCode = StatusCode.OK
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<List<PetType>>()
-                {
-                    Description = $"[GetTypePets] : {ex.Message}",
-                    StatusCode = StatusCode.InternalServerError
-                };
-            }
-        }
+	public async Task<IBaseResponse<List<PetType>>> GetAll()
+	{
+		try
+		{
+			var petTypes = await _petTypePetRepository.GetAll();
 
-        public async Task<IBaseResponse<PetType>> GetById(Guid id)
-        {
-            try
-            {
-                var typepet = await _petTypePetRepository.GetByIdAsync(id);
-                if (typepet == null)
-                {
-                    return new BaseResponse<PetType>()
-                    {
-                        Description = "Not Found",
-                        StatusCode = StatusCode.UserNotFound
-                    };
-                }
+			if (!petTypes.Any())
+				return new BaseResponse<List<PetType>>
+				{
+					Description = "Found 0 items",
+					StatusCode = StatusCode.OK
+				};
+			return new BaseResponse<List<PetType>>
+			{
+				Data = petTypes.ToList(),
+				StatusCode = StatusCode.OK
+			};
+		}
+		catch (Exception ex)
+		{
+			return new BaseResponse<List<PetType>>
+			{
+				Description = $"[GetTypePets] : {ex.Message}",
+				StatusCode = StatusCode.InternalServerError
+			};
+		}
+	}
 
-                var data = new PetType()
-                {
-                    Id = typepet.Id,
-                    PetTypeName = typepet.PetTypeName,
+	public async Task<IBaseResponse<PetType>> GetById(Guid id)
+	{
+		try
+		{
+			var petType = await _petTypePetRepository.GetByIdAsync(id);
+			if (petType == null)
+				return new BaseResponse<PetType>
+				{
+					Description = "Not Found",
+					StatusCode = StatusCode.UserNotFound
+				};
 
-                };
+			var data = new PetType
+			{
+				Id = petType.Id,
+				PetTypeName = petType.PetTypeName
+			};
 
-                return new BaseResponse<PetType>()
-                {
-                    StatusCode = StatusCode.OK,
-                    Data = data
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<PetType>()
-                {
-                    Description = $"[GetTypePet] : {ex.Message}",
-                    StatusCode = StatusCode.InternalServerError
-                };
-            }
-        }
+			return new BaseResponse<PetType>
+			{
+				StatusCode = StatusCode.OK,
+				Data = data
+			};
+		}
+		catch (Exception ex)
+		{
+			return new BaseResponse<PetType>
+			{
+				Description = $"[GetTypePet] : {ex.Message}",
+				StatusCode = StatusCode.InternalServerError
+			};
+		}
+	}
 
-        public async Task<IBaseResponse<PetType>> Create(PetType model)
-        {
-            var baseResponse = new BaseResponse<PetType>();
-            try
-            {
-                var typePet = new PetType()
-                {
-                    Id = Guid.NewGuid(),
-                    PetTypeName = model.PetTypeName
-                };
+	public async Task<IBaseResponse<PetType>> Create(PetType model)
+	{
+		var baseResponse = new BaseResponse<PetType>();
+		try
+		{
+			var petType = new PetType
+			{
+				Id = Guid.NewGuid(),
+				PetTypeName = model.PetTypeName
+			};
 
-                await _petTypePetRepository.Create(typePet);
+			await _petTypePetRepository.Create(petType);
+		}
+		catch (Exception ex)
+		{
+			return new BaseResponse<PetType>
+			{
+				Description = $"[CreateTypePet]: {ex.Message}",
+				StatusCode = StatusCode.InternalServerError
+			};
+		}
 
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<PetType>()
-                {
-                    Description = $"[CreateTypePet]: {ex.Message}",
-                    StatusCode = StatusCode.InternalServerError
-                };
-            }
-            return baseResponse;
-        }
+		return baseResponse;
+	}
 
-        public async Task<IBaseResponse<PetType>> Edit(Guid id, PetType model)
-        {
-            try
-            {
-                var typepet = await _petTypePetRepository.GetByIdAsync(id);
-                if (typepet == null)
-                {
-                    return new BaseResponse<PetType>()
-                    {
-                        Description = "Not found",
-                        StatusCode = StatusCode.NotFound
-                    };
-                }
-                typepet.Id = model.Id;
-                typepet.PetTypeName = model.PetTypeName;
+	public async Task<IBaseResponse<PetType>> Edit(Guid id, PetType model)
+	{
+		try
+		{
+			var petType = await _petTypePetRepository.GetByIdAsync(id);
+			if (petType == null)
+				return new BaseResponse<PetType>
+				{
+					Description = "Not found",
+					StatusCode = StatusCode.NotFound
+				};
+			petType.Id = model.Id;
+			petType.PetTypeName = model.PetTypeName;
 
-                await _petTypePetRepository.Update(typepet);
+			await _petTypePetRepository.Update(petType);
 
 
-                return new BaseResponse<PetType>()
-                {
-                    Data = typepet,
-                    StatusCode = StatusCode.OK,
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<PetType>()
-                {
-                    Description = $"[EditTypePet] : {ex.Message}",
-                    StatusCode = StatusCode.InternalServerError
-                };
-            }
-        }
+			return new BaseResponse<PetType>
+			{
+				Data = petType,
+				StatusCode = StatusCode.OK
+			};
+		}
+		catch (Exception ex)
+		{
+			return new BaseResponse<PetType>
+			{
+				Description = $"[EditTypePet] : {ex.Message}",
+				StatusCode = StatusCode.InternalServerError
+			};
+		}
+	}
 
-        public async Task<IBaseResponse<bool>> Delete(Guid id)
-        {
-            try
-            {
-                var typepet = await _petTypePetRepository.GetByIdAsync(id);
-                if (typepet == null)
-                {
-                    return new BaseResponse<bool>()
-                    {
-                        Description = "Not found",
-                        StatusCode = StatusCode.NotFound,
-                        Data = false
-                    };
-                }
-                else
-                {
-                  var breedpet = _breedRepository.GetAll().Result.FirstOrDefault(x => x.PetTypeId == id);
-                  var servicetype = _serviceTypeRepository.GetAll().Result.FirstOrDefault(x => x.PetTypeId == id);
-                    if (servicetype != null)
-                    {
-                        await _serviceTypeRepository.DeleteRange(servicetype);
-                    }
+	public async Task<IBaseResponse<bool>> Delete(Guid id)
+	{
+		try
+		{
+			var petType = await _petTypePetRepository.GetByIdAsync(id);
+			if (petType == null)
+				return new BaseResponse<bool>
+				{
+					Description = "Not found",
+					StatusCode = StatusCode.NotFound,
+					Data = false
+				};
 
-                    if (breedpet != null)
-                    {
-                        await _breedRepository.DeleteRange(breedpet);
-                    }
+			var breed = _breedRepository.GetAll().Result.FirstOrDefault(x => x.PetTypeId == id);
+			var serviceType = _serviceTypeRepository.GetAll().Result.FirstOrDefault(x => x.PetTypeId == id);
+			if (serviceType != null) await _serviceTypeRepository.DeleteRange(serviceType);
 
-                    await _petTypePetRepository.Delete(typepet);
-                }
+			if (breed != null) await _breedRepository.DeleteRange(breed);
+
+			await _petTypePetRepository.Delete(petType);
 
 
-                return new BaseResponse<bool>()
-                {
-                    Data = true,
-                    StatusCode = StatusCode.OK
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<bool>()
-                {
-                    Description = $"[DeleteTypePet] : {ex.Message}",
-                    StatusCode = StatusCode.InternalServerError
-                };
-            }
-        }
-    }
+			return new BaseResponse<bool>
+			{
+				Data = true,
+				StatusCode = StatusCode.OK
+			};
+		}
+		catch (Exception ex)
+		{
+			return new BaseResponse<bool>
+			{
+				Description = $"[DeleteTypePet] : {ex.Message}",
+				StatusCode = StatusCode.InternalServerError
+			};
+		}
+	}
 }

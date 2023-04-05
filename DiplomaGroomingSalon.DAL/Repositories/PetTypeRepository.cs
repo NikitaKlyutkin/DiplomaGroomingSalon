@@ -6,8 +6,8 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 {
 	public class PetTypeRepository : IBaseRepository<PetType>
 	{
-		private readonly DBContext _db;
-		public PetTypeRepository(DBContext db)
+		private readonly DBContextGroomingSalon _db;
+		public PetTypeRepository(DBContextGroomingSalon db)
 		{
 			_db = db;
 		}

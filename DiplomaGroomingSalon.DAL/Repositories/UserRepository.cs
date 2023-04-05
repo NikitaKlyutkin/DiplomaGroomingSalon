@@ -7,9 +7,9 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 {
 	public class UserRepository : IAccountRepository<User>
 	{
-		private readonly DBContext _db;
+		private readonly DBContextGroomingSalon _db;
 
-		public UserRepository(DBContext db)
+		public UserRepository(DBContextGroomingSalon db)
 		{
 			_db = db;
 		}

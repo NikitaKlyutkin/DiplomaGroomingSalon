@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DiplomaGroomingSalon.Domain.ViewModels
 {
 	public class ChangePasswordViewModel
 	{
-		[Required(ErrorMessage = "Укажите имя")]
+		[Required(ErrorMessage = "Enter a name")]
 		public string UserName { get; set; }
-
-		[Required(ErrorMessage = "Введите пароль")]
+		[Required(ErrorMessage = "Enter password")]
 		[DataType(DataType.Password)]
-		[Display(Name = "Пароль")]
-		[MinLength(5, ErrorMessage = "Пароль должен быть больше или равен 5 символов")]
+		[Display(Name = "Password")]
+		[MinLength(5, ErrorMessage = "Password must be greater than or equal to 5 characters")]
 		public string NewPassword { get; set; }
 	}
 }

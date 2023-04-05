@@ -49,11 +49,13 @@
 					    }
 					    @if (User.IsInRole("Admin") || User.IsInRole("User"))
 					    {
+
 						    <li class="nav-item">
 							    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="CreateOrder">CreateOrder</a>
 						    </li>
+
 					    }
-					    @if (User.IsInRole("User"))
+				    @if (User.IsInRole("User"))
 					    {
 						    <li class="nav-item">
 							    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="GetOrdersByUser">My Orders</a>

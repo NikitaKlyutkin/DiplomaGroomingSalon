@@ -13,72 +13,83 @@
 <h4>OrderViewModel</h4>
 <hr />
 <div class="row">
-    <div class="col-10 offset-1">
-        <form asp-action="CreateOrder">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-	        <div class="form-group">
-				<label>Date and Time Appointment</label>
-		        @if (ViewBag.DateTimeAppointment != null)
-		        {
-			        @Html.DropDownListFor(m => m.AppointmentId, ViewBag.DateTimeAppointment as IEnumerable<SelectListItem>,
-				"--Select Appointment--", new {@class = "form-control"})
-		        }
-		        else
-		        {
-			        <select asp-for="AppointmentId" required class="form-control">
-				        <option value="">--Select Appointment--</option>
-			        </select>
-		        }
-	        </div>
-	        <div class="form-group">
-		        <label> Type Pet</label>
-				@if (ViewBag.TypePetBPOrder != null)
-				{
-					@Html.DropDownListFor(m => m.PetTypeId, ViewBag.TypePetBPOrder as IEnumerable<SelectListItem>,
-						"--Select Type Pet--", new {@class = "form-control"})
-				}
-				else
-				{
-					<select asp-for="PetTypeId" required class="form-control">
-						<option value="">--Select Pet Type--</option>
-					</select>
-				}
-		        </div>
-	        <div class="form-group">
-		       
-		        <label asp-for="NamePet" class="control-label"></label>
-		        <input asp-for="NamePet" required class="form-control"/>
-		        <span asp-validation-for="NamePet" class="text-danger"></span>
-	        </div>
-			<div class="form-group">
-		        <label asp-for="BreedId" class="control-label">Breed</label>
-				<select asp-for="BreedId" required class="form-control">
-					<option value="">--Select Breed Pet--</option>
-				</select>
-			</div>
-	        <div class="mb-2">
-				<label asp-for="ServiceTypeId" class="control-label">Service Type</label>
-		        <select asp-for="ServiceTypeId" required class="form-control">
-			        <option value="">--Select Service Type--</option>
-		        </select>
-	        </div>
-	        <div class="mb-2">
-				<label asp-for="Price" class="control-label"></label>
-		        <select disabled asp-for="Price" style="appearance: none;" class="form-control">
-			        <option value="">--Price--</option>
-		        </select>
-		       
-				<select readonly asp-for="Price" required style="appearance: none;" class="form-control" hidden="text">
-		        </select>
-		        <span asp-validation-for="Price" class="text-danger"></span>
-		        
-	        </div>
+	@if (ViewBag.AllowCreateOrder != null)
+	{
+		<div class="col-10 offset-1">
+			<form asp-action="CreateOrder">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div class="form-group">
+					<label>Date and Time Appointment</label>
+					@if (ViewBag.DateTimeAppointment != null)
+					{
+						@Html.DropDownListFor(m => m.AppointmentId, ViewBag.DateTimeAppointment as IEnumerable<SelectListItem>,
+							"--Select Appointment--", new {@class = "form-control"})
+					}
+					else
+					{
+						<select asp-for="AppointmentId" required class="form-control">
+							<option value="">--Select Appointment--</option>
+						</select>
+					}
+				</div>
+				<div class="form-group">
+					<label> Type Pet</label>
+					@if (ViewBag.TypePetBPOrder != null)
+					{
+						@Html.DropDownListFor(m => m.PetTypeId, ViewBag.TypePetBPOrder as IEnumerable<SelectListItem>,
+							"--Select Type Pet--", new {@class = "form-control"})
+					}
+					else
+					{
+						<select asp-for="PetTypeId" required class="form-control">
+							<option value="">--Select Pet Type--</option>
+						</select>
+					}
+				</div>
+				<div class="form-group">
 
-	        <div class="form-group">
-		        <input type="submit" value="Create" class="btn btn-primary"/>
-	        </div>
-        </form>
-    </div>
+					<label asp-for="NamePet" class="control-label"></label>
+					<input asp-for="NamePet" required class="form-control"/>
+					<span asp-validation-for="NamePet" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="BreedId" class="control-label">Breed</label>
+					<select asp-for="BreedId" required class="form-control">
+						<option value="">--Select Breed Pet--</option>
+					</select>
+				</div>
+				<div class="mb-2">
+					<label asp-for="ServiceTypeId" class="control-label">Service Type</label>
+					<select asp-for="ServiceTypeId" required class="form-control">
+						<option value="">--Select Service Type--</option>
+					</select>
+				</div>
+				<div class="mb-2">
+					<label asp-for="Price" class="control-label"></label>
+					<select disabled asp-for="Price" style="appearance: none;" class="form-control">
+						<option value="">--Price--</option>
+					</select>
+
+					<select readonly asp-for="Price" required style="appearance: none;" class="form-control" hidden="text">
+					</select>
+					<span asp-validation-for="Price" class="text-danger"></span>
+
+				</div>
+
+				<div class="form-group">
+					<input type="submit" value="Create" class="btn btn-primary"/>
+				</div>
+			</form>
+		</div>
+	}
+	else
+	{
+		<div class="col-md-8">
+			<div class="card-body">
+				<h5 class="card-title text-center">Please enter all data in the user profile</h5>
+			</div>
+		</div>
+	}
 </div>
 @section Scripts {
 	

@@ -6,7 +6,6 @@ namespace DiplomaGroomingSalon.Domain.ViewModels
 {
 	public class OrderViewModel
 	{
-
 		public Guid Id { get; set; }
         public StatusOrder StatusOrder { get; set; }
         public Profile Profile { get; set; }

@@ -6,9 +6,9 @@ namespace DiplomaGroomingSalon.DAL.Repositories
 {
 	public class AppointmentRepository : IBaseRepository<Appointment>
 	{
-		private readonly DBContext _db;
+		private readonly DBContextGroomingSalon _db;
 
-		public AppointmentRepository(DBContext db)
+		public AppointmentRepository(DBContextGroomingSalon db)
 		{
 			_db = db;
 		}
