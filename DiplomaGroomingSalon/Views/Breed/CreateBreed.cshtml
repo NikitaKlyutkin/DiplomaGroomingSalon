@@ -1,26 +1,26 @@
 ﻿@model DiplomaGroomingSalon.Domain.ViewModels.BreedViewModel
 
 @{
-    ViewData["Title"] = "CreateBreed";
+    ViewData["Title"] = "Create Breed";
 }
 
-<h1>CreateBreed</h1>
+<h1>Create Breed</h1>
 
-<h4>BreedViewModel</h4>
+<h4>Create a breed for a client</h4>
 <p>
-	<a asp-controller="PetType" asp-action="CreatePetType">Create New PetType</a>
+	<a asp-controller="PetType" asp-action="CreatePetType">Create New Pet Type</a>
 </p>
 <p>
 	<a asp-action="CreateBreed">Create New Breed</a>
 </p>
 <p>
-	<a asp-controller="ServiceType" asp-action="CreateServiceType">Create New ServiceType</a>
+	<a asp-controller="ServiceType" asp-action="CreateServiceType">Create New Service Type</a>
 </p>
 @if (ViewBag.TypePet == null)
 {
 	<div class="col-md-8">
 		<div class="card-body">
-			<h5 class="card-title text-center">Complete the PetType List</h5>
+			<h5 class="card-title text-center">Complete the Pet Type List</h5>
 		</div>
 	</div>
 }
@@ -32,7 +32,7 @@ else
 			<form asp-action="CreateBreed">
 				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 				<div class="form-group">
-					<label>PetType</label>
+					<label>Pet Type</label>
 					@Html.DropDownListFor(m => m.PetTypeId, ViewBag.TypePet as IEnumerable<SelectListItem>, "--Select Pet Type--", new {@class = "form-control"})
 				</div>
 				<div class="form-group">
@@ -49,7 +49,7 @@ else
 	</div>
 	<div>
 
-		<a asp-action="GetBreed">Back to List</a>
+		<a asp-action="GetBreeds">Back to List Breeds</a>
 	</div>
 }
 @section Scripts {

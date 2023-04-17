@@ -30,6 +30,11 @@ public class AppointmentController : Controller
 	{
 		if (ModelState.IsValid)
 		{
+			if (model.DateTimeAppointment <= DateTime.Now)
+			{
+				ModelState.AddModelError("DateTimeAppointment", "The appointment date and time must be in the future.");
+				return View(model);
+			}
 			var response = await _appointmentService.CreateAppointment(model);
 			if (response.StatusCode == Domain.Enum.StatusCode.OK) return Json(new {description = response.Description});
 			return RedirectToAction("CreateAppointment");

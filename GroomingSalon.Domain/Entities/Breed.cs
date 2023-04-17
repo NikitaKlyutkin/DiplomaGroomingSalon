@@ -8,6 +8,7 @@ namespace DiplomaGroomingSalon.Domain.Entities
 	{
 		[Key]
 		public Guid Id { get; set; }
+		[Display(Name = "Breed")]
 		public string BreedName { get; set; }
 		public PetType PetType { get; set; }
 		public Guid PetTypeId { get; set; }

@@ -84,7 +84,7 @@ public class OrderController : Controller
 		return View();
 	}
 
-	[Authorize]
+	[Authorize(Roles = "User")]
 	[HttpGet]
 	public async Task<IActionResult> CreateOrder()
 	{
@@ -101,6 +101,7 @@ public class OrderController : Controller
 			ViewBag.TypePetBPOrder = new SelectList(typePets, "Id", "PetTypeName");
 		else
 			ViewBag.TypePetBPOrder = null;
+
 		var nameUser = User.Identity.Name;
 		var profileUser = await _orderService.GetProfileOrder(nameUser);
 		if (profileUser.Data.Phone == null || profileUser.Data.Name == null)

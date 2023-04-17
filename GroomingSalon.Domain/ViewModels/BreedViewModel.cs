@@ -8,7 +8,8 @@ namespace DiplomaGroomingSalon.Domain.ViewModels
 	{
         [Key]
         public Guid Id { get; set; }
-        public string BreedName { get; set; }
+        [Display(Name = "Breed")]
+		public string BreedName { get; set; }
 		public PetType PetType { get; set; }
 		public Guid PetTypeId { get; set; }
         public string TypePetName { get; set; }

@@ -21,7 +21,7 @@ public class BreedController : Controller
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> GetBreed()
+	public async Task<IActionResult> GetBreeds()
 	{
 		var response = await _breedService.GetAll();
 
@@ -82,14 +82,14 @@ public class BreedController : Controller
 		ModelState.Remove("PetTypeId");
 		if (ModelState.IsValid)
 			await _breedService.Edit(viewModel.Id, viewModel);
-		return RedirectToAction("GetBreed");
+		return RedirectToAction("GetBreeds");
 	}
 
 	[Authorize(Roles = "Admin")]
 	public async Task<IActionResult> DeleteBreed(Guid id)
 	{
 		var response = await _breedService.Delete(id);
-		if (response.StatusCode == Domain.Enum.StatusCode.OK) return RedirectToAction("GetBreed");
+		if (response.StatusCode == Domain.Enum.StatusCode.OK) return RedirectToAction("GetBreeds");
 		return View(response.Description);
 	}
 }

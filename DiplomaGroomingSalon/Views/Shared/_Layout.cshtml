@@ -44,14 +44,14 @@
 					    @if (User.IsInRole("Admin"))
 					    {
 						    <li class="nav-item">
-							    <a class="nav-link text-dark" asp-area="" asp-controller="Appointment" asp-action="GetAppointments">Get Appointment</a>
+							    <a class="nav-link text-dark" asp-area="" asp-controller="Appointment" asp-action="GetAppointments">Get Appointments</a>
 						    </li>
 					    }
-					    @if (User.IsInRole("Admin") || User.IsInRole("User"))
+					    @if (User.IsInRole("User"))
 					    {
 
 						    <li class="nav-item">
-							    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="CreateOrder">CreateOrder</a>
+							    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="CreateOrder">Create Order</a>
 						    </li>
 
 					    }

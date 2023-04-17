@@ -1,20 +1,20 @@
 ﻿@model DiplomaGroomingSalon.Domain.ViewModels.PetTypeViewModel
 
 @{
-    ViewData["Title"] = "CreatePetType";
+    ViewData["Title"] = "Create Pet Type";
 }
 
-<h1>CreatePetType</h1>
+<h1>Create Pet Type</h1>
 
-<h4>PetTypeViewModel</h4>
+<h4>Create a pet type for a client</h4>
 <p>
-    <a asp-action="CreatePetType">Create New PetType</a>
+    <a asp-action="CreatePetType">Create New Pet Type</a>
 </p>
 <p>
     <a asp-controller="Breed" asp-action="CreateBreed">Create New Breed</a>
 </p>
 <p>
-    <a asp-controller="ServiceType" asp-action="CreateServiceType">Create New ServiceType</a>
+    <a asp-controller="ServiceType" asp-action="CreateServiceType">Create New Service Type</a>
 </p>
 <hr />
 <div class="row">
@@ -34,7 +34,7 @@
 </div>
 
 <div>
-    <a asp-action="GetPetTypes">Back to List</a>
+    <a asp-action="GetPetTypes">Back to List Pet Types</a>
 </div>
 
 @section Scripts {

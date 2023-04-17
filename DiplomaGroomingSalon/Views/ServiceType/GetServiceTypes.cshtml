@@ -1,20 +1,26 @@
-﻿@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.ServiceType>
+﻿@using NonFactors.Mvc.Grid
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.ServiceType>
 
 @{
-    ViewData["Title"] = "GetServiceTypes";
+	ViewData["Title"] = "Get Service Types";
 }
 
-<h1>GetServiceTypes</h1>
+<h1>List Service Types</h1>
 
 <p>
-	<a asp-controller="PetType" asp-action="CreatePetType">Create New PetType</a>
+	<a asp-controller="PetType" asp-action="CreatePetType">Create New Pet Type</a>
 </p>
 <p>
 	<a asp-controller="Breed" asp-action="CreateBreed">Create New Breed</a>
 </p>
 <p>
-	<a asp-action="CreateServiceType">Create New ServiceType</a>
+	<a asp-action="CreateServiceType">Create New Service Type</a>
 </p>
+<head>
+	<meta name="viewport" content="width=device-width"/>
+	<link href="~/css/mvc-grid/mvc-grid.css" rel="stylesheet"/>
+</head>
 @if (Model == null)
 {
 	<div class="col-md-8">
@@ -25,46 +31,21 @@
 }
 else
 {
-	<table class="table">
-		<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.ServiceTypeName)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Price)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Breed.BreedName)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Breed.PetType.PetTypeName)
-			</th>
-			<th></th>
-		</tr>
-		</thead>
-		<tbody>
-		@foreach (var item in Model)
-		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.ServiceTypeName)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Price)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Breed.BreedName)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Breed.PetType.PetTypeName)
-				</td>
-				<td>
-					@Html.ActionLink("Edit", "EditServiceType", new {id = item.Id}) |
-					@Html.ActionLink("Delete ServiceType and Price", "DeleteServiceTypes", new {id = item.Id})
-				</td>
-			</tr>
-		}
-		</tbody>
-	</table>
+	<div class="row">
+		<div class="col-12">
+			@Html.Grid(Model).Build(columns =>
+			{
+				columns.Add(model => model.Breed.PetType.PetTypeName).Titled("Pet Type").Filterable(true).Sortable(true);
+				columns.Add(model => model.Breed.BreedName).Titled("Breed").Filterable(true).Sortable(true);
+				columns.Add(model => model.ServiceTypeName).Titled("Service Type").Filterable(true).Sortable(true);
+				columns.Add(model => model.Price).Titled("Price").Sortable(true);
+				columns.Add().RenderedAs(o => Html.ActionLink("Edit", "EditServiceType", new {id = o.Id}));
+				columns.Add().RenderedAs(o => Html.ActionLink("Delete Service Type and Price", "DeleteServiceTypes", new {id = o.Id}));
+			}).Using(GridFilterMode.Excel).Pageable(page => { page.RowsPerPage = 14; }).Empty("No data found")
+		</div>
+	</div>
 }
+<script src="~/js/mvc-grid/mvc-grid.js"></script>
+<script>
+	document.querySelectorAll(".mvc-grid").forEach(element => new MvcGrid(element));
+</script>

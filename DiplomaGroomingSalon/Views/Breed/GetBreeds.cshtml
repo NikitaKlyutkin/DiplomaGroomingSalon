@@ -1,17 +1,18 @@
 ﻿@using NonFactors.Mvc.Grid
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.PetType>
+@model IEnumerable<DiplomaGroomingSalon.Domain.Entities.Breed>
 
 @{
-	ViewData["Title"] = "Get Pet Types";
+	ViewData["Title"] = "Get Breeds";
 }
 
-<h1>List Pet Types</h1>
+<h1>List Breeds</h1>
+
 <p>
-	<a asp-action="CreatePetType">Create New Pet Type</a>
+	<a asp-controller="PetType" asp-action="CreatePetType">Create New Pet Type</a>
 </p>
 <p>
-	<a asp-controller="Breed" asp-action="CreateBreed">Create New Breed</a>
+	<a asp-action="CreateBreed">Create New Breed</a>
 </p>
 <p>
 	<a asp-controller="ServiceType" asp-action="CreateServiceType">Create New Service Type</a>
@@ -34,9 +35,10 @@ else
 		<div class="col-12">
 			@Html.Grid(Model).Build(columns =>
 			{
-				columns.Add(model => model.PetTypeName).Titled("Pet Type").Filterable(true).Sortable(true);
-				columns.Add().RenderedAs(o => Html.ActionLink("Edit", "EditPetType", new {id = o.Id}));
-				columns.Add().RenderedAs(o => Html.ActionLink("Delete All(including Pet Type)", "DeletePetType", new {id = o.Id}));
+				columns.Add(model => model.PetType.PetTypeName).Titled("Pet Type").Filterable(true).Sortable(true);
+				columns.Add(model => model.BreedName).Titled("Breed").Filterable(true).Sortable(true);
+				columns.Add().RenderedAs(o => Html.ActionLink("Edit", "EditBreed", new {id = o.Id}));
+				columns.Add().RenderedAs(o => Html.ActionLink("Delete All(including Breed)", "DeleteBreed", new {id = o.Id}));
 			}).Using(GridFilterMode.Excel).Pageable(page => { page.RowsPerPage = 14; }).Empty("No data found")
 		</div>
 	</div>

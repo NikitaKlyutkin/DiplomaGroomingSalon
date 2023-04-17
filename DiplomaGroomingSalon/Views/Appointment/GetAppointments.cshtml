@@ -1,14 +1,13 @@
 ﻿@using NonFactors.Mvc.Grid
-@using DiplomaGroomingSalon.Domain.Enum
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model IEnumerable<DiplomaGroomingSalon.Domain.Entities.Appointment>
 
 @{
-    ViewData["Title"] = "GetAppointmentsFree";
+    ViewData["Title"] = "Get Appointments Free";
 }
 @if (Model != null)
 {
-	<h1>GetAppointmentsFree</h1>
+	<h1>Appointments Free</h1>
 
 	<p>
 		<a asp-action="CreateAppointment">Create New</a>
@@ -21,7 +20,7 @@
 		<div class="col-12">
 			@Html.Grid(Model).Build(columns =>
 			{
-				columns.Add(model => model.DateTimeAppointment).Titled("Date Appointment").Sortable(true);
+		columns.Add(model => model.DateTimeAppointment).Titled("Date and Time Appointment").Sortable(true);
 				columns.Add().RenderedAs(o => Html.ActionLink("Delete", "DeleteAppointment", new {id = o.Id}));
 			}).Using(GridFilterMode.Excel).Pageable(page => { page.RowsPerPage = 10; }).Empty("No data found")
 		</div>
