@@ -25,6 +25,7 @@ public class OrderController : Controller
 		_appointmentService = appointmentService;
 		_petTypeService = petTypeService;
 	}
+
 	[Authorize(Roles = "Admin")]
 	[HttpGet]
 	public async Task<IActionResult> GetOrders(string type = "all")
@@ -53,49 +54,6 @@ public class OrderController : Controller
 
 		return View(orders.ToList());
 	}
-	//[Authorize(Roles = "Admin")]
-	//[HttpGet]
-	//public async Task<IActionResult> GetOrdersByAdmin()
-	//{
-	//	var response = await _orderService.GetOrders();
-
-	//	if (response.Data != null) return View(response.Data.ToList());
-	//	return View();
-	//}
-
-	//[Authorize(Roles = "Admin")]
-	//[HttpGet]
-	//public async Task<IActionResult> GetActualOrders()
-	//{
-	//	var responseAsync = await _orderService.GetOrders();
-	//	var response = responseAsync.Data.Where(x => x.StatusOrder == StatusOrder.During);
-
-	//	if (responseAsync.Data != null) return View(response.ToList());
-	//	return View();
-	//}
-
-	//[Authorize(Roles = "Admin")]
-	//[HttpGet]
-	//public async Task<IActionResult> GetCompletedOrders()
-	//{
-	//	var responseAsync = await _orderService.GetOrders();
-	//	var response = responseAsync.Data.Where(x => x.StatusOrder == StatusOrder.Сompleted);
-
-	//	if (responseAsync.Data != null) return View(response.ToList());
-	//	return View();
-	//}
-
-	//[Authorize(Roles = "Admin")]
-	//[HttpGet]
-	//public async Task<IActionResult> GetCancellationsOrders()
-	//{
-	//	var responseAsync = await _orderService.GetOrders();
-	//	var response = responseAsync.Data
-	//		.Where(x => x.StatusOrder == StatusOrder.Cancellations || x.StatusOrder == StatusOrder.NotDone);
-
-	//	if (responseAsync.Data != null) return View(response.ToList());
-	//	return View();
-	//}
 
 	[Authorize(Roles = "User")]
 	[HttpGet]
@@ -203,7 +161,7 @@ public class OrderController : Controller
 			await _orderService.Edit(viewModel.Id, viewModel);
 		}
 
-		return RedirectToAction("GetOrdersByAdmin");
+		return RedirectToAction("GetOrders");
 	}
 
 	[Authorize(Roles = "User")]
